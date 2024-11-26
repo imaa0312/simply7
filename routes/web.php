@@ -48,10 +48,6 @@ Route::get('/brand-list', function () {
     return view('brand-list');
 })->name('brand-list');
 
-Route::get('/varriant-attributes', function () {
-    return view('varriant-attributes');
-})->name('varriant-attributes');
-
 Route::get('/product-details', function () {
     return view('product-details');
 })->name('product-details');
@@ -59,6 +55,8 @@ Route::get('/product-details', function () {
 Route::get('/edit-product', function () {
     return view('edit-product');
 })->name('edit-product');   
+
+
 
 Route::get('/manage-stocks', function () {                         
     return view('manage-stocks');
