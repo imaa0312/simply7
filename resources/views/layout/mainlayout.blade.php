@@ -9,7 +9,7 @@
         content="admin, estimates, bootstrap, business, corporate, creative, invoice, html5, responsive, Projects">
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
-    <title>Dreams Pos Admin Template</title>
+    <title>Simply 7</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ URL::asset('/build/img/favicon.png')}}">
@@ -53,7 +53,7 @@
 @yield('content')
 </div>
 <!-- /Main Wrapper -->
-@include('layout.partials.theme-settings')
+
 @component('components.modalpopup')
 @endcomponent
 @include('layout.partials.footer-scripts')
