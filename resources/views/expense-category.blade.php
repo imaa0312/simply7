@@ -25,50 +25,8 @@
                                         class="feather-search"></i></a>
                             </div>
                         </div>
-                        <div class="search-path">
-                            <div class="d-flex align-items-center">
-                                <a class="btn btn-filter" id="filter_search">
-                                    <i data-feather="filter" class="filter-icon"></i>
-                                    <span><img src="{{ URL::asset('/build/img/icons/closes.svg') }}" alt="img"></span>
-                                </a>
-
-                            </div>
-
-                        </div>
-                        <div class="form-sort">
-                            <i data-feather="sliders" class="info-img"></i>
-                            <select class="select">
-                                <option>Sort by Date</option>
-                                <option>25 9 23</option>
-                                <option>12 9 23</option>
-                            </select>
-                        </div>
                     </div>
-                    <!-- /Filter -->
-                    <div class="card" id="filter_inputs">
-                        <div class="card-body pb-0">
-                            <div class="row">
-                                <div class="col-lg-3 col-sm-6 col-12">
-                                    <div class="input-blocks">
-                                        <i data-feather="zap" class="info-img"></i>
-                                        <select class="select">
-                                            <option>Choose Category</option>
-                                            <option>Foods & Snacks</option>
-                                            <option>Petrol</option>
-                                        </select>
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-9 col-sm-6 col-12">
-                                    <div class="input-blocks">
-                                        <a class="btn btn-filters ms-auto"><i data-feather="search"
-                                                class="feather-search"></i> Search </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Filter -->
+                    
                     <div class="table-responsive">
                         <table class="table  datanew">
                             <thead>

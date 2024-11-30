@@ -32,7 +32,11 @@
         @if (
     !Route::is([
         'suppliers',
-        'warehouse'
+        'warehouse',
+        'store-list',
+        'customers',
+        'expense-category',
+        'product-list'
     ]))
         <ul class="table-top-head">
             <li>
@@ -269,12 +273,7 @@
         @endif
         @if (Route::is(['product-list']))
             <div class="page-btn">
-                <a href="{{ $li_2 }}" class="btn btn-added"><i data-feather="plus-circle"
-                        class="me-2"></i>{{ $li_3 }}</a>
-            </div>
-            <div class="page-btn import">
-                <a href="#" class="btn btn-added color" data-bs-toggle="modal" data-bs-target="#view-notes"><i
-                        data-feather="download" class="me-2"></i>{{ $li_4 }}</a>
+                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-products"><i data-feather="plus-circle" class="me-2"></i>{{ $li_3 }}</a>
             </div>
         @endif
     </div>

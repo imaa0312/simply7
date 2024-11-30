@@ -28,8 +28,8 @@
 									href="{{ url('customers') }}"><span>Members</span></a>
 								</li>
 								<li><a href="{{ url('expense-category') }}"
-									class="{{ Request::is('expense-category') ? 'active' : '' }}">Expense
-									Category</a></li>
+									class="{{ Request::is('expense-category') ? 'active' : '' }}"><span>Expense
+									Category</span></a></li>
 							</ul>
 						</li>
 					</ul>

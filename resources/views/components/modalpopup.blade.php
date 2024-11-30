@@ -8372,8 +8372,8 @@
 
 @if (Route::is(['customers']))
     <!-- Add Customer -->
-    <div class="modal fade" id="add-units">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+    <div class="modal fade bs-example-modal-lg" id="add-units">
+        <div class="modal-dialog modal-dialog-centered modal-lg custom-modal-two">
             <div class="modal-content">
                 <div class="page-wrapper-new p-0">
                     <div class="content">
@@ -8387,25 +8387,6 @@
                         </div>
                         <div class="modal-body custom-modal-body">
                             <form action="customers">
-                                <div class="modal-title-head people-cust-avatar">
-                                    <h6>Avatar</h6>
-                                </div>
-                                <div class="new-employee-field">
-                                    <div class="profile-pic-upload">
-                                        <div class="profile-pic">
-                                            <span><i data-feather="plus-circle" class="plus-down-add"></i> Add
-                                                Image</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="image-upload mb-0">
-                                                <input type="file">
-                                                <div class="image-uploads">
-                                                    <h4>Change Image</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-lg-4 pe-0">
                                         <div class="mb-3">
@@ -8440,11 +8421,11 @@
                                     </div>
                                     <div class="col-lg-6 pe-0">
                                         <div class="mb-3">
-                                            <label class="form-label">Country</label>
+                                            <label class="form-label">Province</label>
                                             <select class="select">
                                                 <option>Choose</option>
-                                                <option>United Kingdom</option>
-                                                <option>United State</option>
+                                                <option>Jawa Timur</option>
+                                                <option>Bali</option>
                                             </select>
                                         </div>
                                     </div>
@@ -8472,8 +8453,8 @@
     <!-- /Add Customer -->
 
     <!-- Edit Customer -->
-    <div class="modal fade" id="edit-units">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+    <div class="modal fade bs-example-modal-lg" id="edit-units">
+        <div class="modal-dialog modal-dialog-centered modal-lg custom-modal-two">
             <div class="modal-content">
                 <div class="page-wrapper-new p-0">
                     <div class="content">
@@ -8487,26 +8468,6 @@
                         </div>
                         <div class="modal-body custom-modal-body">
                             <form action="customers">
-                                <div class="modal-title-head people-cust-avatar">
-                                    <h6>Avatar</h6>
-                                </div>
-                                <div class="new-employee-field">
-                                    <div class="profile-pic-upload">
-                                        <div class="profile-pic people-profile-pic">
-                                            <img src="{{ URL::asset('/build/img/profiles/profile.png')}}" alt="Img">
-                                            <a href="#"><i data-feather="x-square"
-                                                    class="x-square-add"></i></a>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="image-upload mb-0">
-                                                <input type="file">
-                                                <div class="image-uploads">
-                                                    <h4>Change Image</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-lg-4 pe-0">
                                         <div class="mb-3">
@@ -8545,10 +8506,10 @@
                                     </div>
                                     <div class="col-lg-6 pe-0">
                                         <div class="mb-3">
-                                            <label class="form-label">Country</label>
+                                            <label class="form-label">Province</label>
                                             <select class="select">
-                                                <option>Germany</option>
-                                                <option>United State</option>
+                                                <option>Jawa Timur</option>
+                                                <option>Bali</option>
                                             </select>
                                         </div>
                                     </div>
@@ -8754,7 +8715,7 @@
                                     <input type="text" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">User Name</label>
+                                    <label class="form-label">Store Manager</label>
                                     <input type="text" class="form-control">
                                 </div>
                                 <div class="input-blocks mb-3">
@@ -8767,10 +8728,6 @@
                                 <div class="mb-3">
                                     <label class="form-label">Phone</label>
                                     <input type="text" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control">
                                 </div>
                                 <div class="mb-0">
                                     <div
@@ -8815,7 +8772,7 @@
                                     <input type="text" class="form-control" value="Fred john ">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">User Name</label>
+                                    <label class="form-label">Store Manager</label>
                                     <input type="text" class="form-control" value="FredJ25">
                                 </div>
                                 <div class="input-blocks mb-3">
@@ -8828,10 +8785,6 @@
                                 <div class="mb-3">
                                     <label class="form-label">Phone</label>
                                     <input type="text" class="form-control" value="+1216358690">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" value="john@example.com">
                                 </div>
                                 <div class="mb-0">
                                     <div
