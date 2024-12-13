@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\MasterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,9 +37,33 @@ Route::get('/low-stocks', function () {
     return view('low-stocks');
 })->name('low-stocks');
 
-Route::get('/category-list', function () {
-    return view('category-list');
-})->name('category-list');
+
+
+
+
+
+ //kategori
+//  Route::get('produk/kategori', [MasterController::class, 'index']);
+//  Route::get('kategori/api/kategori','MKategoriController@apiKategori');
+ Route::get('produk/kategori-delete/{id}','MKategoriController@destroy');
+
+ Route::resource('produk/sub-kategori','MSubKategoriController');
+//  Route::get('subkat/api/subkat','MSubKategoriController@apiSubkat');
+ Route::get('produk/sub-kategori-delete/{id}','MSubKategoriController@destroy');
+
+ //merk
+ Route::resource('produk/merek','MMerekProdukController');
+//  Route::get('merek/api/merek','MMerekProdukController@apiMerek');
+ Route::get('produk/merek-delete/{id}','MMerekProdukController@destroy');
+
+
+
+
+
+
+
+Route::get('/category-list', [MasterController::class, 'category'])->name('category-list');
+Route::get('/edit-category-list/{id}', [MasterController::class, 'edit'])->name('category-edit');
 
 Route::get('/sub-categories', function () {
     return view('sub-categories');

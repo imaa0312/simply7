@@ -1558,18 +1558,6 @@
                                     <label class="form-label">Category</label>
                                     <input type="text" class="form-control">
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Category Slug</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="mb-0">
-                                    <div
-                                        class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                        <span class="status-label">Status</span>
-                                        <input type="checkbox" id="user2" class="check" checked="">
-                                        <label for="user2" class="checktoggle"></label>
-                                    </div>
-                                </div>
                                 <div class="modal-footer-btn">
                                     <button type="button" class="btn btn-cancel me-2"
                                         data-bs-dismiss="modal">Cancel</button>
@@ -1600,21 +1588,10 @@
                         </div>
                         <div class="modal-body custom-modal-body">
                             <form action="{{ url('category-list') }}">
+                                <input type="hidden" name="cat_id" id="cat_id">
                                 <div class="mb-3">
                                     <label class="form-label">Category</label>
-                                    <input type="text" class="form-control" value="Laptop">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Category Slug</label>
-                                    <input type="text" class="form-control" value="laptop">
-                                </div>
-                                <div class="mb-0">
-                                    <div
-                                        class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                        <span class="status-label">Status</span>
-                                        <input type="checkbox" id="user3" class="check" checked="">
-                                        <label for="user3" class="checktoggle"></label>
-                                    </div>
+                                    <input type="text" class="form-control" value="" id="cat_value">
                                 </div>
                                 <div class="modal-footer-btn">
                                     <button type="button" class="btn btn-cancel me-2"
