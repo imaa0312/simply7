@@ -62,12 +62,37 @@ Route::get('/low-stocks', function () {
 
 
 
-Route::get('/category-list', [MasterController::class, 'category'])->name('category-list');
-Route::get('/edit-category-list/{id}', [MasterController::class, 'edit'])->name('category-edit');
+Route::get('/getCategory', [MasterController::class, 'getKategori']);
+Route::get('/getSubCategory/{id}', [MasterController::class, 'getSubKategori']);
+Route::get('/getSsubCategory/{id}', [MasterController::class, 'getSsubKategori']);
 
-Route::get('/sub-categories', function () {
-    return view('sub-categories');
-})->name('sub-categories');
+Route::get('/category-list', [MasterController::class, 'category'])->name('category-list');
+Route::get('/category-datatables', [MasterController::class, 'categoryDatatables'])->name('category-datatables');
+Route::get('/edit-category-list/{id}', [MasterController::class, 'editKategori'])->name('category-edit');
+Route::post('/save-category-list', [MasterController::class, 'storeKategori'])->name('category-save');
+Route::get('/delete-category-list/{id}', [MasterController::class, 'deleteKategori'])->name('category-delete');
+Route::get('/restore-category-list/{id}', [MasterController::class, 'restoreKategori'])->name('category-restore');
+
+Route::get('/subcategory-list', [MasterController::class, 'subcategory'])->name('subcategory-list');
+Route::get('/subcategory-datatables', [MasterController::class, 'subcategoryDatatables'])->name('subcategory-datatables');
+Route::get('/edit-subcategory-list/{id}', [MasterController::class, 'editSubKategori'])->name('subcategory-edit');
+Route::post('/save-subcategory-list', [MasterController::class, 'storeSubKategori'])->name('subcategory-save');
+Route::get('/delete-subcategory-list/{id}', [MasterController::class, 'deleteSubKategori'])->name('subcategory-delete');
+Route::get('/restore-subcategory-list/{id}', [MasterController::class, 'restoreSubKategori'])->name('subcategory-restore');
+
+Route::get('/ssubcategory-list', [MasterController::class, 'ssubcategory'])->name('ssubcategory-list');
+Route::get('/ssubcategory-datatables', [MasterController::class, 'ssubcategoryDatatables'])->name('ssubcategory-datatables');
+Route::get('/edit-ssubcategory-list/{id}', [MasterController::class, 'editSsubKategori'])->name('ssubcategory-edit');
+Route::post('/save-ssubcategory-list', [MasterController::class, 'storeSsubKategori'])->name('ssubcategory-save');
+Route::get('/delete-ssubcategory-list/{id}', [MasterController::class, 'deleteSsubKategori'])->name('ssubcategory-delete');
+Route::get('/restore-ssubcategory-list/{id}', [MasterController::class, 'restoreSsubKategori'])->name('ssubcategory-restore');
+
+Route::get('/sssubcategory-list', [MasterController::class, 'sssubcategory'])->name('sssubcategory-list');
+Route::get('/sssubcategory-datatables', [MasterController::class, 'sssubcategoryDatatables'])->name('sssubcategory-datatables');
+Route::get('/edit-sssubcategory-list/{id}', [MasterController::class, 'editSssubKategori'])->name('sssubcategory-edit');
+Route::post('/save-sssubcategory-list', [MasterController::class, 'storeSssubKategori'])->name('sssubcategory-save');
+Route::get('/delete-sssubcategory-list/{id}', [MasterController::class, 'deleteSssubKategori'])->name('sssubcategory-delete');
+Route::get('/restore-sssubcategory-list/{id}', [MasterController::class, 'restoreSssubKategori'])->name('sssubcategory-restore');
 
 Route::get('/brand-list', function () {
     return view('brand-list');

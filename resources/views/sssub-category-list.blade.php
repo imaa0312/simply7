@@ -5,13 +5,13 @@
         <div class="content">
             @component('components.breadcrumb')
                 @slot('title')
-                    Category
+                    Sub-Sub-Sub Category Lists
                 @endslot
                 @slot('li_1')
-                    Manage your categories
+                    Manage your sub-sub-sub categories
                 @endslot
                 @slot('li_2')
-                    Add Category
+                    Add Sub-Sub-Sub Category
                 @endslot
             @endcomponent
 
@@ -37,6 +37,9 @@
                                         </label>
                                     </th>
                                     <th>Category</th>
+                                    <th>Sub Category</th>
+                                    <th>Sub-Sub Category</th>
+                                    <th>Name</th>
                                     <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -60,7 +63,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{!! url('category-datatables') !!}",
+                url: "{!! url('sssubcategory-datatables') !!}",
                 type: "get"
             },
             select: {
@@ -78,6 +81,9 @@
                     defaultContent: '',
                     data: 'checkbox'
                 },
+                {data: 'kategori_name', name: 'kategori_name'},
+                {data: 'sub_kategori_name', name: 'sub_kategori_name'},
+                {data: 'ssub_kategori_name', name: 'ssub_kategori_name'},
                 {data: 'name', name: 'name'},
                 {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', className: "dt-center"}
@@ -133,22 +139,76 @@
             }
         });
         
-        $('body').on('click', '.add-cat', function(){
-            $('#cat_id').val("");
+        $('body').on('click', '.add-sssubcat', function(){
+            $('#subcat_id').val("");
             $('#cat_name').val("");
-            $('#title-modal').html("Create Category");
+            $('#category').html("");
+            $('#subcategory').html("<option>Choose Sub Category</option>");
+            $('#ssubcategory').html("<option>Choose Sub-Sub Category</option>");
+            $('#title-modal').html("Create Sub-Sub-Sub Category");
+            $.ajax({
+                type : "GET",
+                dataType: 'json',
+                url: '{!! url("getCategory") !!}',
+                success: function (data) {
+                    if (data.status === true) {
+                        $('#category').html(data.category);
+                    }
+                },
+                fail: function (e) {
+                    toastr.error(data.msg);
+                }
+            });
+        });
+
+        $('body').on('change', '#category', function(){
+            var id = $(this).find(':selected').val();
+            $.ajax({
+                type : "GET",
+                dataType: 'json',
+                url: '{!! url("getSubCategory") !!}/'+id,
+                success: function (data) {
+                    if (data.status === true) {
+                        $('#subcategory').html(data.category);
+                    }
+                },
+                fail: function (e) {
+                    toastr.error(data.msg);
+                }
+            });
+        });
+
+        $('body').on('change', '#subcategory', function(){
+            var id = $(this).find(':selected').val();
+            $.ajax({
+                type : "GET",
+                dataType: 'json',
+                url: '{!! url("getSsubCategory") !!}/'+id,
+                success: function (data) {
+                    if (data.status === true) {
+                        $('#ssubcategory').html(data.category);
+                    }
+                },
+                fail: function (e) {
+                    toastr.error(data.msg);
+                }
+            });
         });
 
         $('body').on('click', '.edit-cat', function(){
-            $('#title-modal').html("Edit Category");
+            $('#title_modal').html("Edit Sub-Sub-Sub Category");
             var id = $(this).attr('data-id');
             $.ajax({
                 type : "GET",
                 dataType: 'json',
-                url: '{!! url("edit-category-list") !!}/'+id,
+                url: '{!! url("edit-sssubcategory-list") !!}/'+id,
                 success: function (data) {
                     if (data.status === true) {
-                        $('#cat_id').val(id);
+                        $('#subcat_id').val(id);
+                        $('#subcat').html(data.category_list);
+                        $("#category option[value="+data.kategori_id+"]").attr('selected', true); 
+                        $('#ssubcat').html(data.sub_category_list);
+                        $("#subcategory option[value="+data.sub_kategori_id+"]").attr('selected', true); 
                         $('#cat_name').val(data.name);
                     }
                 },
@@ -159,7 +219,7 @@
         });
         
         $('body').on('click', '.save-cat', function(){
-            var form = $('#formKategori');
+            var form = $('#formSubKategori');
             var formdata = new FormData(form[0]);
 
             bootbox.dialog({
@@ -173,7 +233,7 @@
                             $.ajax({
                                 method : "POST",
                                 dataType: 'json',
-                                url: '{!! url("save-category-list") !!}',
+                                url: '{!! url("save-sssubcategory-list") !!}',
                                 data: formdata,
                                 cache: false,
                                 processData: false,
@@ -236,7 +296,7 @@
                             $.ajax({
                                 method : "GET",
                                 dataType: 'json',
-                                url: '{!! url("delete-category-list") !!}/'+id,
+                                url: '{!! url("delete-sssubcategory-list") !!}/'+id,
                                 success: function (data) {
                                     if (data.status === true) {
                                         Swal.fire({
@@ -294,7 +354,7 @@
                             $.ajax({
                                 method : "GET",
                                 dataType: 'json',
-                                url: '{!! url("restore-category-list") !!}/'+id,
+                                url: '{!! url("restore-sssubcategory-list") !!}/'+id,
                                 success: function (data) {
                                     if (data.status === true) {
                                         Swal.fire({

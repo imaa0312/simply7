@@ -132,11 +132,8 @@
      <script src="{{ URL::asset('/build/plugins/stickynote/sticky.js') }}"></script>
  @endif
 
- @if (Route::is(['ui-toasts']))
-     <!-- Mask JS -->
-     <script src="{{ URL::asset('/build/plugins/toastr/toastr.min.js') }}"></script>
-     <script src="{{ URL::asset('/build/plugins/toastr/toastr.js') }}"></script>
- @endif
+<script src="{{ URL::asset('/build/plugins/toastr/toastr.min.js') }}"></script>
+<script src="{{ URL::asset('/build/plugins/toastr/toastr.js') }}"></script>
 
  @if (Route::is(['ui-lightbox']))
      <script src="{{ URL::asset('/build/plugins/lightbox/glightbox.min.js') }}"></script>
@@ -183,9 +180,7 @@
      <script src="{{ URL::asset('/build/plugins/peity/chart-data.js') }}"></script>
  @endif
 
- @if (Route::is(['form-select2']))
-     <script src="{{ URL::asset('/build/js/custom-select2.js') }}"></script>
- @endif
+<script src="{{ URL::asset('/build/js/custom-select2.js') }}"></script>
 
  @if (Route::is(['form-fileupload']))
      <!-- Fileupload JS -->
@@ -199,6 +194,7 @@
      <script src="{{ URL::asset('/build/plugins/twitter-bootstrap-wizard/form-wizard.js') }}"></script>
  @endif
 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
  <!-- Custom JS -->
  <script src="{{ URL::asset('/build/js/theme-script.js') }}"></script>
  <script src="{{ URL::asset('/build/js/script.js') }}"></script>

@@ -64,11 +64,6 @@
      <link rel="stylesheet" href="{{ url('build/plugins/scrollbar/scroll.min.css') }}">
  @endif
 
- @if (Route::is(['ui-toasts']))
-     <!-- Toatr CSS -->
-     <link rel="stylesheet" href="{{ url('build/plugins/toastr/toatr.css') }}">
- @endif
-
  @if (Route::is(['ui-lightbox']))
      <!-- Lightbox CSS -->
      <link rel="stylesheet" href="{{ url('build/plugins/lightbox/glightbox.min.css') }}">
@@ -79,10 +74,10 @@
      <link rel="stylesheet" href="{{ url('build/plugins/dragula/css/dragula.min.css') }}">
  @endif
 
- @if (Route::is(['icon-feather']))
-     <!-- Feather CSS -->
-     <link rel="stylesheet" href="{{ url('build/plugins/icons/feather/feather.css') }}">
- @endif
+
+<!-- Feather CSS -->
+<link rel="stylesheet" href="{{ url('build/plugins/icons/feather/feather.css') }}">
+
 
  @if (Route::is(['icon-flag']))
      <!-- Pe7 CSS -->
@@ -133,6 +128,7 @@
      <!-- Wizard CSS -->
      <link rel="stylesheet" href="{{ url('build/plugins/twitter-bootstrap-wizard/form-wizard.css') }}">
  @endif
-
+<!-- Toatr CSS -->
+<link rel="stylesheet" href="{{ url('build/plugins/toastr/toatr.css') }}">
  <!-- Main CSS -->
  <link rel="stylesheet" href="{{ url('build/css/style.css') }}">

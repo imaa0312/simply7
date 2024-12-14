@@ -39,7 +39,7 @@
                     <ul>
 						<li class="submenu">
 							<a href="javascript:void(0);"
-								class="{{ Request::is('product-list', 'low-stocks', 'category-list', 'sub-categories', 'brand-list', 'varriant-attributes') ? 'active subdrop' : '' }}"><i data-feather="box"></i><span>Products</span><span class="menu-arrow"></span></a>
+								class="{{ Request::is('product-list', 'low-stocks', 'category-list', 'subcategory-list', 'ssubcategory-list', 'sssubcategory-list', 'brand-list', 'varriant-attributes') ? 'active subdrop' : '' }}"><i data-feather="box"></i><span>Products</span><span class="menu-arrow"></span></a>
 							<ul>
 								<li class="{{ Request::is('product-list','product-details') ? 'active' : '' }}"><a
 									href="{{ url('product-list') }}"><span>Product Lists</span></a>
@@ -48,15 +48,19 @@
 									href="{{ url('low-stocks') }}"><span>Low Stocks</span></a></li>
 								<li class="{{ Request::is('category-list') ? 'active' : '' }}"><a
 									href="{{ url('category-list') }}"><span>Category</span></a></li>
-								<li class="{{ Request::is('sub-categories') ? 'active' : '' }}"><a
-									href="{{ url('sub-categories') }}"><span>Sub Category</span></a></li>
+								<li class="{{ Request::is('subcategory-list') ? 'active' : '' }}"><a
+									href="{{ url('subcategory-list') }}"><span>Sub Category</span></a></li>
+								<li class="{{ Request::is('ssubcategory-list') ? 'active' : '' }}"><a
+										href="{{ url('ssubcategory-list') }}"><span>Sub-Sub Category</span></a></li>
+								<li class="{{ Request::is('sssubcategory-list') ? 'active' : '' }}"><a
+									href="{{ url('sssubcategory-list') }}"><span>Sub-Sub-Sub Category</span></a></li>
 								<li class="{{ Request::is('brand-list') ? 'active' : '' }}"><a
 									href="{{ url('brand-list') }}"><span>Brands</span></a></li>
                     		</ul>
 						</li>
 						<li class="submenu">
 							<a href="javascript:void(0);"
-								class="{{ Request::is('product-list', 'low-stocks', 'category-list', 'sub-categories', 'brand-list', 'varriant-attributes') ? 'active subdrop' : '' }}"><i data-feather="layers"></i><span>Stock</span><span class="menu-arrow"></span></a>
+								class="{{ Request::is('product-list', 'low-stocks', 'brand-list', 'varriant-attributes') ? 'active subdrop' : '' }}"><i data-feather="layers"></i><span>Stock</span><span class="menu-arrow"></span></a>
 							<ul>
 								<li class="{{ Request::is('manage-stocks') ? 'active' : '' }}"><a
 									href="{{ url('manage-stocks') }}"><span>Manage

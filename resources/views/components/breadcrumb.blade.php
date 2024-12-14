@@ -36,7 +36,11 @@
         'store-list',
         'customers',
         'expense-category',
-        'product-list'
+        'product-list',
+        'category-list',
+        'subcategory-list',
+        'ssubcategory-list',
+        'sssubcategory-list',
     ]))
         <ul class="table-top-head">
             <li>
@@ -91,10 +95,22 @@
                         data-feather="plus-circle" class="me-2"></i>Add New Supplier</a>
             </div>
         @endif
-        @if (Route::is(['sub-categories']))
+        @if (Route::is(['subcategory-list']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                <a href="#" class="btn btn-added add-subcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
                         data-feather="plus-circle" class="me-2"></i> Add Sub Category</a>
+            </div>
+        @endif
+        @if (Route::is(['ssubcategory-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-ssubcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                        data-feather="plus-circle" class="me-2"></i> Add Sub-Sub Category</a>
+            </div>
+        @endif
+        @if (Route::is(['sssubcategory-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-sssubcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                        data-feather="plus-circle" class="me-2"></i> Add Sub-Sub-Sub Category</a>
             </div>
         @endif
         @if (Route::is(['store-list']))
@@ -243,7 +259,7 @@
         @endif
         @if (Route::is(['category-list']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                <a href="#" class="btn btn-added add-cat" data-bs-toggle="modal" data-bs-target="#add-category"><i
                         data-feather="plus-circle" class="me-2"></i>Add New Category</a>
             </div>
         @endif
