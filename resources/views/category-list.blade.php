@@ -136,11 +136,11 @@
         $('body').on('click', '.add-cat', function(){
             $('#cat_id').val("");
             $('#cat_name').val("");
-            $('#title-modal').html("Create Category");
+            $('#title_modal').html("Create Category");
         });
 
         $('body').on('click', '.edit-cat', function(){
-            $('#title-modal').html("Edit Category");
+            $('#title_modal').html("Edit Category");
             var id = $(this).attr('data-id');
             $.ajax({
                 type : "GET",

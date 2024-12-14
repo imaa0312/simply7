@@ -1627,26 +1627,26 @@ function toggleFullscreen(elem) {
 
 		// Custom Country Code Selector
 
-		if ($('#phone').length > 0) {
-			var input = document.querySelector("#phone");
-			window.intlTelInput(input, {
-				utilsScript: "assets/plugins/intltelinput/js/utils.js",
-			});
-		}
+		// if ($('#phone').length > 0) {
+		// 	var input = document.querySelector("#phone");
+		// 	window.intlTelInput(input, {
+		// 		utilsScript: "build/plugins/intltelinput/js/utils.js",
+		// 	});
+		// }
 
 		// Custom Country Code Selector
 
 		if ($('#phone2').length > 0) {
 			var input = document.querySelector("#phone2");
 			window.intlTelInput(input, {
-				utilsScript: "assets/plugins/intltelinput/js/utils.js",
+				utilsScript: "build/plugins/intltelinput/js/utils.js",
 			});
 		}
 
 		if ($('#phone3').length > 0) {
 			var input = document.querySelector("#phone3");
 			window.intlTelInput(input, {
-				utilsScript: "assets/plugins/intltelinput/js/utils.js",
+				utilsScript: "build/plugins/intltelinput/js/utils.js",
 			});
 		}
 

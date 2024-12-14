@@ -65,6 +65,42 @@
             </li>
         </ul>
         @endif
+
+        @if (Route::is(['suppliers']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-sup" data-bs-toggle="modal" data-bs-target="#add-supplier"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New Supplier</a>
+            </div>
+        @endif
+        @if (Route::is(['category-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-cat" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New Category</a>
+            </div>
+        @endif
+        @if (Route::is(['subcategory-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-subcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                        data-feather="plus-circle" class="me-2"></i> Add Sub Category</a>
+            </div>
+        @endif
+        @if (Route::is(['ssubcategory-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-ssubcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                        data-feather="plus-circle" class="me-2"></i> Add Sub-Sub Category</a>
+            </div>
+        @endif
+        @if (Route::is(['sssubcategory-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-sssubcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
+                        data-feather="plus-circle" class="me-2"></i> Add Sub-Sub-Sub Category</a>
+            </div>
+        @endif
+
+        
+
+
+
         @if (Route::is(['warranty']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
@@ -87,30 +123,6 @@
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
                         data-feather="plus-circle" class="me-2"></i> {{ $li_2 }}</a>
-            </div>
-        @endif
-        @if (Route::is(['suppliers']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i>Add New Supplier</a>
-            </div>
-        @endif
-        @if (Route::is(['subcategory-list']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added add-subcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
-                        data-feather="plus-circle" class="me-2"></i> Add Sub Category</a>
-            </div>
-        @endif
-        @if (Route::is(['ssubcategory-list']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added add-ssubcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
-                        data-feather="plus-circle" class="me-2"></i> Add Sub-Sub Category</a>
-            </div>
-        @endif
-        @if (Route::is(['sssubcategory-list']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added add-sssubcat" data-bs-toggle="modal" data-bs-target="#add-category"><i
-                        data-feather="plus-circle" class="me-2"></i> Add Sub-Sub-Sub Category</a>
             </div>
         @endif
         @if (Route::is(['store-list']))
@@ -255,12 +267,6 @@
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
                         data-feather="plus-circle" class="me-2"></i>Add New Country</a>
-            </div>
-        @endif
-        @if (Route::is(['category-list']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added add-cat" data-bs-toggle="modal" data-bs-target="#add-category"><i
-                        data-feather="plus-circle" class="me-2"></i>Add New Category</a>
             </div>
         @endif
         @if (Route::is(['brand-list']))

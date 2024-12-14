@@ -15,56 +15,19 @@ use App\Http\Controllers\MasterController;
 |
 */
 Route::get('index', [CustomAuthController::class, 'dashboard']); 
-Route::get('signin', [CustomAuthController::class, 'index'])->name('signin');
-Route::post('custom-login', [CustomAuthController::class, 'customSignin'])->name('signin.custom'); 
-Route::get('register', [CustomAuthController::class, 'registration'])->name('register');
-Route::post('custom-register', [CustomAuthController::class, 'customRegister'])->name('register.custom'); 
-Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
-
-Route::get('/', function () {
-    return view('index');
-})->name('index');
-
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
-
-Route::get('/product-list', function () {
-    return view('product-list');
-})->name('product-list');
-
-Route::get('/low-stocks', function () {
-    return view('low-stocks');
-})->name('low-stocks');
-
-
-
-
-
-
- //kategori
-//  Route::get('produk/kategori', [MasterController::class, 'index']);
-//  Route::get('kategori/api/kategori','MKategoriController@apiKategori');
- Route::get('produk/kategori-delete/{id}','MKategoriController@destroy');
-
- Route::resource('produk/sub-kategori','MSubKategoriController');
-//  Route::get('subkat/api/subkat','MSubKategoriController@apiSubkat');
- Route::get('produk/sub-kategori-delete/{id}','MSubKategoriController@destroy');
-
- //merk
- Route::resource('produk/merek','MMerekProdukController');
-//  Route::get('merek/api/merek','MMerekProdukController@apiMerek');
- Route::get('produk/merek-delete/{id}','MMerekProdukController@destroy');
-
-
-
-
-
-
 
 Route::get('/getCategory', [MasterController::class, 'getKategori']);
 Route::get('/getSubCategory/{id}', [MasterController::class, 'getSubKategori']);
 Route::get('/getSsubCategory/{id}', [MasterController::class, 'getSsubKategori']);
+Route::get('/getProvince', [MasterController::class, 'getProvince']);
+Route::get('/getCity/{id}', [MasterController::class, 'getCity']);
+
+Route::get('/suppliers', [MasterController::class, 'supplier'])->name('suppliers');  
+Route::get('/suppliers-datatables', [MasterController::class, 'supplierDatatables'])->name('suppliers-datatables');  
+Route::get('/edit-supplier/{id}', [MasterController::class, 'editSupplier'])->name('supplier-edit');
+Route::post('/save-supplier', [MasterController::class, 'storeSupplier'])->name('supplier-save');
+Route::get('/delete-supplier/{id}', [MasterController::class, 'deleteSupplier'])->name('supplier-delete');
+Route::get('/restore-supplier/{id}', [MasterController::class, 'restoreSupplier'])->name('supplier-restore');
 
 Route::get('/category-list', [MasterController::class, 'category'])->name('category-list');
 Route::get('/category-datatables', [MasterController::class, 'categoryDatatables'])->name('category-datatables');
@@ -94,6 +57,36 @@ Route::post('/save-sssubcategory-list', [MasterController::class, 'storeSssubKat
 Route::get('/delete-sssubcategory-list/{id}', [MasterController::class, 'deleteSssubKategori'])->name('sssubcategory-delete');
 Route::get('/restore-sssubcategory-list/{id}', [MasterController::class, 'restoreSssubKategori'])->name('sssubcategory-restore');
 
+
+
+
+
+
+
+
+
+Route::get('signin', [CustomAuthController::class, 'index'])->name('signin');
+Route::post('custom-login', [CustomAuthController::class, 'customSignin'])->name('signin.custom'); 
+Route::get('register', [CustomAuthController::class, 'registration'])->name('register');
+Route::post('custom-register', [CustomAuthController::class, 'customRegister'])->name('register.custom'); 
+Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
+
+Route::get('/', function () {
+    return view('index');
+})->name('index');
+
+Route::get('/index', function () {
+    return view('index');
+})->name('index');
+
+Route::get('/product-list', function () {
+    return view('product-list');
+})->name('product-list');
+
+Route::get('/low-stocks', function () {
+    return view('low-stocks');
+})->name('low-stocks');
+
 Route::get('/brand-list', function () {
     return view('brand-list');
 })->name('brand-list');
@@ -105,8 +98,6 @@ Route::get('/product-details', function () {
 Route::get('/edit-product', function () {
     return view('edit-product');
 })->name('edit-product');   
-
-
 
 Route::get('/manage-stocks', function () {                         
     return view('manage-stocks');
@@ -168,10 +159,6 @@ Route::get('/coupons', function () {
 Route::get('/customers', function () {                         
     return view('customers');
 })->name('customers');  
-
-Route::get('/suppliers', function () {                         
-    return view('suppliers');
-})->name('suppliers');  
 
 Route::get('/store-list', function () {                         
     return view('store-list');

@@ -7,6 +7,9 @@ use App\Models\MKategoriModel;
 use App\Models\MSubKategoriModel;
 use App\Models\MSsubKategoriModel;
 use App\Models\MSssubKategoriModel;
+use App\Models\MSupplierModel;
+use App\Models\MProvinsiModel;
+use App\Models\MKotaKabModel;
 
 use DataTables;
 
@@ -17,6 +20,68 @@ class MasterController extends Controller
 
         // echo "<pre>";
         // print_r($getDataKategori);
+    }
+
+    public function getProvince()
+    {
+        $data = MProvinsiModel::get();
+        $prov = '<label class="form-label">Province</label>
+                <select class="select" id="prov" name="prov">
+                <option>Choose Province</option>';
+        foreach($data as $dt){
+            $prov .= '<option value="'.$dt->id.'">'.$dt->name.'</option>';
+        }
+        $prov .= '</select>';
+
+        if($data){
+            $return = array(
+                "province" => $prov,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function getCity($id="")
+    {
+        if($id==""){
+            $data = MKotaKabModel::select('m_kota_kab.*', 'm_provinsi.name as province')
+                ->join('m_provinsi', 'm_provinsi.id', '=', 'm_kota_kab.provinsi')
+                ->get();
+        } else {
+            $data = MKotaKabModel::select('m_kota_kab.*', 'm_provinsi.name as province')
+                ->join('m_provinsi', 'm_provinsi.id', '=', 'm_kota_kab.provinsi')
+                ->where('provinsi', $id)
+                ->get();
+        }
+        
+        $city = '<label class="form-label">City</label>
+            <select class="select" id="city" name="city">
+            <option>Choose City</option>';
+        foreach($data as $dt){
+            $city .= '<option value="'.$dt->id.'">'.$dt->name.'</option>';
+        }
+        $city .= '</select>';
+
+        if($data){
+            $return = array(
+                "city" => $city,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
     }
 
     public function getKategori()
@@ -726,6 +791,173 @@ class MasterController extends Controller
     public function restoreSssubKategori($id)
     {
         $dataKategori = MSssubKategoriModel::find($id);
+        $dataKategori->status = 1;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully restored"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+
+
+    public function supplier(){
+        return view('suppliers');
+    }
+
+    public function supplierDatatables(){
+        $data = MSupplierModel::select('m_kota_kab.name as city_name', 'm_supplier.*')
+            ->join('m_provinsi', 'm_provinsi.id', '=', 'm_supplier.province')
+            ->join('m_kota_kab', 'm_kota_kab.id', '=', 'm_supplier.city')
+            ->orderBy('m_supplier.id','DESC')->get();
+        return Datatables::of($data)
+            ->addColumn('checkbox', function(){
+                return '<label class="checkboxs">
+                    <input type="checkbox" class="checkSingle">
+                    <span class="checkmarks"></span>
+                </label>';
+            })
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-sup" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-supplier" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-sup" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-sup" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['checkbox', 'action', 'status'])
+            ->make(true);
+    }
+
+    public function editSupplier($id)
+    {
+        $data = MSupplierModel::select('m_kota_kab.name as city_name', 'm_supplier.*')
+            ->join('m_provinsi', 'm_provinsi.id', '=', 'm_supplier.province')
+            ->join('m_kota_kab', 'm_kota_kab.id', '=', 'm_supplier.city')
+            ->find($id);
+
+        $province = MProvinsiModel::get();
+        $prov = '<label>Province</label>
+            <select class="form-control" id="prov" name="prov">';
+        foreach($province as $kat){
+            $prov .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $prov .= '</select>';
+
+        $city_data = MKotaKabModel::where('provinsi', $data->province)->get();
+        $city = '<label>City</label>
+            <select class="form-control" id="city" name="city">';
+        foreach($city_data as $kat){
+            $city .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $city .= '</select>';
+
+        if($data){
+            $return = array(
+                "province" => $data->province,
+                "city" => $data->city,
+                "name" => $data->name,
+                "phone" => $data->phone,
+                "address" => $data->address,
+                "desc" => $data->description,
+                "province_list" => $prov,
+                "city_list" => $city,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function storeSupplier(Request $request)
+    {
+        $id = $request->input('sup_id');
+
+        if($id == ""){
+            $data = new MSupplierModel;
+            $data->status = 1;
+        } else {
+            $data = MSupplierModel::find($id);
+        }
+
+        $data->province = $request->input('prov');
+        $data->city = $request->input('city');
+        $data->name = $request->input('sup_name');
+        $data->phone = $request->input('phone');
+        $data->address = $request->input('address');
+        $data->description = $request->input('desc');
+        $data->save();
+
+        if($data){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function deleteSupplier($id)
+    {
+        $dataKategori = MSupplierModel::find($id);
+        $dataKategori->status = 0;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function restoreSupplier($id)
+    {
+        $dataKategori = MSupplierModel::find($id);
         $dataKategori->status = 1;
         $dataKategori->save();
 

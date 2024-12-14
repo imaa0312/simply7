@@ -142,7 +142,7 @@
             $('#cat_name').val("");
             $('#category').html("");
             $('#subcategory').html("<option>Choose Sub Category</option>");
-            $('#title-modal').html("Create Sub-Sub Category");
+            $('#title_modal').html("Create Sub-Sub Category");
             $.ajax({
                 type : "GET",
                 dataType: 'json',

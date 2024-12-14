@@ -138,7 +138,7 @@
         $('body').on('click', '.add-subcat', function(){
             $('#cat_id').val("");
             $('#cat_name').val("");
-            $('#title-modal').html("Create Sub Category");
+            $('#title_modal').html("Create Sub Category");
             $.ajax({
                 type : "GET",
                 dataType: 'json',

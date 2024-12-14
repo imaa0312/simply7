@@ -1,3 +1,285 @@
+@if (Route::is(['suppliers']))
+    <!-- Add Supplier -->
+    <div class="modal fade bd-example-modal-lg" id="add-supplier">
+        <div class="modal-dialog modal-dialog-centered modal-lg custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4 id="title_modal">Add Supplier</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form method="POST" id="myForm">
+                                @csrf
+                                <input type="hidden" name="sup_id" id="sup_id">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="input-blocks">
+                                            <label>Supplier Name</label>
+                                            <input type="text" class="form-control" id="sup_name" name="sup_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-blocks">
+                                            <label>Phone</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="inputGroup-sizing-default">+62</span>
+                                                <input type="text" class="form-control" id="telp" name="phone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-blocks">
+                                            <label>Address</label>
+                                            <textarea class="form-control mb-1" id="address" name="address" maxlength="300"></textarea>
+                                            <p>Maximum 300 Characters</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-10 col-10">
+                                        <div class="input-blocks" id="prov_list">
+                                            <label>Province</label>
+                                            <select class="select" id="prov" name="prov">
+                                                <option>Choose Province</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-10 col-10">
+                                        <div class="input-blocks" id="city_list">
+                                            <label>City</label>
+                                            <select class="select" id="city" name="city">
+                                                <option>Choose City</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="mb-0 input-blocks">
+                                            <label class="form-label">Descriptions</label>
+                                            <textarea class="form-control mb-1" id="desc" name="desc" maxlength="600"></textarea>
+                                            <p>Maximum 600 Characters</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-sup">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Supplier -->
+@endif
+
+@if (Route::is(['category-list']))
+    <!-- Add Category -->
+    <div class="modal fade" id="add-category">
+        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4 id="title-modal">Create Category</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form method="POST" id="formKategori">
+                                @csrf
+                                <input type="hidden" name="cat_id" id="cat_id">
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
+                                </div>
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-cat">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Category -->
+@endif
+
+@if (Route::is(['subcategory-list']))
+    <!-- Add Category -->
+    <div class="modal fade" id="add-category">
+        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4 id="title_modal">Create Sub Category</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form id="formSubKategori" method="POST">
+                                @csrf
+                                <input type="hidden" name="subcat_id" id="subcat_id">
+                                <div class="mb-3" id="subcat">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option>Choose Category</option>
+                                        <option>Category</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Sub Category Name</label>
+                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
+                                </div>
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-cat">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Category -->
+@endif
+
+@if (Route::is(['ssubcategory-list']))
+    <!-- Add Category -->
+    <div class="modal fade" id="add-category">
+        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4 id="title_modal">Create Sub Category</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form id="formSubKategori" method="POST">
+                                @csrf
+                                <input type="hidden" name="subcat_id" id="subcat_id">
+                                <div class="mb-3" id="subcat">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option>Choose Category</option>
+                                        <option>Category</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="ssubcat">
+                                    <label class="form-label">Sub Category</label>
+                                    <select class="form-control" id="subcategory" name="subcategory">
+                                        <option>Choose Sub Category</option>
+                                        <option>Sub Category</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Sub-Sub Category Name</label>
+                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
+                                </div>
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-cat">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Category -->
+@endif
+
+@if (Route::is(['sssubcategory-list']))
+    <!-- Add Category -->
+    <div class="modal fade" id="add-category">
+        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4 id="title_modal">Create Sub-Sub-Sub Category</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form id="formSubKategori" method="POST">
+                                @csrf
+                                <input type="hidden" name="subcat_id" id="subcat_id">
+                                <div class="mb-3" id="subcat">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option>Choose Category</option>
+                                        <option>Category</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3" id="ssubcat">
+                                    <label class="form-label">Sub Category</label>
+                                    <select class="form-control" id="subcategory" name="subcategory">
+                                        <option>Choose Sub Category</option>
+                                        <option>Sub Category</option>
+                                    </select>
+                                </div>                                
+                                <div class="mb-3" id="sssubcat">
+                                    <label class="form-label">Sub-Sub Category</label>
+                                    <select class="form-control" id="ssubcategory" name="ssubcategory">
+                                        <option>Choose Sub-Sub Category</option>
+                                        <option>Sub-Sub Category</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Sub-Sub-Sub Category Name</label>
+                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
+                                </div>
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-cat">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Category -->
+@endif
+
+
+
+
+
+
 @if (Route::is(['product-list']))
     <!-- Add Payroll -->
     <div class="offcanvas offcanvas-end em-payrol-add" tabindex="-1" id="offcanvasRight-add">
@@ -1535,200 +1817,6 @@
         </div>
     </div>
     <!-- / Edit Low Stock -->
-@endif
-
-@if (Route::is(['category-list']))
-    <!-- Add Category -->
-    <div class="modal fade" id="add-category">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4 id="title-modal">Create Category</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form method="POST" id="formKategori">
-                                @csrf
-                                <input type="hidden" name="cat_id" id="cat_id">
-                                <div class="mb-3">
-                                    <label class="form-label">Category</label>
-                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
-                                </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-submit save-cat">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Category -->
-@endif
-
-@if (Route::is(['subcategory-list']))
-    <!-- Add Category -->
-    <div class="modal fade" id="add-category">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4 id="title_modal">Create Sub Category</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form id="formSubKategori" method="POST">
-                                @csrf
-                                <input type="hidden" name="subcat_id" id="subcat_id">
-                                <div class="mb-3" id="subcat">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-control" id="category" name="category">
-                                        <option>Choose Category</option>
-                                        <option>Category</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Sub Category Name</label>
-                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
-                                </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-submit save-cat">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Category -->
-@endif
-
-@if (Route::is(['ssubcategory-list']))
-    <!-- Add Category -->
-    <div class="modal fade" id="add-category">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4 id="title_modal">Create Sub Category</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form id="formSubKategori" method="POST">
-                                @csrf
-                                <input type="hidden" name="subcat_id" id="subcat_id">
-                                <div class="mb-3" id="subcat">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-control" id="category" name="category">
-                                        <option>Choose Category</option>
-                                        <option>Category</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3" id="ssubcat">
-                                    <label class="form-label">Sub Category</label>
-                                    <select class="form-control" id="subcategory" name="subcategory">
-                                        <option>Choose Sub Category</option>
-                                        <option>Sub Category</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Sub-Sub Category Name</label>
-                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
-                                </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-submit save-cat">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Category -->
-@endif
-
-@if (Route::is(['sssubcategory-list']))
-    <!-- Add Category -->
-    <div class="modal fade" id="add-category">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4 id="title_modal">Create Sub-Sub-Sub Category</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form id="formSubKategori" method="POST">
-                                @csrf
-                                <input type="hidden" name="subcat_id" id="subcat_id">
-                                <div class="mb-3" id="subcat">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-control" id="category" name="category">
-                                        <option>Choose Category</option>
-                                        <option>Category</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3" id="ssubcat">
-                                    <label class="form-label">Sub Category</label>
-                                    <select class="form-control" id="subcategory" name="subcategory">
-                                        <option>Choose Sub Category</option>
-                                        <option>Sub Category</option>
-                                    </select>
-                                </div>                                
-                                <div class="mb-3" id="sssubcat">
-                                    <label class="form-label">Sub-Sub Category</label>
-                                    <select class="form-control" id="ssubcategory" name="ssubcategory">
-                                        <option>Choose Sub-Sub Category</option>
-                                        <option>Sub-Sub Category</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Sub-Sub-Sub Category Name</label>
-                                    <input type="text" class="form-control" name="cat_name" id="cat_name">
-                                </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-submit save-cat">Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Category -->
 @endif
 
 @if (Route::is(['brand-list']))
@@ -8520,161 +8608,6 @@
         </div>
     </div>
     <!-- /Edit Customer -->
-@endif
-
-@if (Route::is(['suppliers']))
-    <!-- Add Supplier -->
-    <div class="modal fade bd-example-modal-lg" id="add-units">
-        <div class="modal-dialog modal-dialog-centered modal-lg custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Add Supplier</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="suppliers">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Supplier Name</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Phone</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="input-blocks">
-                                            <label>Address</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-sm-10 col-10">
-                                        <div class="input-blocks">
-                                            <label>City</label>
-                                            <select class="select">
-                                                <option>Choose</option>
-                                                <option>Varrel</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-sm-10 col-10">
-                                        <div class="input-blocks">
-                                            <label>Province</label>
-                                            <select class="select">
-                                                <option>Choose</option>
-                                                <option>Germany</option>
-                                                <option>Mexico</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="mb-0 input-blocks">
-                                            <label class="form-label">Descriptions</label>
-                                            <textarea class="form-control mb-1"></textarea>
-                                            <p>Maximum 600 Characters</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Supplier -->
-
-    <!-- Edit Supplier -->
-    <div class="modal fade bd-example-modal-lg" id="edit-units">
-        <div class="modal-dialog modal-dialog-centered modal-lg custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Edit Supplier</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="suppliers">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Supplier Name</label>
-                                            <input type="text" placeholder="Apex Computers">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Phone</label>
-                                            <input type="text" placeholder="+12163547758 ">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="input-blocks">
-                                            <label>Address</label>
-                                            <input type="text" placeholder="Budapester Strasse 2027259 ">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-sm-10 col-10">
-                                        <div class="input-blocks">
-                                            <label>City</label>
-                                            <select class="select">
-                                                <option>Varrel</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-sm-10 col-10">
-                                        <div class="input-blocks">
-                                            <label>Province</label>
-                                            <select class="select">
-                                                <option>Germany</option>
-                                                <option>France</option>
-                                                <option>Mexico</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-0 input-blocks">
-                                        <label class="form-label">Descriptions</label>
-                                        <textarea class="form-control mb-1"></textarea>
-                                        <p>Maximum 600 Characters</p>
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Edit Supplier -->
 @endif
 
 @if (Route::is(['store-list']))
