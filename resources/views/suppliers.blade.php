@@ -40,6 +40,7 @@
                                     <th>Supplier Name</th>
                                     <th>City</th>
                                     <th>Phone</th>
+                                    <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
                             </thead>
@@ -139,9 +140,10 @@
                 $('#sup_id').val("");
                 $('#sup_name').val("");
                 $('#telp').val("");
-                $('#address').html("");
+                $('#address').val('').blur();
+                // $('#address').html("");
                 $('#city').html("<option>Choose City</option>");
-                $('#desc').html("");
+                $('#desc').val('').blur();
                 $('#title_modal').html("Create Supplier");
                 $.ajax({
                     type : "GET",
@@ -187,8 +189,8 @@
                             $('#sup_id').val(id);
                             $('#sup_name').val(data.name);
                             $('#telp').val(data.phone);
-                            $('#address').html(data.address);
-                            $('#desc').html(data.desc);
+                            $('#address').val(data.address);
+                            $('#desc').val(data.desc);
                             $('#prov_list').html(data.province_list);
                             $('#city_list').html(data.city_list);
                             $("#prov option[value="+data.province+"]").attr('selected', true); 

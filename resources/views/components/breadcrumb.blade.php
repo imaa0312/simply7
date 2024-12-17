@@ -72,6 +72,12 @@
                         data-feather="plus-circle" class="me-2"></i>Add New Supplier</a>
             </div>
         @endif
+        @if (Route::is(['warehouse']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-sup" data-bs-toggle="modal" data-bs-target="#add-warehouse"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New Warehouse</a>
+            </div>
+        @endif
         @if (Route::is(['category-list']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added add-cat" data-bs-toggle="modal" data-bs-target="#add-category"><i

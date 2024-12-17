@@ -81,6 +81,65 @@
     <!-- /Add Supplier -->
 @endif
 
+@if (Route::is(['warehouse']))
+    <!-- Add Supplier -->
+    <div class="modal fade bd-example-modal-lg" id="add-warehouse">
+        <div class="modal-dialog modal-dialog-centered modal-lg custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4 id="title_modal">Add Warehouse</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form method="POST" id="myForm">
+                                @csrf
+                                <input type="hidden" name="warehouse_id" id="warehouse_id">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="input-blocks">
+                                            <label>Warehouse Name</label>
+                                            <input type="text" class="form-control" id="warehouse_name" name="warehouse_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="input-blocks">
+                                            <label>Phone</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="inputGroup-sizing-default">+62</span>
+                                                <input type="text" class="form-control" id="telp" name="phone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-blocks">
+                                            <label>Address</label>
+                                            <textarea class="form-control mb-1" id="address" name="address" maxlength="300"></textarea>
+                                            <p>Maximum 300 Characters</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-warehouse">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Supplier -->
+@endif
+
 @if (Route::is(['category-list']))
     <!-- Add Category -->
     <div class="modal fade" id="add-category">

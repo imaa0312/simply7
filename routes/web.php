@@ -29,6 +29,13 @@ Route::post('/save-supplier', [MasterController::class, 'storeSupplier'])->name(
 Route::get('/delete-supplier/{id}', [MasterController::class, 'deleteSupplier'])->name('supplier-delete');
 Route::get('/restore-supplier/{id}', [MasterController::class, 'restoreSupplier'])->name('supplier-restore');
 
+Route::get('/warehouse', [MasterController::class, 'warehouse'])->name('warehouse');
+Route::get('/warehouse-datatables', [MasterController::class, 'warehouseDatatables'])->name('warehouse-datatables');  
+Route::get('/edit-warehouse/{id}', [MasterController::class, 'editWarehouse'])->name('warehouse-edit');
+Route::post('/save-warehouse', [MasterController::class, 'storeWarehouse'])->name('warehouse-save');
+Route::get('/delete-warehouse/{id}', [MasterController::class, 'deleteWarehouse'])->name('warehouse-delete');
+Route::get('/restore-warehouse/{id}', [MasterController::class, 'restoreWarehouse'])->name('warehouse-restore'); 
+
 Route::get('/category-list', [MasterController::class, 'category'])->name('category-list');
 Route::get('/category-datatables', [MasterController::class, 'categoryDatatables'])->name('category-datatables');
 Route::get('/edit-category-list/{id}', [MasterController::class, 'editKategori'])->name('category-edit');
@@ -163,11 +170,6 @@ Route::get('/customers', function () {
 Route::get('/store-list', function () {                         
     return view('store-list');
 })->name('store-list');  
-
-Route::get('/warehouse', function () {                         
-    return view('warehouse');
-})->name('warehouse');  
-
 
 Route::get('/sales-report', function () {
     return view('sales-report');
