@@ -64,6 +64,13 @@ Route::post('/save-sssubcategory-list', [MasterController::class, 'storeSssubKat
 Route::get('/delete-sssubcategory-list/{id}', [MasterController::class, 'deleteSssubKategori'])->name('sssubcategory-delete');
 Route::get('/restore-sssubcategory-list/{id}', [MasterController::class, 'restoreSssubKategori'])->name('sssubcategory-restore');
 
+Route::get('/store-list', [MasterController::class, 'store'])->name('store-list'); 
+Route::get('/store-datatables', [MasterController::class, 'storeDatatables'])->name('store-datatables');  
+Route::get('/edit-store/{id}', [MasterController::class, 'editStore'])->name('store-edit');
+Route::post('/save-store', [MasterController::class, 'storeStore'])->name('store-save');
+Route::get('/delete-store/{id}', [MasterController::class, 'deleteStore'])->name('store-delete');
+Route::get('/restore-store/{id}', [MasterController::class, 'restoreStore'])->name('store-restore');  
+
 
 
 
@@ -166,10 +173,6 @@ Route::get('/coupons', function () {
 Route::get('/customers', function () {                         
     return view('customers');
 })->name('customers');  
-
-Route::get('/store-list', function () {                         
-    return view('store-list');
-})->name('store-list');  
 
 Route::get('/sales-report', function () {
     return view('sales-report');
