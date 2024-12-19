@@ -1099,4 +1099,127 @@ class MasterController extends Controller
 
         echo json_encode($return);
     }
+
+
+
+
+    public function store(){
+        return view('store');
+    }
+
+    public function storeDatatables(){
+        $data = MGudangModel::orderBy('id','DESC')->get();
+        return Datatables::of($data)
+            ->addRowIndex()
+            ->addColumn('checkbox', function(){
+                return '<label class="checkboxs">
+                    <input type="checkbox" class="checkSingle">
+                    <span class="checkmarks"></span>
+                </label>';
+            })
+            ->addColumn('action', function($row){
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-warehouse" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-warehouse" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                    </div>';
+            })
+            ->rawColumns(['checkbox', 'action'])
+            ->make(true);
+    }
+
+    public function editStore($id)
+    {
+        $data = MGudangModel::find($id);
+
+        if($data){
+            $return = array(
+                "name" => $data->name,
+                "phone" => $data->phone,
+                "address" => $data->address,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function storeStore(Request $request)
+    {
+        $id = $request->input('sup_id');
+
+        if($id == ""){
+            $data = new MGudangModel;
+            $data->status = 1;
+        } else {
+            $data = MGudangModel::find($id);
+        }
+
+        $data->name = $request->input('sup_name');
+        $data->phone = $request->input('phone');
+        $data->address = $request->input('address');
+        $data->save();
+
+        if($data){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function deleteStore($id)
+    {
+        $dataKategori = MGudangModel::find($id);
+        $dataKategori->status = 0;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function restoreStore($id)
+    {
+        $dataKategori = MGudangModel::find($id);
+        $dataKategori->status = 1;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully restored"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
 }
