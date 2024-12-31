@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MUserController;
+use App\Http\Controllers\MRoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,12 @@ Route::get('/getSubCategory/{id}', [MasterController::class, 'getSubKategori']);
 Route::get('/getSsubCategory/{id}', [MasterController::class, 'getSsubKategori']);
 Route::get('/getProvince', [MasterController::class, 'getProvince']);
 Route::get('/getCity/{id}', [MasterController::class, 'getCity']);
+Route::get('/getRole', [MUserController::class, 'getRole']);
+
+Route::get('/roles', [MRoleController::class, 'index'])->name('roles');  
+Route::get('/roles-datatables', [MRoleController::class, 'rolesDatatables'])->name('roles-datatables');  
+Route::get('/edit-roles/{id}', [MRoleController::class, 'editRoles'])->name('roles-edit');
+Route::post('/save-roles', [MRoleController::class, 'storeRoles'])->name('roles-save');
 
 Route::get('/suppliers', [MasterController::class, 'supplier'])->name('suppliers');  
 Route::get('/suppliers-datatables', [MasterController::class, 'supplierDatatables'])->name('suppliers-datatables');  

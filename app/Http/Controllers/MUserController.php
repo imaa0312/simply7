@@ -13,170 +13,197 @@ use Yajra\Datatables\Datatables;
 
 class MUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $getMUser = MUserModel::select('m_user.*', 'm_role.name as role_name')
             ->join('m_role', 'm_role.id', '=', 'm_user.role')
             ->get();
 
-        // dd($getMUser);
-
         return view('users', compact('getMUser'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getRole()
     {
-        $getMRole = MRoleModel::all();
-        return view('users', compact('getMRole'));
-    }
+        $data = MRoleModel::get();
+        $prov = '<label>Role</label>
+                <select class="form-control"  id="roles" name="roles">
+                <option>Choose Roles Permission</option>';
+        foreach($data as $dt){
+            $prov .= '<option value="'.$dt->id.'">'.$dt->name.'</option>';
+        }
+        $prov .= '</select>';
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'nama' => 'required|max:50',
-            'username' => 'unique:m_user',
-            'email' => 'required|email|unique:m_user',
-            'role' => 'required',
-            'password' => 'required',
-        ]);
-
-        //dd($request->all());
-        //$roleSales  = MRoleModel::where('name', 'Sales')->first();
-        $newSales = new MUserModel;
-        $newSales->name = $request->nama;
-        $newSales->username = $request->username;
-        $newSales->email = $request->email;
-        $newSales->address = $request->alamat;
-        $newSales->birthdate = date('Y-m-d', strtotime($request->birthdate));
-        $newSales->password =  bcrypt(str_replace(' ', '', $request->password));
-        $newSales->role = $request->role;
-        $newSales->save();
-
-        return redirect('admin/user');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $dataUser = MUserModel::where('id', '=', $id)->first();
-        $getMRole = DB::table('m_role')
-            ->get();
-
-        return view('admin.user.update', compact('dataUser', 'getMRole'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'nama' => 'required|max:50',
-            'email' => 'email|unique:m_user,email,'.$id,
-            'role' => 'required',
-            'username' => 'unique:m_user,username,'.$id,
-            //'password' => 'required',
-        ]);
-
-        $updateSales = MUserModel::where('id', '=', $id)->update([
-            'name' => $request->nama,
-            'address' => $request->alamat,
-            'birthdate' => date('Y-m-d', strtotime($request->birthdate)),
-            'role' => $request->role
-        ]);
-
-        return redirect('admin/user');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function activeInActive($id)
-    {
-        $user = DB::table('m_user')->where('id', $id)->first();
-        // dd($user);
-
-        if($user->status == 'active'){
-            DB::table('m_user')->where('id', $id)->update(["status" => "inactive"]);
-        }else{
-            DB::table('m_user')->where('id', $id)->update(["status" => "active"]);
+        if($data){
+            $return = array(
+                "roles" => $prov,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
         }
 
-        return redirect()->back();
+        echo json_encode($return);
     }
 
-    public function apiUser()
-    {
-        // $users = User::select(['id', 'name', 'email', 'password', 'created_at', 'updated_at']);
-        $user = DB::table('m_user')
-        ->leftjoin('m_role','m_role.id','m_user.role')
-        ->select('m_user.id','m_user.name','m_user.username','m_user.email','m_user.status','m_user.address','m_role.name as role')
-
-        ->get();
-
-        return Datatables::of($user)
-            ->addColumn('action', function ($user) {
-                $buttonClass = ($user->status == 'active') ? "btn-danger" : "btn-success";
-                return '<table id="tabel-in-opsi">'.
-                    '<tr>'.
-                        '<td>'.
-                            '<a href="'.url('/admin/user/'.$user->id.'/edit').'" class="btn btn-warning  btn-sm"><i class="fa fa-edit"></i></a>'.
-
-                            '&nbsp'.
-
-                            '<a href="'.url('/admin/user-status/'.$user->id).'" class="btn btn-sm '.$buttonClass.'"><i class="fa fa-eye"></i></a>'.
-
-                        '</td>'.
-                    '</tr>'.
-                '</table>';
-
-            })
+    public function usersDatatables(){
+        $data = MUserModel::select('m_user.*', 'm_role.name as role_name')
+            ->join('m_role', 'm_role.id', '=', 'm_user.role')
+            ->get();
+        return Datatables::of($data)
             ->addIndexColumn()
-            ->rawColumns(['action'])
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-users" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-users" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-users" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-users" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['action', 'status'])
             ->make(true);
+    }
+    
+    public function storeUsers(Request $request)
+    {
+        $id = $request->input('users_id');
+
+        $val = \Validator::make($request->all(), [
+            'password' => 'required|confirmed|min:4',
+        ]);
+
+        if ($val->fails()) {
+            $return = array(
+                "status" => false,
+                "msg" => "Password is required and must be confirmed"
+            );
+        } else {
+            if($id == ""){
+                $dataUser = new MUserModel;
+                $dataUser->status = 1;
+            } else {
+                $dataUser = MUserModel::find($id);
+            }
+
+            //dd($request->all());
+            //$roleSales  = MRoleModel::where('name', 'Sales')->first();
+            $dataUser->name = $request->user_name;
+            $dataUser->username = $request->uname;
+            $dataUser->phone = $request->phone;
+            $dataUser->address = $request->address;
+            $dataUser->birthdate = date('Y-m-d', strtotime($request->birthdate));
+            $dataUser->password =  bcrypt(str_replace(' ', '', $request->password));
+            $dataUser->role = $request->roles;
+            $dataUser->save();
+
+            if($dataUser){
+                $return = array(
+                    "status" => true,
+                    "msg" => "Successfully saved"
+                );
+            } else {
+                $return = array(
+                    "status" => false,
+                    "msg" => "Oops! Something wen't wrong"
+                );
+            }
+        }
+
+        echo json_encode($return);
+    }
+    
+    public function editUsers($id)
+    {
+        $dataUser = MUserModel::select('m_user.*', 'm_role.name as role_name')
+            ->join('m_role', 'm_role.id', '=', 'm_user.role')
+            ->find($id);
+
+        $roles = MRoleModel::get();
+        $cat = '<label>Role</label>
+            <select class="form-control" id="roles" name="roles">';
+        foreach($roles as $kat){
+            $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $cat .= '</select>';
+
+        if($dataUser){
+            $return = array(
+                "role_id" => $dataUser->role,
+                "name" => $dataUser->name,
+                "username" => $dataUser->username,
+                "phone" => $dataUser->phone,
+                "address" => $dataUser->address,
+                "birthdate" => date('Y-m-d', strtotime($dataUser->birthdate)),
+                "role" => $cat,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+    
+    public function deleteUsers($id)
+    {
+        $user = MUserModel::find($id);
+        $user->status = 0;
+        $user->save();
+
+        if($user){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+    
+    public function restoreUsers($id)
+    {
+        $user = MUserModel::find($id);
+        $user->status = 1;
+        $user->save();
+
+        if($user){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
     }
 }

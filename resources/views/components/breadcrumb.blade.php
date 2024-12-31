@@ -29,9 +29,9 @@
                 <h6>{{ $li_1 }}</h6>
             </div>
         </div>
-        @if (
-    !Route::is([
+        @if (!Route::is([
         'suppliers',
+        'roles',
         'warehouse',
         'store-list',
         'customers',
@@ -41,8 +41,7 @@
         'subcategory-list',
         'ssubcategory-list',
         'sssubcategory-list',
-        'users',
-    ]))
+        'users']))
         <ul class="table-top-head">
             <li>
                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img
@@ -67,6 +66,13 @@
         </ul>
         @endif
 
+        
+        @if (Route::is(['users']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-users" data-bs-toggle="modal" data-bs-target="#add-users"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New User</a>
+            </div>
+        @endif
         @if (Route::is(['suppliers']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added add-sup" data-bs-toggle="modal" data-bs-target="#add-supplier"><i
@@ -286,18 +292,6 @@
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
                         data-feather="plus-circle" class="me-2"></i>Add New Attendance</a>
-            </div>
-        @endif
-        @if (Route::is(['users']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-users"><i
-                        data-feather="plus-circle" class="me-2"></i>Add New User</a>
-            </div>
-        @endif
-        @if (Route::is(['roles-permissions']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i> Add New Role</a>
             </div>
         @endif
         @if (Route::is(['product-list']))

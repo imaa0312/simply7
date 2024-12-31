@@ -12814,74 +12814,6 @@
 			<!-- Edit popup -->
 @endif
 
-@if(Route::is(['roles-permissions']))
-		<!-- Add Role -->
-		<div class="modal fade" id="add-units">
-			<div class="modal-dialog modal-dialog-centered custom-modal-two">
-				<div class="modal-content">
-					<div class="page-wrapper-new p-0">
-						<div class="content">
-							<div class="modal-header border-0 custom-modal-header">
-								<div class="page-title">
-									<h4>Create Role</h4>
-								</div>
-								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body custom-modal-body">
-								<form action="roles-permissions">
-									<div class="mb-0">
-										<label class="form-label">Role Name</label>
-										<input type="text" class="form-control">
-									</div>
-									<div class="modal-footer-btn">
-										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-submit">Create Role</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Add Role -->
-
-		<!-- Edit Role -->
-		<div class="modal fade" id="edit-units">
-			<div class="modal-dialog modal-dialog-centered custom-modal-two">
-				<div class="modal-content">
-					<div class="page-wrapper-new p-0">
-						<div class="content">
-							<div class="modal-header border-0 custom-modal-header">
-								<div class="page-title">
-									<h4>Edit Role</h4>
-								</div>
-								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body custom-modal-body">
-								<form action="roles-permissions">
-									<div class="mb-0">
-										<label class="form-label">Role Name</label>
-										<input type="text" class="form-control" value="sales Man">
-									</div>
-									<div class="modal-footer-btn">
-										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-submit">Save Changes</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Edit Role -->
-@endif
-
 @if(Route::is(['shift']))
 		<!-- Add Shift -->
 		<div class="modal fade" id="add-units">
@@ -15243,15 +15175,11 @@
                             </button>
                         </div>
                         <div class="modal-body custom-modal-body">
-                            <form action="users">
+                            <form id="myForm">
+                                @csrf
+                                <input type="hidden" id="users_id" name="users_id">
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Code</label>
-                                            <input type="text" class="form-control" disabled id="user_code" name="user_code">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
                                         <div class="input-blocks">
                                             <label>Name</label>
                                             <input type="text" class="form-control" id="user_name" name="user_name">
@@ -15272,19 +15200,19 @@
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="input-blocks">
+                                        <div class="input-blocks" id="role_list">
                                             <label>Role</label>
-                                            <select class="select" id="userrole" name="userrole">
-                                                <option>Choose</option>
-                                                <option>Manager</option>
-                                                <option>Admin</option>
+                                            <select class="form-control" id="roles" name="roles">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="input-blocks">
                                             <label>Phone</label>
-                                            <input type="text" class="form-control" id="phone" name="phone">
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="inputGroup-sizing-default">+62</span>
+                                                <input type="text" class="form-control" id="telp" name="phone">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -15292,7 +15220,7 @@
                                         <div class="input-blocks">
                                             <label>Password</label>
                                             <div class="pass-group">
-                                                <input type="password" class="pass-input">
+                                                <input type="password" class="pass-input" id="password" name="password">
                                                 <span class="fas toggle-password fa-eye-slash"></span>
                                             </div>
                                         </div>
@@ -15301,7 +15229,7 @@
                                         <div class="input-blocks">
                                             <label>Confirm Passworrd</label>
                                             <div class="pass-group">
-                                                <input type="password" class="pass-input">
+                                                <input type="password" class="pass-input" id="password_confirmation" name="password_confirmation">
                                                 <span class="fas toggle-password fa-eye-slash"></span>
                                             </div>
                                         </div>
@@ -15310,7 +15238,7 @@
                                     <div class="col-lg-12">
                                         <div class="mb-0 input-blocks">
                                             <label class="form-label">Address</label>
-                                            <textarea class="form-control mb-1"></textarea>
+                                            <textarea class="form-control mb-1" id="address" name="address"></textarea>
                                             <p>Maximum 600 Charac
                                                 ters</p>
                                         </div>	
@@ -15318,7 +15246,7 @@
                                 </div>
                                 <div class="modal-footer-btn">
                                     <button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Submit</button>
+                                    <button type="button" class="btn btn-submit save-users">Submit</button>
                                 </div>
                             </form>
                         </div>
