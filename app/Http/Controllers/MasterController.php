@@ -987,13 +987,7 @@ class MasterController extends Controller
     public function warehouseDatatables(){
         $data = MGudangModel::orderBy('id','DESC')->get();
         return Datatables::of($data)
-            ->addRowIndex()
-            ->addColumn('checkbox', function(){
-                return '<label class="checkboxs">
-                    <input type="checkbox" class="checkSingle">
-                    <span class="checkmarks"></span>
-                </label>';
-            })
+            ->addIndexColumn()
             ->addColumn('action', function($row){
                     return '<div class="edit-delete-action">
                         <a class="me-2 p-2 btn btn-success btn-sm edit-warehouse" href="javascript:void(0);" data-bs-toggle="modal"
@@ -1002,7 +996,7 @@ class MasterController extends Controller
                         </a>
                     </div>';
             })
-            ->rawColumns(['checkbox', 'action'])
+            ->rawColumns(['action'])
             ->make(true);
     }
 
@@ -1029,7 +1023,7 @@ class MasterController extends Controller
 
     public function storeWarehouse(Request $request)
     {
-        $id = $request->input('sup_id');
+        $id = $request->input('warehouse_id');
 
         if($id == ""){
             $data = new MGudangModel;
@@ -1038,7 +1032,7 @@ class MasterController extends Controller
             $data = MGudangModel::find($id);
         }
 
-        $data->name = $request->input('sup_name');
+        $data->name = $request->input('warehouse_name');
         $data->phone = $request->input('phone');
         $data->address = $request->input('address');
         $data->save();
@@ -1058,59 +1052,16 @@ class MasterController extends Controller
         echo json_encode($return);
     }
 
-    public function deleteWarehouse($id)
-    {
-        $dataKategori = MGudangModel::find($id);
-        $dataKategori->status = 0;
-        $dataKategori->save();
-
-        if($dataKategori){
-            $return = array(
-                "status" => true,
-                "msg" => "Successfully deleted"
-            );
-        } else {
-            $return = array(
-                "status" => false,
-                "msg" => "Oops! Something wen't wrong"
-            );
-        }
-
-        echo json_encode($return);
-    }
-
-    public function restoreWarehouse($id)
-    {
-        $dataKategori = MGudangModel::find($id);
-        $dataKategori->status = 1;
-        $dataKategori->save();
-
-        if($dataKategori){
-            $return = array(
-                "status" => true,
-                "msg" => "Successfully restored"
-            );
-        } else {
-            $return = array(
-                "status" => false,
-                "msg" => "Oops! Something wen't wrong"
-            );
-        }
-
-        echo json_encode($return);
-    }
-
 
 
 
     public function store(){
-        return view('store');
+        return view('store-list');
     }
 
     public function storeDatatables(){
-        $data = MGudangModel::orderBy('id','DESC')->get();
+        $data = MTokoModel::orderBy('id','DESC')->get();
         return Datatables::of($data)
-            ->addRowIndex()
             ->addColumn('checkbox', function(){
                 return '<label class="checkboxs">
                     <input type="checkbox" class="checkSingle">
@@ -1131,13 +1082,14 @@ class MasterController extends Controller
 
     public function editStore($id)
     {
-        $data = MGudangModel::find($id);
+        $data = MTokoModel::find($id);
 
         if($data){
             $return = array(
                 "name" => $data->name,
-                "phone" => $data->phone,
                 "address" => $data->address,
+                "store_manager" => $data->phone,
+                "phone" => $data->phone,
                 "status" => true
             );
         } else {
@@ -1152,18 +1104,19 @@ class MasterController extends Controller
 
     public function storeStore(Request $request)
     {
-        $id = $request->input('sup_id');
+        $id = $request->input('store_id');
 
         if($id == ""){
-            $data = new MGudangModel;
+            $data = new MTokoModel;
             $data->status = 1;
         } else {
-            $data = MGudangModel::find($id);
+            $data = MTokoModel::find($id);
         }
 
-        $data->name = $request->input('sup_name');
-        $data->phone = $request->input('phone');
+        $data->name = $request->input('store_name');
         $data->address = $request->input('address');
+        $data->phone = $request->input('phone');
+        $data->store_manager = $request->input('manager');
         $data->save();
 
         if($data){
@@ -1183,7 +1136,7 @@ class MasterController extends Controller
 
     public function deleteStore($id)
     {
-        $dataKategori = MGudangModel::find($id);
+        $dataKategori = MTokoModel::find($id);
         $dataKategori->status = 0;
         $dataKategori->save();
 
@@ -1204,7 +1157,7 @@ class MasterController extends Controller
 
     public function restoreStore($id)
     {
-        $dataKategori = MGudangModel::find($id);
+        $dataKategori = MTokoModel::find($id);
         $dataKategori->status = 1;
         $dataKategori->save();
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\MUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,8 @@ use App\Http\Controllers\MasterController;
 */
 Route::get('index', [CustomAuthController::class, 'dashboard']); 
 
+
+// Master
 Route::get('/getCategory', [MasterController::class, 'getKategori']);
 Route::get('/getSubCategory/{id}', [MasterController::class, 'getSubKategori']);
 Route::get('/getSsubCategory/{id}', [MasterController::class, 'getSsubKategori']);
@@ -70,6 +73,15 @@ Route::get('/edit-store/{id}', [MasterController::class, 'editStore'])->name('st
 Route::post('/save-store', [MasterController::class, 'storeStore'])->name('store-save');
 Route::get('/delete-store/{id}', [MasterController::class, 'deleteStore'])->name('store-delete');
 Route::get('/restore-store/{id}', [MasterController::class, 'restoreStore'])->name('store-restore');  
+
+
+// User
+Route::get('/users', [MUserController::class, 'index'])->name('users');
+Route::get('/users-datatables', [MUserController::class, 'usersDatatables'])->name('users-datatables');  
+Route::get('/edit-users/{id}', [MUserController::class, 'editUsers'])->name('users-edit');
+Route::post('/save-users', [MUserController::class, 'storeUsers'])->name('users-save');
+Route::get('/delete-users/{id}', [MUserController::class, 'deleteUsers'])->name('users-delete');
+Route::get('/restore-users/{id}', [MUserController::class, 'restoreUsers'])->name('users-restore'); 
 
 
 

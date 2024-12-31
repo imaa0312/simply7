@@ -20,14 +20,13 @@ class MUserController extends Controller
      */
     public function index()
     {
-        $getMUser = DB::table('m_user')
-            ->select('m_user.*', 'm_user.email','m_user.address', 'm_user.role', 'm_role.name as role_name')
+        $getMUser = MUserModel::select('m_user.*', 'm_role.name as role_name')
             ->join('m_role', 'm_role.id', '=', 'm_user.role')
             ->get();
 
         // dd($getMUser);
 
-        return view('admin.user.index', compact('getMUser'));
+        return view('users', compact('getMUser'));
     }
 
     /**
@@ -37,9 +36,8 @@ class MUserController extends Controller
      */
     public function create()
     {
-        $getMRole = DB::table('m_role')
-            ->get();
-        return view('admin.user.create', compact('getMRole'));
+        $getMRole = MRoleModel::all();
+        return view('users', compact('getMRole'));
     }
 
     /**

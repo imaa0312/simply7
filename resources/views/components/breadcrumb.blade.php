@@ -41,6 +41,7 @@
         'subcategory-list',
         'ssubcategory-list',
         'sssubcategory-list',
+        'users',
     ]))
         <ul class="table-top-head">
             <li>
@@ -289,7 +290,7 @@
         @endif
         @if (Route::is(['users']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
+                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-users"><i
                         data-feather="plus-circle" class="me-2"></i>Add New User</a>
             </div>
         @endif
