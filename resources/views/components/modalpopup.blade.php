@@ -15193,10 +15193,9 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Birthdate</label>
-                                            <input type="text" class="form-control" id="birthdate" name="birthdate">
-                                        </div>
+                                        <label class="form-label">Date</label>
+                                        <input type="text" id="date" name="birthdate" class="form-control">
+                                        <span class="form-text text-muted">dd/mm/yyyy</span>
                                     </div>
 
                                     <div class="col-lg-6">
@@ -15225,7 +15224,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6" id="conf">
                                         <div class="input-blocks">
                                             <label>Confirm Passworrd</label>
                                             <div class="pass-group">

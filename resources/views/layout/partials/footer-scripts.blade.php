@@ -114,11 +114,11 @@
      <script src="{{ URL::asset('/build/plugins/ion-rangeslider/js/custom-rangeslider.js') }}"></script>
  @endif
 
- @if (Route::is(['form-mask']))
+ 
      <!-- Mask JS -->
      <script src="{{ URL::asset('/build/js/jquery.maskedinput.min.js') }}"></script>
      <script src="{{ URL::asset('/build/js/mask.js') }}"></script>
- @endif
+ 
 
  @if (Route::is(['ui-scrollbar']))
      <!-- Plyr JS -->

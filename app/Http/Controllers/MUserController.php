@@ -8,7 +8,7 @@ use App\Models\MUserModel;
 use App\Models\MRoleModel;
 use App\Models\TargetSalesModel;
 use DB;
-use carbon;
+use Hash;
 use Yajra\Datatables\Datatables;
 
 class MUserController extends Controller
@@ -85,44 +85,71 @@ class MUserController extends Controller
     public function storeUsers(Request $request)
     {
         $id = $request->input('users_id');
+        $date_arr = explode("/", $request->birthdate);
+        $date = date('Y-m-d', strtotime($date_arr[2]."-".$date_arr[1]."-".$date_arr[0]));
 
-        $val = \Validator::make($request->all(), [
-            'password' => 'required|confirmed|min:4',
-        ]);
+        if($id == ""){
+            $val = \Validator::make($request->all(), [
+                'password' => 'required|confirmed|min:4',
+            ]);
 
-        if ($val->fails()) {
-            $return = array(
-                "status" => false,
-                "msg" => "Password is required and must be confirmed"
-            );
-        } else {
-            if($id == ""){
-                $dataUser = new MUserModel;
-                $dataUser->status = 1;
-            } else {
-                $dataUser = MUserModel::find($id);
-            }
-
-            //dd($request->all());
-            //$roleSales  = MRoleModel::where('name', 'Sales')->first();
-            $dataUser->name = $request->user_name;
-            $dataUser->username = $request->uname;
-            $dataUser->phone = $request->phone;
-            $dataUser->address = $request->address;
-            $dataUser->birthdate = date('Y-m-d', strtotime($request->birthdate));
-            $dataUser->password =  bcrypt(str_replace(' ', '', $request->password));
-            $dataUser->role = $request->roles;
-            $dataUser->save();
-
-            if($dataUser){
+            if ($val->fails()) {
                 $return = array(
-                    "status" => true,
-                    "msg" => "Successfully saved"
+                    "status" => false,
+                    "msg" => "Password is required and must be confirmed"
                 );
+            } else {
+                $dataUser = new MUserModel;
+                $dataUser->name = $request->user_name;
+                $dataUser->username = $request->uname;
+                $dataUser->phone = $request->phone;
+                $dataUser->address = $request->address;
+                $dataUser->birthdate = $date;
+                $dataUser->password =  bcrypt(str_replace(' ', '', $request->password));
+                $dataUser->role = $request->roles;
+                $dataUser->save();
+                $dataUser->status = 1;
+
+                if($dataUser){
+                    $return = array(
+                        "status" => true,
+                        "msg" => "Successfully saved"
+                    );
+                } else {
+                    $return = array(
+                        "status" => false,
+                        "msg" => "Oops! Something wen't wrong"
+                    );
+                }
+            }
+        } else {
+            $dataUser = MUserModel::find($id);
+            // $hash = bcrypt(str_replace(' ', '', $request->password));
+
+            if(Hash::check($request->password, $dataUser->password)){
+                $dataUser->name = $request->user_name;
+                $dataUser->username = $request->uname;
+                $dataUser->phone = $request->phone;
+                $dataUser->address = $request->address;
+                $dataUser->birthdate = $date;
+                $dataUser->role = $request->roles;
+                $dataUser->save();
+
+                if($dataUser){
+                    $return = array(
+                        "status" => true,
+                        "msg" => "Successfully saved"
+                    );
+                } else {
+                    $return = array(
+                        "status" => false,
+                        "msg" => "Oops! Something wen't wrong"
+                    );
+                }
             } else {
                 $return = array(
                     "status" => false,
-                    "msg" => "Oops! Something wen't wrong"
+                    "msg" => "Password didn't match"
                 );
             }
         }
@@ -151,7 +178,7 @@ class MUserController extends Controller
                 "username" => $dataUser->username,
                 "phone" => $dataUser->phone,
                 "address" => $dataUser->address,
-                "birthdate" => date('Y-m-d', strtotime($dataUser->birthdate)),
+                "birthdate" => date('d/m/Y', strtotime($dataUser->birthdate)),
                 "role" => $cat,
                 "status" => true
             );

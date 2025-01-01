@@ -98,10 +98,12 @@
                 $('#user_name').val("");
                 $('#uname').val("");
                 $('#password').val("");
-                $('#confirm_password').val("");
+                $('#password_confirmation').val("");
                 $('#telp').val("");
+                $('#date').val("");
                 $('#address').val('').blur();
                 $('#title_modal').html("Create User");
+                $('#conf').show();
 
                 $.ajax({
                     type : "GET",
@@ -133,6 +135,8 @@
                             $('#telp').val(data.phone);
                             $('#address').val(data.address);
                             $('#role_list').html(data.role);
+                            $('#date').val(data.birthdate);
+                            $('#conf').hide();
                             $("#roles option[value="+data.role_id+"]").attr('selected', true); 
                         }
                     },
@@ -172,6 +176,7 @@
                                                 showConfirmButton: false,
                                                 timer: 2000
                                             });
+                                            $('#add-users').modal('toggle');
                                         } else {
                                             Swal.fire({
                                                 position: "top-end",
@@ -182,7 +187,6 @@
                                                 timer: 2000
                                             });
                                         }
-                                        $('#add-users').modal('toggle');
                                         $('#myTable').DataTable().ajax.reload();
                                     },
                                     fail: function (e) {
