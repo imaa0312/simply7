@@ -8685,38 +8685,31 @@
                             </button>
                         </div>
                         <div class="modal-body custom-modal-body">
-                            <form action="store-list">
+                            <form method="POST" id="formku">
+                                @csrf
                                 <div class="mb-3">
                                     <label class="form-label">Store Name</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="store_nama" id="store_nama">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Store Manager</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="input-blocks mb-3">
-                                    <label>Password</label>
-                                    <div class="pass-group">
-                                        <input type="password" class=" pass-input">
-                                        <span class="fas toggle-password fa-eye-slash"></span>
-                                    </div>
+                                    <input type="text" class="form-control" name="manager" id="manager">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Phone</label>
-                                    <input type="text" class="form-control">
+                                    <label class="form-label">Store Phone</label>
+                                    <input type="text" class="form-control" name="telp" id="telp">
                                 </div>
-                                <div class="mb-0">
-                                    <div
-                                        class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                        <span class="status-label">Status</span>
-                                        <input type="checkbox" id="user2" class="check" checked="">
-                                        <label for="user2" class="checktoggle"></label>
+                                <div class="col-lg-12">
+                                    <div class="mb-0 input-blocks">
+                                        <label class="form-label">Address</label>
+                                        <textarea class="form-control mb-1" name="address" id="address"></textarea>
+                                        <p>Maximum 100 Characters</p>
                                     </div>
                                 </div>
                                 <div class="modal-footer-btn">
                                     <button type="button" class="btn btn-cancel me-2"
                                         data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Create</button>
+                                    <button type="button" class="btn btn-submit">Create</button>
                                 </div>
                             </form>
                         </div>
