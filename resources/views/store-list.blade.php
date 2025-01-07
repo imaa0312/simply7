@@ -28,15 +28,10 @@
                     </div>
                     
                     <div class="table-responsive">
-                        <table class="table  datanew">
+                        <table class="table" id="myTable">
                             <thead>
                                 <tr>
-                                    <th class="no-sort">
-                                        <label class="checkboxs">
-                                            <input type="checkbox" id="select-all">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </th>
+                                    <th class="no-sort">No</th>
                                     <th>Store Address </th>
                                     <th>Store Manager </th>
                                     <th>Phone</th>
@@ -45,30 +40,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Denpasar </td>
-                                    <td>Thomas21 </td>
-                                    <td>+12163547758 </td>
-                                    <td><span class="badge badge-linesuccess">Active</span></td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-stores">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -77,4 +48,79 @@
             <!-- /product list -->
         </div>
     </div>
+
+    <script src="{{ URL::asset('build/js/jquery-3.7.1.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{!! url('store-datatables') !!}",
+                    type: "get"
+                },
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
+                    {                          
+                        orderable: false,
+                        targets: 0,
+                        'checkboxes': {
+                            'selectRow': true,
+                        },
+                        defaultContent: '',
+                        data: 'checkbox'
+                    },
+                    {data: 'address', name: 'address', searchable: true},
+                    {data: 'manager', name: 'manager', searchable: true},
+                    {data: 'phone', name: 'phone', searchable: true},
+                    {data: 'status', name: 'status', searchable: true},
+                    {data: 'action', name: 'action', className: "dt-center"}
+                ],            
+                "bFilter": true,
+                "sDom": 'fBtlpi',  
+                "ordering": true,
+                "language": {
+                    search: ' ',
+                    sLengthMenu: '_MENU_',
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> '
+                    },
+                },
+                initComplete: (settings, json)=>{
+                    $('.dataTables_filter').appendTo('#tableSearch');
+                    $('.dataTables_filter').appendTo('.search-input');
+
+                }
+            });
+
+            $('body').on('click', '.add-stores', function(){
+                $('#store_id').val("");
+                $('#store_name').val("");
+                $('#telp').val("");
+                $('#address').val("");
+                $('#title_modal').html("Create Store");
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("getManager") !!}',
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#manager_list').html(data.manager);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

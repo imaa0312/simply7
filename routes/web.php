@@ -26,6 +26,7 @@ Route::get('/getSsubCategory/{id}', [MasterController::class, 'getSsubKategori']
 Route::get('/getProvince', [MasterController::class, 'getProvince']);
 Route::get('/getCity/{id}', [MasterController::class, 'getCity']);
 Route::get('/getRole', [MUserController::class, 'getRole']);
+Route::get('/getManager', [MasterController::class, 'getStoreManager']);
 
 Route::get('/roles', [MRoleController::class, 'index'])->name('roles');  
 Route::get('/roles-datatables', [MRoleController::class, 'rolesDatatables'])->name('roles-datatables');  

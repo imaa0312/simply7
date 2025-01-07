@@ -9,10 +9,13 @@ use App\Models\MSsubKategoriModel;
 use App\Models\MSssubKategoriModel;
 use App\Models\MSupplierModel;
 use App\Models\MGudangModel;
+use App\Models\MTokoModel;
 use App\Models\MProvinsiModel;
 use App\Models\MKotaKabModel;
-
+use App\Models\MUserModel;
 use DataTables;
+use Yajra\DataTables\DataTables as DataTablesDataTables;
+use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class MasterController extends Controller
 {
@@ -173,6 +176,32 @@ class MasterController extends Controller
         if($dataKategori){
             $return = array(
                 "category" => $cat,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function getStoreManager()
+    {
+        $data = MUserModel::where('role', '=', 5)->get();
+        $manager = '<label class="form-label">Store Manager</label>
+                <select class="select" id="manager" name="manager">
+                <option>Choose Manager</option>';
+        foreach($data as $dt){
+            $manager .= '<option value="'.$dt->id.'">'.$dt->name.'</option>';
+        }
+        $manager .= '</select>';
+
+        if($data){
+            $return = array(
+                "manager" => $manager,
                 "status" => true
             );
         } else {
@@ -990,8 +1019,8 @@ class MasterController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function($row){
                     return '<div class="edit-delete-action">
-                        <a class="me-2 p-2 btn btn-success btn-sm edit-warehouse" href="javascript:void(0);" data-bs-toggle="modal"
-                            data-bs-target="#add-warehouse" data-id="'.$row->id.'">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-store" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-store" data-id="'.$row->id.'">
                             <i class="fas fa-pencil"></i>
                         </a>
                     </div>';
@@ -1062,12 +1091,7 @@ class MasterController extends Controller
     public function storeDatatables(){
         $data = MTokoModel::orderBy('id','DESC')->get();
         return Datatables::of($data)
-            ->addColumn('checkbox', function(){
-                return '<label class="checkboxs">
-                    <input type="checkbox" class="checkSingle">
-                    <span class="checkmarks"></span>
-                </label>';
-            })
+            ->addIndexColumn()
             ->addColumn('action', function($row){
                     return '<div class="edit-delete-action">
                         <a class="me-2 p-2 btn btn-success btn-sm edit-warehouse" href="javascript:void(0);" data-bs-toggle="modal"
@@ -1076,7 +1100,7 @@ class MasterController extends Controller
                         </a>
                     </div>';
             })
-            ->rawColumns(['checkbox', 'action'])
+            ->rawColumns(['action'])
             ->make(true);
     }
 
