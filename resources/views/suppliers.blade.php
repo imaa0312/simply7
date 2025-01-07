@@ -70,19 +70,11 @@
                     selector: 'td:first-child'
                 },
                 columns: [
-                    // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
-                    {                          
-                        orderable: false,
-                        targets: 0,
-                        'checkboxes': {
-                            'selectRow': true,
-                        },
-                        defaultContent: '',
-                        data: 'checkbox'
-                    },
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
                     {data: 'name', name: 'name'},
                     {data: 'city_name', name: 'city_name'},
                     {data: 'phone', name: 'phone'},
+                    {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', className: "dt-center"}
                 ],            
                 "bFilter": true,

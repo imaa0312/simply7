@@ -66,15 +66,6 @@
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
-                    {                          
-                        orderable: false,
-                        targets: 0,
-                        'checkboxes': {
-                            'selectRow': true,
-                        },
-                        defaultContent: '',
-                        data: 'checkbox'
-                    },
                     {data: 'address', name: 'address', searchable: true},
                     {data: 'manager', name: 'manager', searchable: true},
                     {data: 'phone', name: 'phone', searchable: true},

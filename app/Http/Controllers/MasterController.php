@@ -191,8 +191,8 @@ class MasterController extends Controller
     public function getStoreManager()
     {
         $data = MUserModel::where('role', '=', 5)->get();
-        $manager = '<label class="form-label">Store Manager</label>
-                <select class="select" id="manager" name="manager">
+        $manager = '<label>Store Manager</label>
+                <select class="form-control" id="manager" name="manager">
                 <option>Choose Manager</option>';
         foreach($data as $dt){
             $manager .= '<option value="'.$dt->id.'">'.$dt->name.'</option>';
@@ -851,12 +851,7 @@ class MasterController extends Controller
             ->join('m_kota_kab', 'm_kota_kab.id', '=', 'm_supplier.city')
             ->orderBy('m_supplier.id','DESC')->get();
         return Datatables::of($data)
-            ->addColumn('checkbox', function(){
-                return '<label class="checkboxs">
-                    <input type="checkbox" class="checkSingle">
-                    <span class="checkmarks"></span>
-                </label>';
-            })
+            ->addIndexColumn()
             ->addColumn('action', function($row){
                 if($row->status == 1)
                     return '<div class="edit-delete-action">

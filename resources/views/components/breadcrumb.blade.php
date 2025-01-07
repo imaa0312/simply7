@@ -140,7 +140,7 @@
         @endif
         @if (Route::is(['store-list']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-stores"><i
+                <a href="#" class="btn btn-added add-stores" data-bs-toggle="modal" data-bs-target="#add-stores"><i
                         data-feather="plus-circle" class="me-2"></i> Add Store</a>
             </div>
         @endif

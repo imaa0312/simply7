@@ -8691,7 +8691,7 @@
                                     <label class="form-label">Store Name</label>
                                     <input type="text" class="form-control" name="store_nama" id="store_nama">
                                 </div>                                
-                                <div class="mb-3">
+                                <div class="col-lg-12">
                                     <div class="input-blocks" id="manager_list">
                                         <label>Store Manager</label>
                                         <select class="select" id="manager" name="manager">
