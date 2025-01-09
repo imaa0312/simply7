@@ -8685,11 +8685,12 @@
                             </button>
                         </div>
                         <div class="modal-body custom-modal-body">
-                            <form method="POST" id="formku">
+                            <form method="POST" id="myForm">
                                 @csrf
+                                <input type="hidden" class="form-control" name="store_id" id="store_id">
                                 <div class="mb-3">
                                     <label class="form-label">Store Name</label>
-                                    <input type="text" class="form-control" name="store_nama" id="store_nama">
+                                    <input type="text" class="form-control" name="store_name" id="store_name">
                                 </div>                                
                                 <div class="col-lg-12">
                                     <div class="input-blocks" id="manager_list">
@@ -8713,7 +8714,7 @@
                                 <div class="modal-footer-btn">
                                     <button type="button" class="btn btn-cancel me-2"
                                         data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-submit">Create</button>
+                                    <button type="button" class="btn btn-submit save-store">Create</button>
                                 </div>
                             </form>
                         </div>

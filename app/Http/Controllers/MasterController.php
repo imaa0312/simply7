@@ -14,8 +14,6 @@ use App\Models\MProvinsiModel;
 use App\Models\MKotaKabModel;
 use App\Models\MUserModel;
 use DataTables;
-use Yajra\DataTables\DataTables as DataTablesDataTables;
-use Yajra\DataTables\Facades\DataTables as FacadesDataTables;
 
 class MasterController extends Controller
 {
@@ -1084,30 +1082,57 @@ class MasterController extends Controller
     }
 
     public function storeDatatables(){
-        $data = MTokoModel::orderBy('id','DESC')->get();
+        $data = MTokoModel::select('m_toko.*', 'm_user.name as manager')
+            ->join('m_user', 'm_toko.store_manager', '=', 'm_user.id')
+            ->orderBy('m_toko.id','DESC')->get();
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
+                if($row->status == 1)
                     return '<div class="edit-delete-action">
-                        <a class="me-2 p-2 btn btn-success btn-sm edit-warehouse" href="javascript:void(0);" data-bs-toggle="modal"
-                            data-bs-target="#add-warehouse" data-id="'.$row->id.'">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-store" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-stores" data-id="'.$row->id.'">
                             <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-store" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-store" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
                         </a>
                     </div>';
             })
-            ->rawColumns(['action'])
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['action', 'status'])
             ->make(true);
     }
 
     public function editStore($id)
     {
-        $data = MTokoModel::find($id);
+        $store_manager = MUserModel::where('role', '=', 5)->get();
 
+        $manager = '<label>Store Manager</label>
+            <select class="form-control" id="manager" name="manager">';
+        foreach($store_manager as $mng){
+            $manager .= '<option value="'.$mng->id.'">'.$mng->name.'</option>';
+        }
+        $manager .= '</select>';
+        
+        $data = MTokoModel::find($id);
         if($data){
             $return = array(
                 "name" => $data->name,
                 "address" => $data->address,
-                "store_manager" => $data->phone,
+                "manager" => $data->store_manager,
+                "manager_list" => $manager,
                 "phone" => $data->phone,
                 "status" => true
             );
@@ -1134,7 +1159,7 @@ class MasterController extends Controller
 
         $data->name = $request->input('store_name');
         $data->address = $request->input('address');
-        $data->phone = $request->input('phone');
+        $data->phone = $request->input('telp');
         $data->store_manager = $request->input('manager');
         $data->save();
 
