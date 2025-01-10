@@ -109,6 +109,24 @@
                         data-feather="plus-circle" class="me-2"></i> Add Sub-Sub-Sub Category</a>
             </div>
         @endif
+        @if (Route::is(['store-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-stores" data-bs-toggle="modal" data-bs-target="#add-stores"><i
+                        data-feather="plus-circle" class="me-2"></i> Add Store</a>
+            </div>
+        @endif
+        @if (Route::is(['expense-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
+                        data-feather="plus-circle" class="me-2"></i> Add New Expense</a>
+            </div>
+        @endif
+        @if (Route::is(['expense-category']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-expense-category" data-bs-toggle="modal" data-bs-target="#add-expense-category"><i
+                        data-feather="plus-circle" class="me-2"></i> Add Expense Category</a>
+            </div>
+        @endif
 
         
 
@@ -120,12 +138,6 @@
                         data-feather="plus-circle" class="me-2"></i> {{ $li_2 }}</a>
             </div>
         @endif
-        @if (Route::is(['warehouse']))
-            {{-- <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i>{{ $li_2 }}</a>
-            </div> --}}
-        @endif
         @if (Route::is(['varriant-attributes']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
@@ -136,12 +148,6 @@
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
                         data-feather="plus-circle" class="me-2"></i> {{ $li_2 }}</a>
-            </div>
-        @endif
-        @if (Route::is(['store-list']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added add-stores" data-bs-toggle="modal" data-bs-target="#add-stores"><i
-                        data-feather="plus-circle" class="me-2"></i> Add Store</a>
             </div>
         @endif
         @if (Route::is(['stock-transfer']))
@@ -232,18 +238,6 @@
             <div class="page-btn">
                 <a href="" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-department"><i
                         data-feather="plus-circle" class="me-2"></i>Add New Holiday</a>
-            </div>
-        @endif
-        @if (Route::is(['expense-list']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i> Add New Expense</a>
-            </div>
-        @endif
-        @if (Route::is(['expense-category']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i> Add Expense Category</a>
             </div>
         @endif
         @if (Route::is(['employees-grid']))

@@ -13,6 +13,8 @@ use App\Models\MTokoModel;
 use App\Models\MProvinsiModel;
 use App\Models\MKotaKabModel;
 use App\Models\MUserModel;
+use App\Models\MExpenseCategoryModel;
+use App\Models\MExpenseModel;
 use DataTables;
 
 class MasterController extends Controller
@@ -1202,6 +1204,139 @@ class MasterController extends Controller
     public function restoreStore($id)
     {
         $dataKategori = MTokoModel::find($id);
+        $dataKategori->status = 1;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully restored"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+
+
+
+
+
+
+    public function expenseCategory(){
+        return view('expense-category');
+    }
+
+    public function expenseCategoryDatatables(){
+        $data = MExpenseCategoryModel::orderBy('id','DESC')->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-expense-category" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-expense-category" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-expense-category" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-expense-category" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
+    }
+
+    public function editExpenseCategory($id)
+    {
+        $data = MExpenseCategoryModel::find($id);
+        if($data){
+            $return = array(
+                "name" => $data->name,
+                "desc" => $data->description,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function storeExpenseCategory(Request $request)
+    {
+        $id = $request->input('exp_cat_id');
+
+        if($id == ""){
+            $data = new MExpenseCategoryModel;
+            $data->status = 1;
+        } else {
+            $data = MExpenseCategoryModel::find($id);
+        }
+
+        $data->name = $request->input('nama');
+        $data->description = $request->input('desc');
+        $data->save();
+
+        if($data){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function deleteExpenseCategory($id)
+    {
+        $dataKategori = MExpenseCategoryModel::find($id);
+        $dataKategori->status = 0;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function restoreExpenseCategory($id)
+    {
+        $dataKategori = MExpenseCategoryModel::find($id);
         $dataKategori->status = 1;
         $dataKategori->save();
 

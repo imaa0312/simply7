@@ -334,8 +334,281 @@
     <!-- /Add Category -->
 @endif
 
+@if(Route::is(['expense-category']))
+    <!-- Add Expense Category-->
+    <div class="modal fade" id="add-expense-category">
+        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4>Add Expense Category</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form method="POST" id="myForm">
+                                @csrf
+                                <input type="hidden" name="exp_cat_id" id="exp_cat_id">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Expense Name</label>
+                                            <input type="text" class="form-control" name="nama" id="nama">
+                                        </div>
+                                        
+                                    </div>								
+                                    <!-- Editor -->
+                                    <div class="col-md-12">
+                                        <div class="edit-add card">
+                                            <div class="edit-add">
+                                                <label class="form-label">Description</label>
+        
+                                            </div>
+                                            <div class="card-body-list input-blocks mb-0">
+                                                <textarea class="form-control" name="desc" id="desc"></textarea>
+                                            </div>
+                                            <p>Maximum 600 Characters</p>
+                                        </div>
+                                    </div>
+                                    <!-- /Editor -->
+                                </div>									
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-expense-category">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Expense Category-->
+@endif
 
+@if(Route::is(['expense-list']))
+			<!-- Add Expense -->
+			<div class="modal fade" id="add-units">
+				<div class="modal-dialog modal-dialog-centered custom-modal-two">
+					<div class="modal-content">
+						<div class="page-wrapper-new p-0">
+							<div class="content">
+								<div class="modal-header border-0 custom-modal-header">
+									<div class="page-title">
+										<h4>Add Expense</h4>
+									</div>
+									<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body custom-modal-body">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="mb-3">
+												<label class="form-label">Expense Category</label>
+												<select class="select">
+													<option>Choose</option>
+													<option>Foods & Snacks</option>
+													<option>Employee Benefits</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="input-blocks date-group">
+												<i data-feather="calendar" class="info-img"></i>
+												<div class="input-groupicon">
+													<input type="text" class="datetimepicker" placeholder="Choose Date" >
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="mb-3">
+												<label class="form-label">Amount</label>
+												<input type="text" class="form-control" placeholder="$">
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="mb-3">
+												<label class="form-label">Reference</label>
+												<input type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="mb-3">
+												<label class="form-label">Expense For</label>
+												<input type="text" class="form-control">
+												<span class="unlimited-text">0 for Unlimited</span>
+											</div>
+											
+										</div>								
+										<!-- Editor -->
+										<div class="col-md-12">
+											<div class="edit-add card">
+												<div class="edit-add">
+													<label class="form-label">Description</label>
+												</div>
+												<div class="card-body-list input-blocks mb-0">
+													<textarea class="form-control"></textarea>
+												</div>
+												<p>Maximum 600 Characters</p>
+											</div>
+										</div>
+										<!-- /Editor -->
+									</div>							
+									<div class="modal-footer-btn">
+										<a href="javascript:void(0);" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</a>
+										<a href="{{url('expense-list')}}" class="btn btn-submit">Submit</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /Add Expense -->
+            <!-- Edit Expense -->
+		<div class="modal fade" id="edit-units">
+			<div class="modal-dialog modal-dialog-centered custom-modal-two">
+				<div class="modal-content">
+					<div class="page-wrapper-new p-0">
+						<div class="content">
+							<div class="modal-header border-0 custom-modal-header">
+								<div class="page-title">
+									<h4>Edit Expense</h4>
+								</div>
+								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body custom-modal-body">
+								<form action="expense-list">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="mb-3">
+												<label class="form-label">Expense Category</label>
+												<select class="select">
+													<option>Employee Benefits</option>
+													<option>Foods & Snacks</option>
+													<option>Entertainment</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="input-blocks date-group">
+												<i data-feather="calendar" class="info-img"></i>
+												<div class="input-groupicon">
+													<input type="text" class="datetimepicker ps-5" placeholder="19 Jan 2023" >
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="mb-3">
+												<label class="form-label">Amount</label>
+												<input type="text" class="form-control" value="$550.00">
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="mb-3">
+												<label class="form-label">Reference</label>
+												<input type="text" class="form-control" value="55544">
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="mb-3 input-blocks">
+												<label class="form-label">Expense For</label>
+												<input type="text" class="form-control">
+												<span class="unlimited-text">0 for Unlimited</span>
+											</div>
+											
+										</div>								
+										<!-- Editor -->
+										<div class="col-md-12">
+											<div class="edit-add card">
+												<div class="edit-add">
+													<label class="form-label">Description</label>
+												</div>
+												<div class="card-body-list input-blocks mb-0">
+													<textarea class="form-control">Employee Vehicle</textarea>
+												</div>
+												<p>Maximum 600 Characters</p>
+											</div>
+										</div>
+										<!-- /Editor -->
+									</div>
+									<div class="modal-footer-btn">
+										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
+										<button type="submit" class="btn btn-submit">Save Changes</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Expense -->
+@endif
 
+@if (Route::is(['store-list']))
+    <!-- Add Store -->
+    <div class="modal fade" id="add-stores">
+        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4>Create Store</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form method="POST" id="myForm">
+                                @csrf
+                                <input type="hidden" class="form-control" name="store_id" id="store_id">
+                                <div class="mb-3">
+                                    <label class="form-label">Store Name</label>
+                                    <input type="text" class="form-control" name="store_name" id="store_name">
+                                </div>                                
+                                <div class="col-lg-12">
+                                    <div class="input-blocks" id="manager_list">
+                                        <label>Store Manager</label>
+                                        <select class="select" id="manager" name="manager">
+                                            <option>Choose Manager</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Store Phone</label>
+                                    <input type="text" class="form-control" name="telp" id="telp">
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="mb-0 input-blocks">
+                                        <label class="form-label">Address</label>
+                                        <textarea class="form-control mb-1" name="address" id="address"></textarea>
+                                        <p>Maximum 100 Characters</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-submit save-store">Create</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Store -->
+@endif
 
 
 
@@ -8669,263 +8942,6 @@
     <!-- /Edit Customer -->
 @endif
 
-@if (Route::is(['store-list']))
-    <!-- Add Store -->
-    <div class="modal fade" id="add-stores">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Create Store</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form method="POST" id="myForm">
-                                @csrf
-                                <input type="hidden" class="form-control" name="store_id" id="store_id">
-                                <div class="mb-3">
-                                    <label class="form-label">Store Name</label>
-                                    <input type="text" class="form-control" name="store_name" id="store_name">
-                                </div>                                
-                                <div class="col-lg-12">
-                                    <div class="input-blocks" id="manager_list">
-                                        <label>Store Manager</label>
-                                        <select class="select" id="manager" name="manager">
-                                            <option>Choose Manager</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Store Phone</label>
-                                    <input type="text" class="form-control" name="telp" id="telp">
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="mb-0 input-blocks">
-                                        <label class="form-label">Address</label>
-                                        <textarea class="form-control mb-1" name="address" id="address"></textarea>
-                                        <p>Maximum 100 Characters</p>
-                                    </div>
-                                </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-submit save-store">Create</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Store -->
-@endif
-
-@if (Route::is(['warehouse']))
-    <!-- Add Warehouse -->
-    <div class="modal fade" id="add-units">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Add Warehouse</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="warehouse">
-                                <div class="modal-title-head">
-                                    <h6><span><i data-feather="info" class="feather-edit"></i></span>Warehouse Info
-                                    </h6>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Name</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Contact Person</label>
-                                            <select class="select">
-                                                <option>Choose</option>
-                                                <option>Steven</option>
-                                                <option>Gravely</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-3 war-add">
-                                            <label class="mb-2">Phone Number</label>
-                                            <input class="form-control" id="phone" name="phone"
-                                                type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Work Phone</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="modal-title-head">
-                                        <h6><span><i data-feather="map-pin"></i></span>Location</h6>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Address 1</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Address 2</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Country</label>
-                                            <select class="select">
-                                                <option>Choose</option>
-                                                <option>United Kingdom</option>
-                                                <option>United State</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">State</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-3 mb-0">
-                                            <label class="form-label">City</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-3 mb-0">
-                                            <label class="form-label">Zipcode</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Create Warehouse</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Warehouse -->
-
-    <!-- Edit Warehouse -->
-    <div class="modal fade" id="edit-units">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Edit Warehouse</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="warehouse">
-                                <div class="modal-title-head">
-                                    <h6><span><i data-feather="info" class="feather-edit"></i></span>Warehouse Info
-                                    </h6>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Name</label>
-                                            <input type="text" class="form-control" value="Legendary">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-3 war-edit-phone">
-                                            <label class="mb-2">Phone Number</label>
-                                            <input class="form-control" id="phone2" name="phone"
-                                                type="text">
-                                        </div>
-                                    </div>
-                                    <div class="modal-title-head">
-                                        <h6><span><i data-feather="map-pin"></i></span>Location</h6>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Address 1</label>
-                                            <input type="text" class="form-control" value="Admiral Street">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="input-blocks">
-                                            <label class="form-label">Address 2</label>
-                                            <input type="text" class="form-control" value="Aire Street">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>Province</label>
-                                            <select class="select">
-                                                <option>United Kingdom</option>
-                                                <option>United State</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="input-blocks">
-                                            <label>City</label>
-                                            <select class="select">
-                                                <option>United Kingdom</option>
-                                                <option>United State</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Save Changes</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endif
-
 @if(Route::is(['attendance-admin']))
 		<!-- Add Attendance -->
 		<div class="modal fade" id="add-units">
@@ -10481,271 +10497,6 @@
 			</div>
 		</div>
 		<!-- /Test Mail -->
-@endif
-
-@if(Route::is(['expense-category']))
-			<!-- Add Expense Category-->
-			<div class="modal fade" id="add-units">
-				<div class="modal-dialog modal-dialog-centered custom-modal-two">
-					<div class="modal-content">
-						<div class="page-wrapper-new p-0">
-							<div class="content">
-								<div class="modal-header border-0 custom-modal-header">
-									<div class="page-title">
-										<h4>Add Expense Category</h4>
-									</div>
-									<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body custom-modal-body">
-									<form action="expense-category">
-										<div class="row">
-											<div class="col-lg-12">
-												<div class="mb-3">
-													<label class="form-label">Expense Name</label>
-													<input type="text" class="form-control">
-												</div>
-												
-											</div>								
-											<!-- Editor -->
-											<div class="col-md-12">
-												<div class="edit-add card">
-													<div class="edit-add">
-														<label class="form-label">Description</label>
-				
-													</div>
-													<div class="card-body-list input-blocks mb-0">
-														<textarea class="form-control"></textarea>
-													</div>
-													<p>Maximum 600 Characters</p>
-												</div>
-											</div>
-											<!-- /Editor -->
-										</div>									
-										<div class="modal-footer-btn">
-											<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-											<button type="submit" class="btn btn-submit">Submit</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Add Expense Category-->
-            <!-- Edit Expense Category-->
-		<div class="modal fade" id="edit-units">
-			<div class="modal-dialog modal-dialog-centered custom-modal-two">
-				<div class="modal-content">
-					<div class="page-wrapper-new p-0">
-						<div class="content">
-							<div class="modal-header border-0 custom-modal-header">
-								<div class="page-title">
-									<h4>Edit Expense Category</h4>
-								</div>
-								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body custom-modal-body">
-								<div class="row">
-									<div class="col-lg-12">
-										<div class="mb-3">
-											<label class="form-label">Expense Name</label>
-											<input type="text" value="Employee Benefits" class="form-control">
-										</div>
-										
-									</div>							
-									<!-- Editor -->
-									<div class="col-md-12">
-										<div class="edit-add card">
-											<div class="edit-add">
-												<label class="form-label">Description</label>
-											</div>
-											<div class="card-body-list input-blocks mb-0">
-												<textarea class="form-control">Employee Vehicle</textarea>
-											</div>
-											<p>Maximum 600 Characters</p>
-										</div>
-									</div>
-									<!-- /Editor -->
-								</div>						
-								<div class="modal-footer-btn">
-									<a href="javascript:void(0);" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</a>
-									<a href="{{url('expense-category')}}" class="btn btn-submit">Save Changes</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Edit Expense -->
-@endif
-
-@if(Route::is(['expense-list']))
-			<!-- Add Expense -->
-			<div class="modal fade" id="add-units">
-				<div class="modal-dialog modal-dialog-centered custom-modal-two">
-					<div class="modal-content">
-						<div class="page-wrapper-new p-0">
-							<div class="content">
-								<div class="modal-header border-0 custom-modal-header">
-									<div class="page-title">
-										<h4>Add Expense</h4>
-									</div>
-									<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body custom-modal-body">
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="mb-3">
-												<label class="form-label">Expense Category</label>
-												<select class="select">
-													<option>Choose</option>
-													<option>Foods & Snacks</option>
-													<option>Employee Benefits</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="input-blocks date-group">
-												<i data-feather="calendar" class="info-img"></i>
-												<div class="input-groupicon">
-													<input type="text" class="datetimepicker" placeholder="Choose Date" >
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="mb-3">
-												<label class="form-label">Amount</label>
-												<input type="text" class="form-control" placeholder="$">
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="mb-3">
-												<label class="form-label">Reference</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="mb-3">
-												<label class="form-label">Expense For</label>
-												<input type="text" class="form-control">
-												<span class="unlimited-text">0 for Unlimited</span>
-											</div>
-											
-										</div>								
-										<!-- Editor -->
-										<div class="col-md-12">
-											<div class="edit-add card">
-												<div class="edit-add">
-													<label class="form-label">Description</label>
-												</div>
-												<div class="card-body-list input-blocks mb-0">
-													<textarea class="form-control"></textarea>
-												</div>
-												<p>Maximum 600 Characters</p>
-											</div>
-										</div>
-										<!-- /Editor -->
-									</div>							
-									<div class="modal-footer-btn">
-										<a href="javascript:void(0);" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</a>
-										<a href="{{url('expense-list')}}" class="btn btn-submit">Submit</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /Add Expense -->
-            <!-- Edit Expense -->
-		<div class="modal fade" id="edit-units">
-			<div class="modal-dialog modal-dialog-centered custom-modal-two">
-				<div class="modal-content">
-					<div class="page-wrapper-new p-0">
-						<div class="content">
-							<div class="modal-header border-0 custom-modal-header">
-								<div class="page-title">
-									<h4>Edit Expense</h4>
-								</div>
-								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body custom-modal-body">
-								<form action="expense-list">
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="mb-3">
-												<label class="form-label">Expense Category</label>
-												<select class="select">
-													<option>Employee Benefits</option>
-													<option>Foods & Snacks</option>
-													<option>Entertainment</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="input-blocks date-group">
-												<i data-feather="calendar" class="info-img"></i>
-												<div class="input-groupicon">
-													<input type="text" class="datetimepicker ps-5" placeholder="19 Jan 2023" >
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="mb-3">
-												<label class="form-label">Amount</label>
-												<input type="text" class="form-control" value="$550.00">
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="mb-3">
-												<label class="form-label">Reference</label>
-												<input type="text" class="form-control" value="55544">
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="mb-3 input-blocks">
-												<label class="form-label">Expense For</label>
-												<input type="text" class="form-control">
-												<span class="unlimited-text">0 for Unlimited</span>
-											</div>
-											
-										</div>								
-										<!-- Editor -->
-										<div class="col-md-12">
-											<div class="edit-add card">
-												<div class="edit-add">
-													<label class="form-label">Description</label>
-												</div>
-												<div class="card-body-list input-blocks mb-0">
-													<textarea class="form-control">Employee Vehicle</textarea>
-												</div>
-												<p>Maximum 600 Characters</p>
-											</div>
-										</div>
-										<!-- /Editor -->
-									</div>
-									<div class="modal-footer-btn">
-										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-submit">Save Changes</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Edit Expense -->
 @endif
 
 @if(Route::is(['file-manager']))

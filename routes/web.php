@@ -80,7 +80,21 @@ Route::get('/store-datatables', [MasterController::class, 'storeDatatables'])->n
 Route::get('/edit-store/{id}', [MasterController::class, 'editStore'])->name('store-edit');
 Route::post('/save-store', [MasterController::class, 'storeStore'])->name('store-save');
 Route::get('/delete-store/{id}', [MasterController::class, 'deleteStore'])->name('store-delete');
-Route::get('/restore-store/{id}', [MasterController::class, 'restoreStore'])->name('store-restore');  
+Route::get('/restore-store/{id}', [MasterController::class, 'restoreStore'])->name('store-restore'); 
+
+Route::get('/expense-category', [MasterController::class, 'expenseCategory'])->name('expense-category'); 
+Route::get('/expense-category-datatables', [MasterController::class, 'expenseCategoryDatatables'])->name('expense-category-datatables');  
+Route::get('/edit-expense-category/{id}', [MasterController::class, 'editExpenseCategory'])->name('expense-category-edit');
+Route::post('/save-expense-category', [MasterController::class, 'storeExpenseCategory'])->name('expense-category-save');
+Route::get('/delete-expense-category/{id}', [MasterController::class, 'deleteExpenseCategory'])->name('expense-category-delete');
+Route::get('/restore-expense-category/{id}', [MasterController::class, 'restoreExpenseCategory'])->name('expense-category-restore');  
+
+Route::get('/expense', [MasterController::class, 'expense'])->name('expense'); 
+Route::get('/expense-datatables', [MasterController::class, 'expenseDatatables'])->name('expense-datatables');  
+Route::get('/edit-expense/{id}', [MasterController::class, 'editExpense'])->name('expense-edit');
+Route::post('/save-expense', [MasterController::class, 'storeExpense'])->name('expense-save');
+Route::get('/delete-expense/{id}', [MasterController::class, 'deleteExpense'])->name('expense-delete');
+Route::get('/restore-expense/{id}', [MasterController::class, 'restoreExpense'])->name('expense-restore');  
 
 
 // User
@@ -91,6 +105,12 @@ Route::post('/save-users', [MUserController::class, 'storeUsers'])->name('users-
 Route::get('/delete-users/{id}', [MUserController::class, 'deleteUsers'])->name('users-delete');
 Route::get('/restore-users/{id}', [MUserController::class, 'restoreUsers'])->name('users-restore'); 
 
+Route::get('/customers', [MUserController::class, 'customers'])->name('customers');  
+Route::get('/customers-datatables', [MUserController::class, 'customersDatatables'])->name('customers-datatables');  
+Route::get('/edit-customers/{id}', [MUserController::class, 'editCustomers'])->name('customers-edit');
+Route::post('/save-customers', [MUserController::class, 'storeCustomers'])->name('customers-save');
+Route::get('/delete-customers/{id}', [MUserController::class, 'deleteCustomers'])->name('customers-delete');
+Route::get('/restore-customers/{id}', [MUserController::class, 'restoreCustomers'])->name('customers-restore'); 
 
 
 
@@ -159,11 +179,7 @@ Route::get('/purchase-returns', function () {
 
 Route::get('/expense-list', function () {                         
     return view('expense-list');
-})->name('expense-list'); 
-
-Route::get('/expense-category', function () {                         
-    return view('expense-category');
-})->name('expense-category');     
+})->name('expense-list');   
 
 Route::get('/purchase-report', function () {                         
     return view('purchase-report');
@@ -189,10 +205,6 @@ Route::get('/pos', function () {
 Route::get('/coupons', function () {                         
     return view('coupons');
 })->name('coupons');  
-
-Route::get('/customers', function () {                         
-    return view('customers');
-})->name('customers');  
 
 Route::get('/sales-report', function () {
     return view('sales-report');
