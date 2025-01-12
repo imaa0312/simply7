@@ -5,6 +5,9 @@ use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\MUserController;
 use App\Http\Controllers\MRoleController;
+use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\TPurchaseOrder;
+use App\Http\Controllers\MProdukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +30,7 @@ Route::get('/getProvince', [MasterController::class, 'getProvince']);
 Route::get('/getCity/{id}', [MasterController::class, 'getCity']);
 Route::get('/getRole', [MUserController::class, 'getRole']);
 Route::get('/getManager', [MasterController::class, 'getStoreManager']);
+Route::get('/getExpenseCategory', [MasterController::class, 'getExpenseCategory']);
 
 Route::get('/roles', [MRoleController::class, 'index'])->name('roles');  
 Route::get('/roles-datatables', [MRoleController::class, 'rolesDatatables'])->name('roles-datatables');  
@@ -75,6 +79,20 @@ Route::post('/save-sssubcategory-list', [MasterController::class, 'storeSssubKat
 Route::get('/delete-sssubcategory-list/{id}', [MasterController::class, 'deleteSssubKategori'])->name('sssubcategory-delete');
 Route::get('/restore-sssubcategory-list/{id}', [MasterController::class, 'restoreSssubKategori'])->name('sssubcategory-restore');
 
+Route::get('/brand-list', [MasterController::class, 'brand'])->name('brand-list');
+Route::get('/brand-datatables', [MasterController::class, 'brandDatatables'])->name('brand-datatables');  
+Route::get('/edit-brand/{id}', [MasterController::class, 'editBrand'])->name('brand-edit');
+Route::post('/save-brand', [MasterController::class, 'storeBrand'])->name('brand-save');
+Route::get('/delete-brand/{id}', [MasterController::class, 'deleteBrand'])->name('brand-delete');
+Route::get('/restore-brand/{id}', [MasterController::class, 'restoreBrand'])->name('brand-restore'); 
+
+Route::get('/size', [MasterController::class, 'size'])->name('size');
+Route::get('/size-datatables', [MasterController::class, 'sizeDatatables'])->name('size-datatables');  
+Route::get('/edit-size/{id}', [MasterController::class, 'editSize'])->name('size-edit');
+Route::post('/save-size', [MasterController::class, 'storeSize'])->name('size-save');
+Route::get('/delete-size/{id}', [MasterController::class, 'deleteSize'])->name('size-delete');
+Route::get('/restore-size/{id}', [MasterController::class, 'restoreSize'])->name('size-restore'); 
+
 Route::get('/store-list', [MasterController::class, 'store'])->name('store-list'); 
 Route::get('/store-datatables', [MasterController::class, 'storeDatatables'])->name('store-datatables');  
 Route::get('/edit-store/{id}', [MasterController::class, 'editStore'])->name('store-edit');
@@ -89,12 +107,11 @@ Route::post('/save-expense-category', [MasterController::class, 'storeExpenseCat
 Route::get('/delete-expense-category/{id}', [MasterController::class, 'deleteExpenseCategory'])->name('expense-category-delete');
 Route::get('/restore-expense-category/{id}', [MasterController::class, 'restoreExpenseCategory'])->name('expense-category-restore');  
 
-Route::get('/expense', [MasterController::class, 'expense'])->name('expense'); 
-Route::get('/expense-datatables', [MasterController::class, 'expenseDatatables'])->name('expense-datatables');  
-Route::get('/edit-expense/{id}', [MasterController::class, 'editExpense'])->name('expense-edit');
-Route::post('/save-expense', [MasterController::class, 'storeExpense'])->name('expense-save');
-Route::get('/delete-expense/{id}', [MasterController::class, 'deleteExpense'])->name('expense-delete');
-Route::get('/restore-expense/{id}', [MasterController::class, 'restoreExpense'])->name('expense-restore');  
+Route::get('/expense-list', [FinanceController::class, 'expense'])->name('expense-list'); 
+Route::get('/expense-datatables', [FinanceController::class, 'expenseDatatables'])->name('expense-datatables');  
+Route::get('/edit-expense/{id}', [FinanceController::class, 'editExpense'])->name('expense-edit');
+Route::post('/save-expense', [FinanceController::class, 'storeExpense'])->name('expense-save');
+Route::get('/delete-expense/{id}', [FinanceController::class, 'deleteExpense'])->name('expense-delete');
 
 
 // User
@@ -111,6 +128,13 @@ Route::get('/edit-customers/{id}', [MUserController::class, 'editCustomers'])->n
 Route::post('/save-customers', [MUserController::class, 'storeCustomers'])->name('customers-save');
 Route::get('/delete-customers/{id}', [MUserController::class, 'deleteCustomers'])->name('customers-delete');
 Route::get('/restore-customers/{id}', [MUserController::class, 'restoreCustomers'])->name('customers-restore'); 
+
+Route::get('/product-list', [MProdukController::class, 'product'])->name('product-list');
+Route::post('/save-product-images', [MProdukController::class, 'uploadImages'])->name('upload-images');
+
+Route::get('/purchase-order', [TPurchaseOrder::class, 'purchaseOrder'])->name('purchase-order'); 
+
+Route::get('/purchase-received', [TPurchaseOrder::class, 'purchaseReceived'])->name('purchase-received'); 
 
 
 
@@ -133,17 +157,9 @@ Route::get('/index', function () {
     return view('index');
 })->name('index');
 
-Route::get('/product-list', function () {
-    return view('product-list');
-})->name('product-list');
-
 Route::get('/low-stocks', function () {
     return view('low-stocks');
 })->name('low-stocks');
-
-Route::get('/brand-list', function () {
-    return view('brand-list');
-})->name('brand-list');
 
 Route::get('/product-details', function () {
     return view('product-details');
@@ -164,22 +180,6 @@ Route::get('/stock-adjustment', function () {
 Route::get('/stock-transfer', function () {                         
     return view('stock-transfer');
 })->name('stock-transfer'); 
-
-Route::get('/purchase-list', function () {                         
-    return view('purchase-list');
-})->name('purchase-list'); 
-
-Route::get('/purchase-order-report', function () {                         
-    return view('purchase-order-report');
-})->name('purchase-order-report'); 
-
-Route::get('/purchase-returns', function () {                         
-    return view('purchase-returns');
-})->name('purchase-returns'); 
-
-Route::get('/expense-list', function () {                         
-    return view('expense-list');
-})->name('expense-list');   
 
 Route::get('/purchase-report', function () {                         
     return view('purchase-report');

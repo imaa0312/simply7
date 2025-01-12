@@ -29,19 +29,7 @@
                 <h6>{{ $li_1 }}</h6>
             </div>
         </div>
-        @if (!Route::is([
-        'suppliers',
-        'roles',
-        'warehouse',
-        'store-list',
-        'customers',
-        'expense-category',
-        'product-list',
-        'category-list',
-        'subcategory-list',
-        'ssubcategory-list',
-        'sssubcategory-list',
-        'users']))
+        @if (Route::is(['sales-report']))
         <ul class="table-top-head">
             <li>
                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img
@@ -117,8 +105,8 @@
         @endif
         @if (Route::is(['expense-list']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i> Add New Expense</a>
+                <a href="#" class="btn btn-added add-expense" data-bs-toggle="modal" data-bs-target="#add-expense"><i
+                        data-feather="plus-circle" class="me-2"></i> {{ $li_2 }}</a>
             </div>
         @endif
         @if (Route::is(['expense-category']))
@@ -127,29 +115,30 @@
                         data-feather="plus-circle" class="me-2"></i> Add Expense Category</a>
             </div>
         @endif
+        @if (Route::is(['customers']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-customers" data-bs-toggle="modal" data-bs-target="#add-customers"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New Customer</a>
+            </div>
+        @endif
+        @if (Route::is(['brand-list']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-brand" data-bs-toggle="modal" data-bs-target="#add-brand"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New Brand</a>
+            </div>
+        @endif
+        @if (Route::is(['size']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-size" data-bs-toggle="modal" data-bs-target="#add-size"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New Size</a>
+            </div>
+        @endif
 
         
 
 
 
-        @if (Route::is(['warranty']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i> {{ $li_2 }}</a>
-            </div>
-        @endif
-        @if (Route::is(['varriant-attributes']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i> {{ $li_2 }}</a>
-            </div>
-        @endif
-        @if (Route::is(['units']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i> {{ $li_2 }}</a>
-            </div>
-        @endif
+        
         @if (Route::is(['stock-transfer']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
@@ -258,12 +247,6 @@
                         data-feather="plus-circle" class="me-2"></i>Add New Department</a>
             </div>
         @endif
-        @if (Route::is(['customers']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i>Add New Customer</a>
-            </div>
-        @endif
         @if (Route::is(['coupons']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
@@ -276,12 +259,6 @@
                         data-feather="plus-circle" class="me-2"></i>Add New Country</a>
             </div>
         @endif
-        @if (Route::is(['brand-list']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-brand"><i
-                        data-feather="plus-circle" class="me-2"></i>Add New Brand</a>
-            </div>
-        @endif
         @if (Route::is(['attendance-admin']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
@@ -290,7 +267,7 @@
         @endif
         @if (Route::is(['product-list']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-products"><i data-feather="plus-circle" class="me-2"></i>{{ $li_3 }}</a>
+                <a href="#" class="btn btn-added add-product" data-bs-toggle="modal" data-bs-target="#add-products"><i data-feather="plus-circle" class="me-2"></i>{{ $li_3 }}</a>
             </div>
         @endif
     </div>

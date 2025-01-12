@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MExpenseModel extends Model
+class DExpenseModel extends Model
 {
-    protected $table = 'm_expense';
+    protected $table = 'd_expense';
 
     protected $guarded = ['id'];
 }

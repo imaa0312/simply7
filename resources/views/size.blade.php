@@ -1,17 +1,17 @@
-<?php $page = 'customers'; ?>
+<?php $page = 'size'; ?>
 @extends('layout.mainlayout')
 @section('content')
     <div class="page-wrapper">
         <div class="content">
             @component('components.breadcrumb')
                 @slot('title')
-                    Customer List
+                    Size List
                 @endslot
                 @slot('li_1')
-                    Manage your member
+                    Manage your size
                 @endslot
                 @slot('li_2')
-                    Add New Member
+                    Add New Size
                 @endslot
             @endcomponent
 
@@ -32,11 +32,8 @@
                             <thead>
                                 <tr>
                                     <th class="no-sort">No</th>
-                                    <th>Name</th>
+                                    <th>Size</th>
                                     <th>Code</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Address</th>
                                     <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -51,15 +48,16 @@
         </div>
     </div>
 
-    <script src="{{ URL::asset('build/js/jquery-3.7.1.min.js') }}"></script>
 
+    <script src="{{ URL::asset('build/js/jquery-3.7.1.min.js') }}"></script>
+    
     <script>
         $(document).ready(function(){
             $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{!! url('customers-datatables') !!}",
+                    url: "{!! url('size-datatables') !!}",
                     type: "get"
                 },
                 select: {
@@ -70,9 +68,6 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
                     {data: 'name', name: 'name'},
                     {data: 'code', name: 'code'},
-                    {data: 'email', name: 'email'},
-                    {data: 'phone', name: 'phone'},
-                    {data: 'alamat', name: 'alamat'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', className: "dt-center"}
                 ],            
@@ -88,74 +83,33 @@
                         next: ' <i class=" fa fa-angle-right"></i>',
                         previous: '<i class="fa fa-angle-left"></i> '
                     },
-                },
+                 },
                 initComplete: (settings, json)=>{
                     $('.dataTables_filter').appendTo('#tableSearch');
                     $('.dataTables_filter').appendTo('.search-input');
-
+    
                 }
             });
             
-            $('body').on('click', '.add-customers', function(){
-                $('#customers_id').val("");
-                $('#nama').val("");
-                $('#telp').val("");
-                $('#email').val("");
-                $('#address').val('');
-                $('#city').html("<option>Choose City</option>");
-                $('#desc').val('').blur();
-                $('#title_modal').html("Create Member");
-                $.ajax({
-                    type : "GET",
-                    dataType: 'json',
-                    url: '{!! url("getProvince") !!}',
-                    success: function (data) {
-                        if (data.status === true) {
-                            $('#prov').html(data.province);
-                        }
-                    },
-                    fail: function (e) {
-                        toastr.error(data.msg);
-                    }
-                });
+            $('body').on('click', '.add-size', function(){
+                $('#size_id').val("");
+                $('#size_name').val("");
+                $('#code').val("");
+                $('#title_modal').html("Create Size");
             });
-
-            $('body').on('change', '#prov', function(){
-                var id = $(this).find(':selected').val();
-                $.ajax({
-                    type : "GET",
-                    dataType: 'json',
-                    url: '{!! url("getCity") !!}/'+id,
-                    success: function (data) {
-                        if (data.status === true) {
-                            $('#city').html(data.city);
-                        }
-                    },
-                    fail: function (e) {
-                        toastr.error(data.msg);
-                    }
-                });
-            });
-
-            $('body').on('click', '.edit-customers', function(){
-                $('#title_modal').html("Edit Member");
+    
+            $('body').on('click', '.edit-size', function(){
+                $('#title_modal').html("Edit Size");
                 var id = $(this).attr('data-id');
                 $.ajax({
                     type : "GET",
                     dataType: 'json',
-                    url: '{!! url("edit-customers") !!}/'+id,
+                    url: '{!! url("edit-size") !!}/'+id,
                     success: function (data) {
                         if (data.status === true) {
-                            $('#customers_id').val(id);
-                            $('#nama').val(data.name);
-                            $('#email').val(data.email);
-                            $('#telp').val(data.phone);
-                            $('#address').val(data.address);
-                            $('#desc').val(data.desc);
-                            $('#prov_list').html(data.prov_list);
-                            $('#city_list').html(data.city_list);
-                            $("#prov option[value="+data.prov_id+"]").attr('selected', true); 
-                            $("#city option[value="+data.city_id+"]").attr('selected', true); 
+                            $('#size_id').val(id);
+                            $('#size_name').val(data.name);
+                            $('#code').val(data.code);
                         }
                     },
                     fail: function (e) {
@@ -164,10 +118,10 @@
                 });
             });
             
-            $('body').on('click', '.save-customers', function(){
-                var form = $('#myForm');
+            $('body').on('click', '.save-size', function(){
+                var form = $('#formKu');
                 var formdata = new FormData(form[0]);
-
+    
                 bootbox.dialog({
                     message: "Are you sure want to save this data ?",
                     title: "Save Confirmation",
@@ -179,7 +133,7 @@
                                 $.ajax({
                                     method : "POST",
                                     dataType: 'json',
-                                    url: '{!! url("save-customers") !!}',
+                                    url: '{!! url("save-size") !!}',
                                     data: formdata,
                                     cache: false,
                                     processData: false,
@@ -204,7 +158,7 @@
                                                 timer: 2000
                                             });
                                         }
-                                        $('#add-customers').modal('toggle');
+                                        $('#add-size').modal('toggle');
                                         $('#myTable').DataTable().ajax.reload();
                                     },
                                     fail: function (e) {
@@ -227,10 +181,10 @@
                     }
                 });
             });
-
-            $('body').on('click', '.del-customers', function(){
+    
+            $('body').on('click', '.del-size', function(){
                 var id = $(this).attr('data-id');
-
+    
                 bootbox.dialog({
                     message: "Are you sure want to delete this data ?",
                     title: "Confirmation",
@@ -242,7 +196,7 @@
                                 $.ajax({
                                     method : "GET",
                                     dataType: 'json',
-                                    url: '{!! url("delete-customers") !!}/'+id,
+                                    url: '{!! url("delete-size") !!}/'+id,
                                     success: function (data) {
                                         if (data.status === true) {
                                             Swal.fire({
@@ -286,8 +240,8 @@
                     }
                 });
             });
-
-            $('body').on('click', '.restore-customers', function(){
+    
+            $('body').on('click', '.restore-size', function(){
                 var id = $(this).attr('data-id');
                 bootbox.dialog({
                     message: "Are you sure want to restore this data ?",
@@ -300,7 +254,7 @@
                                 $.ajax({
                                     method : "GET",
                                     dataType: 'json',
-                                    url: '{!! url("restore-customers") !!}/'+id,
+                                    url: '{!! url("restore-size") !!}/'+id,
                                     success: function (data) {
                                         if (data.status === true) {
                                             Swal.fire({

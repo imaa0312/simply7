@@ -32,322 +32,223 @@ class MProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function product()
     {
-        $getData = DB::table('m_produk')
-            ->leftjoin('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori')
-            ->leftjoin('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori')
-            ->leftjoin('m_merek_produk', 'm_merek_produk.id', '=', 'm_produk.merek')
-            ->select('m_produk.id','m_produk.code','m_produk.name','m_produk.stok_minimal','m_kategori_produk.name as kategori','m_sub_kategori_produk.name as sub_kategori','m_merek_produk.name as merek')
-            ->orderBy('m_produk.code', 'DESC')
-            ->get();
-
-        return view('admin.produk.index');
+        return view('product-list');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $setCodeProduct = $this->setProdukCode();
-
-        $getMerek = MMerekProdukModel::get();
-        $getKategori = MKategoriModel::get();
-        // $getSubKategori = MSubKategoriModel::get();
-        //$satuanKemasan = MSatuanKemasanProdukModel::get();
-        $satuanUnit = MSatuanUnitModel::get();
-        return view('admin.produk.create', compact('setCodeProduct', 'getMerek', 'getKategori','satuanUnit'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // dd($request->all());
-        $this->validate($request,[
-            'stok_minimal' => 'required|numeric',
-            'satuan_terkecil_id' => 'required',
-            'nilai_konversi_satuan_terkecil' => 'required|numeric',
-            'satuan_terbesar_id' => 'required',
-            'nilai_konversi_satuan_terbesar' => 'required|numeric',
-            'harga' => 'required|numeric',
-            'name' => 'max:75',
-            'type_asset' => 'required',
-            'type_barang' => 'required'
-        ]);
-
-        // dd($request->all(), explode(',', $request->image_detail));
-
-        $setCodeProduct = $this->setProdukCode();
-        $kategori = DB::table("m_kategori_produk")->where("id",$request->kategori_id)->first();
-        $sub_kategori = DB::table("m_sub_kategori_produk")->where("id",$request->sub_kategori_id)->first();
-        $satuan_kecil = DB::table("m_satuan_unit")->where("id",$request->satuan_terkecil_id)->first();
-        $satuan_besar = DB::table("m_satuan_unit")->where("id",$request->satuan_terbesar_id)->first();
-        $merek =MMerekProdukModel::where("id",$request->merek_id)->first();
-        //set value request code
-        $request->merge([
-            'code' => $setCodeProduct,
-            'kategori' => $kategori->name,
-            'sub_kategori' => $sub_kategori->name,
-            'satuan_terbesar' => $satuan_besar->code,
-            'satuan_terkecil' => $satuan_kecil->code,
-            'merek' => $merek->name,
-        ]);
-
-        $store = MProdukModel::create($request->except('harga','image_detail'));
-
-        if($request->image_detail != null){
-            $dataImage = explode(',', $request->image_detail);
-            $imageDetail = [];
-            foreach ($dataImage as $img) {
-                $imageDetail[] = [
-                    'image' => $img,
-                ];
-            }
-        }
-
-        if($request->image_detail != null){
-            $store->imagedetail()->createMany($imageDetail);
-        }
-
-        $array = [];
-        $index = 0;
-        $jmlhGudang = MGudangModel::count();
-        $getIdGudang = MGudangModel::get();
-        //add-index-gudang-array
-        foreach( $getIdGudang as $rowGudang )
-        {
-            $array[$index]['id_gudang'] = $rowGudang->id;
-
-            $index++;
-        }
-
-        //insert stok di semua gudang
-        for($i = 0;$i < count($array); $i++) {
-            $stok = new MStokProdukModel;
-            $stok->produk_code = $request->code;
-            $stok->tipe_transaksi = "Initial Produk Baru";
-            $stok->stok = 0;
-            $stok->gudang = $array[$i]['id_gudang'] ;
-            $stok->type = 'in';
-            $stok->save();
-        }
-
-        // dd($stok);
-        // $insertHarga = new MHargaProdukModel;
-        // $insertHarga->produk = $store->id;
-        // $insertHarga->date_start = date('Y-m-d');
-        // $insertHarga->date_end = date('Y-m-d');
-        // $insertHarga->price = $request->harga;
-        // $insertHarga->save();
-
-        return redirect('admin/produk');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        abort(404);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $dataProduk = DB::table('m_produk')
-            ->leftjoin('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
-            ->leftjoin('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
-            ->leftjoin('m_merek_produk', 'm_merek_produk.id', '=', 'm_produk.merek_id')
-            ->select('m_produk.*','m_kategori_produk.id as kategori_id','m_kategori_produk.name as kategori',
-            'm_sub_kategori_produk.name as sub_kategori','m_sub_kategori_produk.id as sub_kategori_id','m_merek_produk.name as merek','m_merek_produk.id as m_merek_id')
-            ->where('m_produk.id',$id)
-            ->first();
-
-        $getMerek = MMerekProdukModel::get();
-        $getKategori = MKategoriModel::get();
-        $getSubKategori = MSubKategoriModel::get();
-        $satuanKemasan = MSatuanKemasanProdukModel::get();
-        $satuanUnit = MSatuanUnitModel::get();
-        $produkImage = MProdukImage::where('produk_id', $id)->get()->implode('image',',');
-
-        return view('admin.produk.update', compact(
-            'getMerek', 'getKategori', 'getSubKategori',
-            'satuanKemasan','satuanUnit','dataProduk', 'produkImage'
-        ));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $produk = MProdukModel::where('id',$id)->first();
-        $kategori = DB::table("m_kategori_produk")->where("id",$request->kategori_id)->first();
-        $sub_kategori = DB::table("m_sub_kategori_produk")->where("id",$request->sub_kategori_id)->first();
-        $satuan_kecil = DB::table("m_satuan_unit")->where("id",$request->satuan_terkecil_id)->first();
-        $satuan_besar = DB::table("m_satuan_unit")->where("id",$request->satuan_terbesar_id)->first();
-        $merek =MMerekProdukModel::where("id",$request->merek_id)->first();
-
-
-        //set value request code
-        $request->merge([
-            'kategori' => $kategori->name,
-            'sub_kategori' => $sub_kategori->name,
-            'satuan_terbesar' => $satuan_besar->code,
-            'satuan_terkecil' => $satuan_kecil->code,
-            'merek' => $merek->name,
-        ]);
-
-
-        $produk->update($request->except('_token','_method', 'image_detail'));
-
-        if($request->image_detail != null){
-            $dataImage = explode(',', $request->image_detail);
-            $imageDetail = [];
-            foreach ($dataImage as $img) {
-                $imageDetail[] = [
-                    'produk_id' => $id,
-                    'image' => $img,
-                    'created_at' =>  Carbon::now(),
-                ];
-            }
-
-            $oldData = MProdukImage::where('produk_id', $id)->get();
-
-            foreach ($oldData as $img) {
-                if(file_exists($img->image)){
-                    File::delete($img->image);
-                }
-            }
-
-            MProdukImage::where('produk_id', $id)->delete();
-            MProdukImage::insert($imageDetail);
-        }
-
-        return redirect('admin/produk');
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $cek = DB::table('d_sales_order')->where('produk', '=', $id)->count();
-        if ($cek > 0) {
-            return redirect()->back()->with('message', 'Data Tidak Bisa Dihapus Karena Dipakai Untuk Transaksi');
-        }
-
-        DB::table('m_produk')->where('id', '=', $id)->delete();
-        DB::table('m_produk_image')->where('produk_id', '=', $id)->delete();
-        return redirect()->back()->with('message-success', 'Data Berhasil Dihapus');
-    }
-
-    protected function setProdukCode()
-    {
-        $getLastCode = DB::table('m_produk')
-                ->select('id')
-                ->orderBy('id', 'desc')
-                ->pluck('id')
-                ->first();
-        
-        $getLastCode = $getLastCode +1;
-
-        $nol = null;
-        if(strlen($getLastCode) == 1){
-            $nol = "000000";
-        }elseif(strlen($getLastCode) == 2){
-            $nol = "00000";
-        }elseif(strlen($getLastCode) == 3){
-            $nol = "0000";
-        }elseif(strlen($getLastCode) == 4){
-            $nol = "000";
-        }elseif(strlen($getLastCode) == 5){
-            $nol = "00";
-        }elseif(strlen($getLastCode) == 6){
-            $nol = "0";
-        }else{
-            $nol = null;
-        }
-
-        return $setCodeProduct = 'PRDATK'.$nol.$getLastCode;
-
-    }
-
-    public function getSubKategorProdukByKategori($id)
-    {
-        $result = MSubKategoriModel::where('kategori_id',$id)->get();
-
-        return Response::json($result);
-    }
-
-
-    public function apiProduk()
-    {
-        $produk = DB::table('m_produk')
-            ->leftjoin('m_kategori_produk','m_kategori_produk.id','m_produk.kategori_id')
-            ->leftjoin('m_sub_kategori_produk','m_sub_kategori_produk.id','m_produk.sub_kategori_id')
-             ->leftjoin('m_merek_produk','m_merek_produk.id','m_produk.merek')
-            ->select('m_produk.id as produk_id','m_produk.code','m_produk.name','m_kategori_produk.name as kategori','m_sub_kategori_produk.name as sub_kat','m_merek_produk.name as merek',
-             'm_produk.stok_minimal','m_produk.type_asset','m_produk.type_barang', 'm_produk.image')
-            ->orderBy('m_produk.id','desc')
-            ->get();
-
-        return Datatables::of($produk)
-            ->addColumn('action', function ($produk) {
-                return '<table id="tabel-in-opsi">'.
-                    '<tr>'.
-                        '<td>'.
-                            '<a href="'.url('/admin/produk/'.$produk->produk_id.'/edit').'" data-toggle="tooltip" data-placement="top" title="Ubah" class="btn btn-warning pull-left btn-sm"><i class="fa fa-edit"></i></a>'.
-
-                            '&nbsp'.
-
-                            '<a href="'.url('/admin/produk-delete/'.$produk->produk_id).'" onclick="return confirm('."'Apakah Anda Yakin Untuk Menghapus ?'".')" data-toggle="tooltip" data-placement="top" title="Hapus" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>'.
-
-                            '&nbsp'.
-
-                        '</td>'.
-                    '</tr>'.
-                '</table>';
-
-            })
-            ->editColumn('type_asset', function($produk){
-              return ucfirst($produk->type_asset);
-            })
-            ->editColumn('image', function($produk){
-                if($produk->image != null){
-                    return "<img class=\"img-responsive\"style=\"height:120px; width:120px\" src=\"$produk->image\">";
-                }
-
-            })
-            ->editColumn('type_barang', function($produk){
-              return ucfirst($produk->type_barang);
-            })
+    public function productDatatables(){
+        $data = MProductModel::select('m_produk.*', 'm_kategori_produk.name as kategori', 'm_kategori_produk.name as kategori', 'm_sub_kategori_produk.name as sub_kategori', 'm_ssub_kategori_produk.name as ssub_kategori', 'm_sssub_kategori_produk.name as sssub_kategori', 'm_brand.name as brand', 'm_size.name as size')
+            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
+            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
+            ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_produk.ssub_kategori_id')
+            ->join('m_sssub_kategori_produk', 'm_sssub_kategori_produk.id', '=', 'm_produk.sssub_kategori_id')
+            ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
+            ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')
+            ->orderBy('m_produk.id','DESC')->get();
+        return Datatables::of($data)
             ->addIndexColumn()
-            ->rawColumns(['action','image'])
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-product" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-product" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-product" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-product" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->editColumn('status', function($row){
+                return $row->kategori." > ". $row->sub_kategori." > ". $row->ssub_kategori." > ". $row->sssub_kategori." > ". $row->size;
+            })
+            ->rawColumns(['status', 'action'])
             ->make(true);
+    }
+
+    public function editProduct($id)
+    {
+        $data = MSizeModel::select('m_produk.*', 'm_kategori_produk.name as kategori', 'm_kategori_produk.name as kategori', 'm_sub_kategori_produk.name as sub_kategori', 'm_ssub_kategori_produk.name as ssub_kategori', 'm_sssub_kategori_produk.name as sssub_kategori', 'm_brand.name as brand', 'm_size.name as size')
+            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
+            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
+            ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_produk.ssub_kategori_id')
+            ->join('m_sssub_kategori_produk', 'm_sssub_kategori_produk.id', '=', 'm_produk.sssub_kategori_id')
+            ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
+            ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')
+            ->find($id);
+
+        if($data){
+            $return = array(
+                "name" => $data->name,
+                "sku" => $data->code,
+                "sub_kategori_list" => $sub_kategori_list,
+                "ssub_kategori_list" => $ssub_kategori_list,
+                "sssub_kategori_list" => $sssub_kategori_list,
+                "brand_list" => $brand_list,
+                "size_list" => $size_list,
+                "kategori_id" => $kategori_id,
+                "sub_kategori_id" => $data->sub_kategori_id,
+                "ssub_kategori_id" => $data->ssub_kategori_id,
+                "sssub_kategori_id" => $data->sssub_kategori_id,
+                "brand_id" => $data->brand,
+                "size_id" => $data->size,
+                "description" => $data->description,
+                "price_purchase" => $data->price_purchase,
+                "price_sale" => $data->price_sale,
+                "profit_percent" => $data->profit_percent,
+                "stok_minimal" => $data->stok_minimal,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function storeProduct(Request $request)
+    {
+        DB::beginTransaction();
+
+        try{
+            $id = $request->input('product_id');
+
+            if($id == ""){
+                $data = new MProductModel;
+                $data->status = 1;
+            } else {
+                $data = MProductModel::find($id);
+            }
+
+            $data->name = $request->input('product_name');
+            $data->category = $request->input('category');
+            $data->sub_category = $request->input('sub_category');
+            $data->ssub_category = $request->input('ssub_category');
+            $data->sssub_category = $request->input('sssub_category');
+            $data->brand = $request->input('brand');
+            $data->size = $request->input('size');
+            $data->sku = $request->input('sku');
+            $data->desc = $request->input('desc');
+            $data->price_purchase = $request->input('p_price');
+            $data->price_sale = $request->input('s_price');
+            $data->profit_percent = $request->input('profit');
+            $data->stok_minimal = $request->input('qty_alert');
+            $data->save();
+
+            $request->validate([
+                'images' => 'required|array',
+                'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            ]);
+
+            $images = [];
+
+            foreach($request->file('images') as $image) {
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('product_images'), $imageName);
+                $images[] = ['product_id' => $data->id, 'image' => $imageName];
+            }
+
+            foreach ($images as $imageData) {
+                Image::create($imageData);
+            }
+
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function uploadImages(Request $request){
+        // $request->validate([
+        //     'images' => 'required|array',
+        //     'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        // ]);
+
+        $images = [];
+
+        foreach($request->file('images') as $image) {
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('product_images'), $imageName);
+            $images[] = ['product_id' => $data->id, 'image' => $imageName];
+        }
+
+        foreach ($images as $imageData) {
+            Image::create($imageData);
+        }
+
+        $return = array(
+            "status" => true,
+            "msg" => "Successfully saved"
+        );
+    }
+
+    public function deleteSize($id)
+    {
+        $dataKategori = MProductModel::find($id);
+        $dataKategori->status = 0;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function restoreSize($id)
+    {
+        $dataKategori = MProductModel::find($id);
+        $dataKategori->status = 1;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully restored"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
     }
 }

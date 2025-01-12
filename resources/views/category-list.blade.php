@@ -30,13 +30,9 @@
                         <table class="table" id="myTable">
                             <thead>
                                 <tr>
-                                    <th class="no-sort">
-                                        <label class="checkboxs">
-                                            <input type="checkbox" id="checkedAll">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </th>
+                                    <th class="no-sort">No</th>
                                     <th>Category</th>
+                                    <th>Code</th>
                                     <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -68,17 +64,9 @@
                 selector: 'td:first-child'
             },
             columns: [
-                // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
-                {                          
-                    orderable: false,
-                    targets: 0,
-                    'checkboxes': {
-                        'selectRow': true,
-                    },
-                    defaultContent: '',
-                    data: 'checkbox'
-                },
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
                 {data: 'name', name: 'name'},
+                {data: 'code', name: 'code'},
                 {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', className: "dt-center"}
             ],            
@@ -101,41 +89,11 @@
 
 			}
         });
-
-        $('body').on('click', '#checkedAll', function(){
-            if (this.checked) {
-                $(".checkSingle").each(function() {
-                    this.checked=true;
-                });
-            } else {
-                $(".checkSingle").each(function() {
-                    this.checked=false;
-                });
-            }
-            // return false;
-        });
-
-        $('body').on('click', '.checkSingle', function(){
-            if ($(this).is(":checked")) {
-                var isAllChecked = 0;
-
-                $(".checkSingle").each(function() {
-                    if (!this.checked)
-                        isAllChecked = 1;
-                });
-
-                if (isAllChecked == 0) {
-                    $("#checkedAll").prop("checked", true);
-                }     
-            }
-            else {
-                $("#checkedAll").prop("checked", false);
-            }
-        });
         
         $('body').on('click', '.add-cat', function(){
             $('#cat_id').val("");
             $('#cat_name').val("");
+            $('#code').val("");
             $('#title_modal').html("Create Category");
         });
 
@@ -150,6 +108,7 @@
                     if (data.status === true) {
                         $('#cat_id').val(id);
                         $('#cat_name').val(data.name);
+                        $('#code').val(data.code);
                     }
                 },
                 fail: function (e) {

@@ -11,25 +11,41 @@
 							<i data-feather="home"></i>Dashboard</a></li>
 						<li class="submenu">
 							<a href="javascript:void(0);"
-								class="{{ Request::is('suppliers', 'warehouse', 'store-list', 'customers') ? 'active subdrop' : '' }}"><i
+								class="{{ Request::is('suppliers', 'warehouse', 'store-list', 'customers', 'category-list', 'subcategory-list', 'ssubcategory-list', 'sssubcategory-list', 'brand-list', 'size') ? 'active subdrop' : '' }}"><i
 									data-feather="key"></i><span>Master</span><span
 									class="menu-arrow"></span></a>
 							<ul>
 								<li class="{{ Request::is('suppliers') ? 'active' : '' }}"><a
 									href="{{ url('suppliers') }}"><span>Suppliers</span></a>
 								</li>
+								<li class="{{ Request::is('customers') ? 'active' : '' }}"><a
+									href="{{ url('customers') }}"><span>Members</span></a>
 								<li class="{{ Request::is('warehouse') ? 'active' : '' }}"><a
 									href="{{ url('warehouse') }}"><span>Warehouse</span></a>
 								</li>
 								<li class="{{ Request::is('store-list') ? 'active' : '' }}"><a
 									href="{{ url('store-list') }}"><span>Stores</span></a>
 								</li>
-								<li class="{{ Request::is('customers') ? 'active' : '' }}"><a
-									href="{{ url('customers') }}"><span>Members</span></a>
+								<li class="submenu submenu-two submenu-three"><a
+									href="javascript:void(0);" style="color: #5B6670;">Product<span
+										class="menu-arrow inside-submenu inside-submenu-two"></span></a>
+									<ul>
+										<li class="{{ Request::is('category-list') ? 'active' : '' }}"><a
+											href="{{ url('category-list') }}"><span>Category</span></a></li>
+										<li class="{{ Request::is('subcategory-list') ? 'active' : '' }}"><a
+											href="{{ url('subcategory-list') }}"><span>Sub Category</span></a></li>
+										<li class="{{ Request::is('ssubcategory-list') ? 'active' : '' }}"><a
+												href="{{ url('ssubcategory-list') }}"><span>Sub-Sub Category</span></a></li>
+										<li class="{{ Request::is('sssubcategory-list') ? 'active' : '' }}"><a
+											href="{{ url('sssubcategory-list') }}"><span>Sub-Sub-Sub Category</span></a></li>
+										<li class="{{ Request::is('brand-list') ? 'active' : '' }}"><a
+											href="{{ url('brand-list') }}"><span>Brands</span></a></li>
+										</li>
+										<li class="{{ Request::is('size') ? 'active' : '' }}"><a
+											href="{{ url('size') }}"><span>Size</span></a></li>
+										</li>
+									</ul>
 								</li>
-								<li><a href="{{ url('expense-category') }}"
-									class="{{ Request::is('expense-category') ? 'active' : '' }}"><span>Expense
-									Category</span></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -39,28 +55,18 @@
                     <ul>
 						<li class="submenu">
 							<a href="javascript:void(0);"
-								class="{{ Request::is('product-list', 'low-stocks', 'category-list', 'subcategory-list', 'ssubcategory-list', 'sssubcategory-list', 'brand-list', 'varriant-attributes') ? 'active subdrop' : '' }}"><i data-feather="box"></i><span>Products</span><span class="menu-arrow"></span></a>
+								class="{{ Request::is('product-list', 'low-stocks') ? 'active subdrop' : '' }}"><i data-feather="box"></i><span>Products</span><span class="menu-arrow"></span></a>
 							<ul>
-								<li class="{{ Request::is('product-list','product-details') ? 'active' : '' }}"><a
+								<li class="{{ Request::is('product-list') ? 'active' : '' }}"><a
 									href="{{ url('product-list') }}"><span>Product Lists</span></a>
 								</li>
 								<li class="{{ Request::is('low-stocks') ? 'active' : '' }}"><a
 									href="{{ url('low-stocks') }}"><span>Low Stocks</span></a></li>
-								<li class="{{ Request::is('category-list') ? 'active' : '' }}"><a
-									href="{{ url('category-list') }}"><span>Category</span></a></li>
-								<li class="{{ Request::is('subcategory-list') ? 'active' : '' }}"><a
-									href="{{ url('subcategory-list') }}"><span>Sub Category</span></a></li>
-								<li class="{{ Request::is('ssubcategory-list') ? 'active' : '' }}"><a
-										href="{{ url('ssubcategory-list') }}"><span>Sub-Sub Category</span></a></li>
-								<li class="{{ Request::is('sssubcategory-list') ? 'active' : '' }}"><a
-									href="{{ url('sssubcategory-list') }}"><span>Sub-Sub-Sub Category</span></a></li>
-								<li class="{{ Request::is('brand-list') ? 'active' : '' }}"><a
-									href="{{ url('brand-list') }}"><span>Brands</span></a></li>
                     		</ul>
 						</li>
 						<li class="submenu">
 							<a href="javascript:void(0);"
-								class="{{ Request::is('product-list', 'low-stocks', 'brand-list', 'varriant-attributes') ? 'active subdrop' : '' }}"><i data-feather="layers"></i><span>Stock</span><span class="menu-arrow"></span></a>
+								class="{{ Request::is('manage-stocks', 'stock-adjustment', 'stock-transfer') ? 'active subdrop' : '' }}"><i data-feather="layers"></i><span>Stock</span><span class="menu-arrow"></span></a>
 							<ul>
 								<li class="{{ Request::is('manage-stocks') ? 'active' : '' }}"><a
 									href="{{ url('manage-stocks') }}"><span>Manage
@@ -78,8 +84,8 @@
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Purchases</h6>
                     <ul>
-                        <li class="{{ Request::is('purchase-list') ? 'active' : '' }}"><a
-                            href="{{ url('purchase-list') }}"><i data-feather="shopping-bag"></i><span>Purchase Order</span></a></li>
+                        <li class="{{ Request::is('purchase-order') ? 'active' : '' }}"><a
+                            href="{{ url('purchase-order') }}"><i data-feather="shopping-bag"></i><span>Purchase Order</span></a></li>
                         <li class="{{ Request::is('purchase-order-report') ? 'active' : '' }}"><a
                             href="{{ url('purchase-order-report') }}"><i data-feather="file-text"></i><span>Purchase Invoice</span></a></li>
                     </ul>
@@ -104,6 +110,9 @@
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Finance</h6>
                     <ul>
+						<li><a href="{{ url('expense-category') }}"
+							class="{{ Request::is('expense-category') ? 'active' : '' }}"><span>Expense
+							Category</span></a></li>
 						<li><a href="{{ url('expense-list') }}" class="{{ Request::is('expense-list') ? 'active' : '' }}"><i data-feather="file-text"></i>Expenses</a></li>
                     </ul>
                 </li>

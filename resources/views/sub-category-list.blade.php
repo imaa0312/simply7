@@ -30,14 +30,10 @@
                         <table class="table" id="myTable">
                             <thead>
                                 <tr>
-                                    <th class="no-sort">
-                                        <label class="checkboxs">
-                                            <input type="checkbox" id="checkedAll">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </th>
-                                    <th>Category</th>
-                                    <th>Sub Category</th>
+                                    <th class="no-sort">No</th>
+                                    <!--<th>Category</th>-->
+                                    <th>Name</th>
+                                    <th>Code</th>
                                     <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -69,18 +65,10 @@
                 selector: 'td:first-child'
             },
             columns: [
-                // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
-                {                          
-                    orderable: false,
-                    targets: 0,
-                    'checkboxes': {
-                        'selectRow': true,
-                    },
-                    defaultContent: '',
-                    data: 'checkbox'
-                },
-                {data: 'kategori', name: 'kategori', searchable: true},
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
+                // {data: 'kategori', name: 'kategori', searchable: true},
                 {data: 'name', name: 'name', searchable: true},
+                {data: 'code', name: 'code', searchable: true},
                 {data: 'status', name: 'status', searchable: true},
                 {data: 'action', name: 'action', className: "dt-center"}
             ],            
@@ -103,55 +91,25 @@
 
 			}
         });
-
-        $('body').on('click', '#checkedAll', function(){
-            if (this.checked) {
-                $(".checkSingle").each(function() {
-                    this.checked=true;
-                });
-            } else {
-                $(".checkSingle").each(function() {
-                    this.checked=false;
-                });
-            }
-            // return false;
-        });
-
-        $('body').on('click', '.checkSingle', function(){
-            if ($(this).is(":checked")) {
-                var isAllChecked = 0;
-
-                $(".checkSingle").each(function() {
-                    if (!this.checked)
-                        isAllChecked = 1;
-                });
-
-                if (isAllChecked == 0) {
-                    $("#checkedAll").prop("checked", true);
-                }     
-            }
-            else {
-                $("#checkedAll").prop("checked", false);
-            }
-        });
         
         $('body').on('click', '.add-subcat', function(){
             $('#cat_id').val("");
             $('#cat_name').val("");
+            $('#code').val("");
             $('#title_modal').html("Create Sub Category");
-            $.ajax({
-                type : "GET",
-                dataType: 'json',
-                url: '{!! url("getCategory") !!}',
-                success: function (data) {
-                    if (data.status === true) {
-                        $('#category').html(data.category);
-                    }
-                },
-                fail: function (e) {
-                    toastr.error(data.msg);
-                }
-            });
+            // $.ajax({
+            //     type : "GET",
+            //     dataType: 'json',
+            //     url: '{!! url("getCategory") !!}',
+            //     success: function (data) {
+            //         if (data.status === true) {
+            //             $('#category').html(data.category);
+            //         }
+            //     },
+            //     fail: function (e) {
+            //         toastr.error(data.msg);
+            //     }
+            // });
         });
 
         $('body').on('click', '.edit-cat', function(){
@@ -164,8 +122,9 @@
                 success: function (data) {
                     if (data.status === true) {
                         $('#subcat_id').val(id);
-                        $('#subcat').html(data.category_list);
-                        $("#category option[value="+data.kategori_id+"]").attr('selected', true); 
+                        // $('#subcat').html(data.category_list);
+                        $('#code').val(data.code);
+                        // $("#category option[value="+data.kategori_id+"]").attr('selected', true); 
                         $('#cat_name').val(data.name);
                     }
                 },
