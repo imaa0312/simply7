@@ -187,27 +187,31 @@ class MProdukController extends Controller
     }
 
     public function uploadImages(Request $request){
-        // $request->validate([
-        //     'images' => 'required|array',
-        //     'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        // ]);
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $imageName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('product_images'), $imageName);
 
-        $images = [];
+        $data = new MProdukImage;
+        $data->image = $imageName;
+        $data->save();
 
-        foreach($request->file('images') as $image) {
-            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('product_images'), $imageName);
-            $images[] = ['product_id' => $data->id, 'image' => $imageName];
+        if($data){
+            $return = array(
+                "status" => true,
+                "id" => $data->id,
+                "images" => 'product_images/'.$data->image,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
         }
 
-        foreach ($images as $imageData) {
-            Image::create($imageData);
-        }
-
-        $return = array(
-            "status" => true,
-            "msg" => "Successfully saved"
-        );
+        echo json_encode($return);
     }
 
     public function deleteSize($id)

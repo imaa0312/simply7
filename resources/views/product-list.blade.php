@@ -59,6 +59,8 @@
     
     <script>
         $(document).ready(function(){
+            $('#images').val("");
+
             $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -337,17 +339,18 @@
                 });
             });
 
-            $('body').on('change', '#images', function(){
-                var form = $('#dormImages');
-                var formdata = new FormData(form[0]);
+            $('body').on('change', '#image', function(){
+                var formData = new FormData();
+                formData.append('image', $(this)[0].files[0]);
+                formData.append('product_id', $('#product_id').val());
+                var array_images = $('#images').val();
 
                 $.ajax({
                     method : "POST",
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     dataType: 'json',
                     url: '{!! url("save-product-images") !!}',
-                    data: formdata,
-                    cache: false,
+                    data: formData,
                     processData: false,
                     contentType: false,
                     success: function (data) {
@@ -360,7 +363,13 @@
                                 showConfirmButton: false,
                                 timer: 2000
                             });
-                            $('.add-choosen').append('<div class="phone-img"><img src="'+window.location.hostname+'/public/product_images/'+filename+'" alt="image"><a href="javascript:void(0);"><i data-feather="x" class="x-square-add remove-product"></i></a></div>');
+                            $('.add-choosen').append('<div class="phone-img"><img src="'+data.images+'" alt="image"><a href="javascript:void(0);"><i class="fa-solid fa-xmark remove-product"></i></a></div>');
+                            
+                            if(array_images=="")
+                                $('#images').val(data.id);
+                            else 
+                                $('#images').val(array_images+";"+data.id);
+                            
                         } else {
                             Swal.fire({
                                 position: "top-end",

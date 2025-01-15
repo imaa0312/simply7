@@ -881,6 +881,8 @@
 						</div>
 						<div class="modal-body custom-modal-body">
 							<form method="POST" id="formKu">
+                                @csrf
+                                <input type="hidden" name="product_id" id="product_id">
                                 <div class="card">
                                     <div class="card-body add-product pb-0">
                                         <div class="accordion-card-one accordion" id="accordionExample">
@@ -1065,8 +1067,9 @@
                                                                                             <div class="input-blocks">
                                                                                                 <form id="formImage" enctype="multipart/form-data" method="POST">
                                                                                                 @csrf
+                                                                                                <input type="text" name="images" id="images">
                                                                                                 <div class="image-upload">
-                                                                                                    <input type="file" id="images" name="images[]">
+                                                                                                    <input type="file" id="image" name="image">
                                                                                                     <div class="image-uploads">
                                                                                                         <i data-feather="plus-circle"
                                                                                                             class="plus-down-add me-0"></i>
