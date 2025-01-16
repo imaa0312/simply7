@@ -119,6 +119,7 @@
                 $('#size_category_list').html("<option>Choose Size</option>");
                 $('#desc').val('').blur();
                 $('#title_modal').html("Create Product");
+                $('.image-upload').show();
             });
     
             $('body').on('click', '.edit-product', function(){
@@ -150,6 +151,12 @@
                             $("#sssub_category option[value="+data.sssub_category_id+"]").attr('selected', true); 
                             $("#brand option[value="+data.brand_id+"]").attr('selected', true); 
                             $("#size option[value="+data.size_id+"]").attr('selected', true); 
+
+                            if(data.images_id == ""){
+                                $('.image-upload').show();
+                            } else {
+                                $('.image-upload').hide();
+                            }
                         }
                     },
                     fail: function (e) {
@@ -363,12 +370,14 @@
                                 showConfirmButton: false,
                                 timer: 2000
                             });
-                            $('.add-choosen').append('<div class="phone-img"><img src="'+data.images+'" alt="image"><a href="javascript:void(0);"><i class="fa-solid fa-xmark remove-product"></i></a></div>');
+                            $('.add-choosen').append('<div class="phone-img"><img src="'+data.images+'" alt="image"><a href="javascript:void(0);"><i class="fa-solid fa-xmark remove-product" data-id="'+data.id+'"></i></a></div>');
                             
                             if(array_images=="")
                                 $('#images').val(data.id);
                             else 
                                 $('#images').val(array_images+";"+data.id);
+
+                            $('.image-upload').hide();
                             
                         } else {
                             Swal.fire({
@@ -380,6 +389,53 @@
                                 timer: 2000
                             });
                         }
+                    },
+                    fail: function (e) {
+                        Swal.fire({
+                            position: "top-end",
+                            toast: true,
+                            title: "Something wen't Wrong",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            });
+
+            $('body').on('change', '.remove-product', function(){
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    method : "POST",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    dataType: 'json',
+                    url: '{!! url("del-image-product") !!}',
+                    data: formdata,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if (data.status === true) {
+                            Swal.fire({
+                                position: "top-end",
+                                toast: true,
+                                icon: "success",
+                                title: "Data has been saved",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        } else {
+                            Swal.fire({
+                                position: "top-end",
+                                toast: true,
+                                title: "Something wen't Wrong",
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
+                        $('#add-products').modal('toggle');
+                        $('#myTable').DataTable().ajax.reload();
                     },
                     fail: function (e) {
                         Swal.fire({

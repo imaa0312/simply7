@@ -255,4 +255,8 @@ class MProdukController extends Controller
 
         echo json_encode($return);
     }
+
+    public function delImages(){
+        
+    }
 }

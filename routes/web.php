@@ -131,6 +131,7 @@ Route::get('/restore-customers/{id}', [MUserController::class, 'restoreCustomers
 
 Route::get('/product-list', [MProdukController::class, 'product'])->name('product-list');
 Route::post('/save-product-images', [MProdukController::class, 'uploadImages'])->name('upload-images');
+Route::post('/del-image-product', [MProdukController::class, 'delImages'])->name('del-image-product');
 
 Route::get('/purchase-order', [TPurchaseOrder::class, 'purchaseOrder'])->name('purchase-order'); 
 

@@ -1067,7 +1067,7 @@
                                                                                             <div class="input-blocks">
                                                                                                 <form id="formImage" enctype="multipart/form-data" method="POST">
                                                                                                 @csrf
-                                                                                                <input type="text" name="images" id="images">
+                                                                                                <input type="hidden" name="images" id="images">
                                                                                                 <div class="image-upload">
                                                                                                     <input type="file" id="image" name="image">
                                                                                                     <div class="image-uploads">
@@ -1077,13 +1077,6 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 </form>
-                                                                                            </div>
-                                                                                            <div class="phone-img">
-                                                                                                <img src="{{ URL::asset('/build/img/products/phone-add-2.png') }}"
-                                                                                                    alt="image">
-                                                                                                <a href="javascript:void(0);"><i
-                                                                                                        data-feather="x"
-                                                                                                        class="x-square-add remove-product"></i></a>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
