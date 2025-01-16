@@ -1,20 +1,17 @@
-<?php $page = 'product-list'; ?>
+<?php $page = 'size'; ?>
 @extends('layout.mainlayout')
 @section('content')
     <div class="page-wrapper">
         <div class="content">
             @component('components.breadcrumb')
                 @slot('title')
-                    Product List
+                    Size List
                 @endslot
                 @slot('li_1')
-                    Manage your products
+                    Manage your size
                 @endslot
                 @slot('li_2')
-                    {{ url('add-product') }}
-                @endslot
-                @slot('li_3')
-                    Add New Product
+                    Add New Size
                 @endslot
             @endcomponent
 
@@ -24,23 +21,19 @@
                     <div class="table-top">
                         <div class="search-set">
                             <div class="search-input">
-                                <a href="javascript:void(0);" class="btn btn-searchset"><i data-feather="search"
+                                <a href="" class="btn btn-searchset"><i data-feather="search"
                                         class="feather-search"></i></a>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="table-responsive product-list">
-                        <table class="table datanew">
+                    <div class="table-responsive">
+                        <table class="table" id="myTable">
                             <thead>
                                 <tr>
                                     <th class="no-sort">No</th>
-                                    <th>Product</th>
-                                    <th>SKU</th>
-                                    <th>Category</th>
-                                    <th>Brand</th>
-                                    <th>Purchase Price</th>
-                                    <th>Sale Price</th>
+                                    <th>Size</th>
+                                    <th>Code</th>
                                     <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -55,17 +48,16 @@
         </div>
     </div>
 
+
     <script src="{{ URL::asset('build/js/jquery-3.7.1.min.js') }}"></script>
     
     <script>
         $(document).ready(function(){
-            $('#images').val("");
-
             $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{!! url('product-datatables') !!}",
+                    url: "{!! url('size-datatables') !!}",
                     type: "get"
                 },
                 select: {
@@ -75,11 +67,7 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
                     {data: 'name', name: 'name'},
-                    {data: 'sku', name: 'sku'},
-                    {data: 'category', name: 'category'},
-                    {data: 'brand', name: 'brand'},
-                    {data: 'p_price', name: 'p_price'},
-                    {data: 's_price', name: 's_price'},
+                    {data: 'code', name: 'code'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', className: "dt-center"}
                 ],            
@@ -95,7 +83,7 @@
                         next: ' <i class=" fa fa-angle-right"></i>',
                         previous: '<i class="fa fa-angle-left"></i> '
                     },
-                },
+                 },
                 initComplete: (settings, json)=>{
                     $('.dataTables_filter').appendTo('#tableSearch');
                     $('.dataTables_filter').appendTo('.search-input');
@@ -103,60 +91,25 @@
                 }
             });
             
-            $('body').on('click', '.add-product', function(){
-                $('#product_id').val("");
-                $('#product_name').val("");
-                $('#sku').val("");
-                $('#p_price').val('');
-                $('#s_price').val('');
-                $('#profit').val("");
-                $('#qty_alert').val("");
-                $('#category_list').html("<option>Choose Category</option>");
-                $('#sub_category_list').html("<option>Choose Sub Category</option>");
-                $('#ssub_category_list').html("<option>Choose Sub Sub Category</option>");
-                $('#sssub_category_list').html("<option>Choose Sub Sub Sub Category</option>");
-                $('#brand_list').html("<option>Choose Brand</option>");
-                $('#size_category_list').html("<option>Choose Size</option>");
-                $('#desc').val('').blur();
-                $('#title_modal').html("Create Product");
-                $('.image-upload').show();
+            $('body').on('click', '.add-size', function(){
+                $('#size_id').val("");
+                $('#size_name').val("");
+                $('#code').val("");
+                $('#title_modal').html("Create Size");
             });
     
-            $('body').on('click', '.edit-product', function(){
-                $('#title_modal').html("Edit Product");
+            $('body').on('click', '.edit-size', function(){
+                $('#title_modal').html("Edit Size");
                 var id = $(this).attr('data-id');
                 $.ajax({
                     type : "GET",
                     dataType: 'json',
-                    url: '{!! url("edit-product") !!}/'+id,
+                    url: '{!! url("edit-size") !!}/'+id,
                     success: function (data) {
                         if (data.status === true) {
-                            $('#product_id').val(data.id);
-                            $('#product_name').val(data.name);
-                            $('#sku').val(data.sku);
-                            $('#p_price').val(data.price_purchase);
-                            $('#s_price').val(data.proce_sale);
-                            $('#profit').val(data.profit_percent);
-                            $('#qty_alert').val(data.stok_minimal);
-                            $('#category_list').html(data.category_list);
-                            $('#sub_category_list').html(data.sub_category_list);
-                            $('#ssub_category_list').html(data.ssub_category_list);
-                            $('#sssub_category_list').html(data.sssub_category_list);
-                            $('#brand_list').html(data.brand_list);
-                            $('#size_category_list').html(data.size_list);
-                            $('#desc').html(data.desc);
-                            $("#category option[value="+data.category_id+"]").attr('selected', true); 
-                            $("#sub_category option[value="+data.sub_category_id+"]").attr('selected', true); 
-                            $("#ssub_category option[value="+data.ssub_category_id+"]").attr('selected', true); 
-                            $("#sssub_category option[value="+data.sssub_category_id+"]").attr('selected', true); 
-                            $("#brand option[value="+data.brand_id+"]").attr('selected', true); 
-                            $("#size option[value="+data.size_id+"]").attr('selected', true); 
-
-                            if(data.images_id == ""){
-                                $('.image-upload').show();
-                            } else {
-                                $('.image-upload').hide();
-                            }
+                            $('#size_id').val(id);
+                            $('#size_name').val(data.name);
+                            $('#code').val(data.code);
                         }
                     },
                     fail: function (e) {
@@ -165,8 +118,8 @@
                 });
             });
             
-            $('body').on('click', '.save-product', function(){
-                var form = $('#myForm');
+            $('body').on('click', '.save-size', function(){
+                var form = $('#formKu');
                 var formdata = new FormData(form[0]);
     
                 bootbox.dialog({
@@ -180,7 +133,7 @@
                                 $.ajax({
                                     method : "POST",
                                     dataType: 'json',
-                                    url: '{!! url("save-product") !!}',
+                                    url: '{!! url("save-size") !!}',
                                     data: formdata,
                                     cache: false,
                                     processData: false,
@@ -205,7 +158,7 @@
                                                 timer: 2000
                                             });
                                         }
-                                        $('#add-products').modal('toggle');
+                                        $('#add-size').modal('toggle');
                                         $('#myTable').DataTable().ajax.reload();
                                     },
                                     fail: function (e) {
@@ -229,7 +182,7 @@
                 });
             });
     
-            $('body').on('click', '.del-product', function(){
+            $('body').on('click', '.del-size', function(){
                 var id = $(this).attr('data-id');
     
                 bootbox.dialog({
@@ -243,7 +196,7 @@
                                 $.ajax({
                                     method : "GET",
                                     dataType: 'json',
-                                    url: '{!! url("delete-product") !!}/'+id,
+                                    url: '{!! url("delete-size") !!}/'+id,
                                     success: function (data) {
                                         if (data.status === true) {
                                             Swal.fire({
@@ -288,7 +241,7 @@
                 });
             });
     
-            $('body').on('click', '.restore-product', function(){
+            $('body').on('click', '.restore-size', function(){
                 var id = $(this).attr('data-id');
                 bootbox.dialog({
                     message: "Are you sure want to restore this data ?",
@@ -301,7 +254,7 @@
                                 $.ajax({
                                     method : "GET",
                                     dataType: 'json',
-                                    url: '{!! url("restore-product") !!}/'+id,
+                                    url: '{!! url("restore-size") !!}/'+id,
                                     success: function (data) {
                                         if (data.status === true) {
                                             Swal.fire({
@@ -342,110 +295,6 @@
                             label: "Cancel",
                             className: "btn-danger btn-flat"
                         }
-                    }
-                });
-            });
-
-            $('body').on('change', '#image', function(){
-                var formData = new FormData();
-                formData.append('image', $(this)[0].files[0]);
-                formData.append('product_id', $('#product_id').val());
-                var array_images = $('#images').val();
-
-                $.ajax({
-                    method : "POST",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    url: '{!! url("save-product-images") !!}',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        if (data.status === true) {
-                            Swal.fire({
-                                position: "top-end",
-                                toast: true,
-                                icon: "success",
-                                title: "Data has been saved",
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-                            $('.add-choosen').append('<div class="phone-img"><img src="'+data.images+'" alt="image"><a href="javascript:void(0);"><i class="fa-solid fa-xmark remove-product" data-id="'+data.id+'"></i></a></div>');
-                            
-                            if(array_images=="")
-                                $('#images').val(data.id);
-                            else 
-                                $('#images').val(array_images+";"+data.id);
-
-                            $('.image-upload').hide();
-                            
-                        } else {
-                            Swal.fire({
-                                position: "top-end",
-                                toast: true,
-                                title: "Something wen't Wrong",
-                                icon: "error",
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-                        }
-                    },
-                    fail: function (e) {
-                        Swal.fire({
-                            position: "top-end",
-                            toast: true,
-                            title: "Something wen't Wrong",
-                            icon: "error",
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                    }
-                });
-            });
-
-            $('body').on('change', '.remove-product', function(){
-                var id = $(this).attr('data-id');
-                $.ajax({
-                    method : "POST",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    dataType: 'json',
-                    url: '{!! url("del-image-product") !!}',
-                    data: formdata,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        if (data.status === true) {
-                            Swal.fire({
-                                position: "top-end",
-                                toast: true,
-                                icon: "success",
-                                title: "Data has been saved",
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-                        } else {
-                            Swal.fire({
-                                position: "top-end",
-                                toast: true,
-                                title: "Something wen't Wrong",
-                                icon: "error",
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-                        }
-                        $('#add-products').modal('toggle');
-                        $('#myTable').DataTable().ajax.reload();
-                    },
-                    fail: function (e) {
-                        Swal.fire({
-                            position: "top-end",
-                            toast: true,
-                            title: "Something wen't Wrong",
-                            icon: "error",
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
                     }
                 });
             });

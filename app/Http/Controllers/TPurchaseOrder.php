@@ -8,11 +8,10 @@ use Response;
 use Illuminate\Http\Request;
 use App\Models\MProdukModel;
 use App\Models\MSupplierModel;
-use App\Models\MJangkaWaktu;
 use App\Models\TPurchaseOrderModel;
 use App\Models\DPurchaseOrderModel;
-use App\Models\MReasonModel;
-use Yajra\Datatables\Datatables;
+use App\Models\MUser;
+use DataTables;
 
 class TPurchaseOrder extends Controller
 {
@@ -21,45 +20,43 @@ class TPurchaseOrder extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function index()
+    public function purchaseOrder()
     {
-        $po = DB::table('t_purchase_order')
-        ->join('m_supplier','t_purchase_order.supplier','m_supplier.id')
-        ->select('t_purchase_order.*','m_supplier.name')
-        ->orderBy('t_purchase_order.id','DESC')
-        ->get();
-        //dd($po);
-        foreach ($po as $dataPO) {
-            $sj = true;
-            $cekSjm = DB::table('t_surat_jalan_masuk')
-            ->where('po_code',$dataPO->po_code)
-            ->get();
-            // dd($cekSj);
-            if (count($cekSjm) > 0 ) {
-                $sj = false; // jika ada false
-            }
-            $dataPO->sj = $sj;
-        }
-        //dd($po);
-        return view('admin.purchasing.po.index');
+        return view('purchase-list');
     }
 
-    /**
-    * Show the form for creating a new repource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-    public function create()
-    {
-        $codePo = $this->setCode();
-
-        $supllier = MSupplierModel::orderBy('name','ASC')->get();
-
-        $barang = MProdukModel::orderBy('name','ASC')->get();
-
-        $jangkaWaktu = MJangkaWaktu::orderBy('jangka_waktu')->get();
-
-        return view('admin.purchasing.po.create',compact('supllier','codePo','barang','jangkaWaktu'));
+    public function poDatatables(){
+        $data = TPurchaseOrderModel::select('m_user.*', 'm_role.name as role_name')
+            ->join('m_role', 'm_role.id', '=', 'm_user.role')
+            ->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-users" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-users" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-users" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-users" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['action', 'status'])
+            ->make(true);
     }
 
     //dropdown_selection

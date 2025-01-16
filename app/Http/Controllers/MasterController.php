@@ -13,7 +13,10 @@ use App\Models\MTokoModel;
 use App\Models\MProvinsiModel;
 use App\Models\MKotaKabModel;
 use App\Models\MUserModel;
-use \Yajra\Datatables\DataTables;
+use App\Models\MExpenseCategoryModel;
+use App\Models\MBrandModel;
+use App\Models\MSizeModel;
+use DataTables;
 
 class MasterController extends Controller
 {
@@ -212,15 +215,36 @@ class MasterController extends Controller
         echo json_encode($return);
     }
 
+    public function getExpenseCategory()
+    {
+        $data = MExpenseCategoryModel::where('status', '=', 1)->get();
+        $category = '<label class="form-label">Expense Category</label>
+                <select class="form-control" id="category" name="category">
+                <option>Choose Expense Category</option>';
+        foreach($data as $dt){
+            $category .= '<option value="'.$dt->id.'">'.$dt->name.'</option>';
+        }
+        $category .= '</select>';
+
+        if($data){
+            $return = array(
+                "category" => $category,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
     public function categoryDatatables(){
         $data = MKategoriModel::orderBy('id','DESC')->get();
         return Datatables::of($data)
-            ->addColumn('checkbox', function(){
-                return '<label class="checkboxs">
-                    <input type="checkbox" class="checkSingle">
-                    <span class="checkmarks"></span>
-                </label>';
-            })
+            ->addIndexColumn()
             ->addColumn('action', function($row){
                 if($row->status == 1)
                     return '<div class="edit-delete-action">
@@ -245,7 +269,7 @@ class MasterController extends Controller
                 else
                     return '<span class="badge rounded-pill bg-success">Active</span>';
             })
-            ->rawColumns(['checkbox', 'action', 'status'])
+            ->rawColumns(['action', 'status'])
             ->make(true);
     }
 
@@ -256,6 +280,7 @@ class MasterController extends Controller
         if($dataKategori){
             $return = array(
                 "name" => $dataKategori->name,
+                "code" => $dataKategori->code,
                 "status" => true
             );
         } else {
@@ -279,7 +304,8 @@ class MasterController extends Controller
             $dataKategori = MKategoriModel::find($id);
         }
 
-        $dataKategori->name = $request->input('subcat_name');
+        $dataKategori->name = $request->input('cat_name');
+        $dataKategori->code = $request->input('code');
         $dataKategori->save();
 
         if($dataKategori){
@@ -351,16 +377,12 @@ class MasterController extends Controller
     }
 
     public function subcategoryDatatables(){
-        $data = MSubKategoriModel::select('m_kategori_produk.name as kategori', 'm_sub_kategori_produk.*')
-            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-            ->orderBy('m_sub_kategori_produk.id','DESC')->get();
+        $data = MSubKategoriModel::orderBy('m_sub_kategori_produk.id','DESC')->get();
+        // select('m_kategori_produk.name as kategori', 'm_sub_kategori_produk.*')
+            // ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
+            // ->orderBy('m_sub_kategori_produk.id','DESC')->get();
         return Datatables::of($data)
-            ->addColumn('checkbox', function(){
-                return '<label class="checkboxs">
-                    <input type="checkbox" class="checkSingle">
-                    <span class="checkmarks"></span>
-                </label>';
-            })
+            ->addIndexColumn()
             ->addColumn('action', function($row){
                 if($row->status == 1)
                     return '<div class="edit-delete-action">
@@ -385,31 +407,33 @@ class MasterController extends Controller
                 else
                     return '<span class="badge rounded-pill bg-success">Active</span>';
             })
-            ->rawColumns(['checkbox', 'action', 'status'])
+            ->rawColumns(['action', 'status'])
             ->make(true);
     }
 
     public function editSubKategori($id)
     {
-        $dataKategori = MSubKategoriModel::select('m_sub_kategori_produk.*', 'm_kategori_produk.name as kategori_name')
-            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-            ->find($id);
+        $dataKategori = MSubKategoriModel::find($id);
+        // select('m_sub_kategori_produk.*', 'm_kategori_produk.name as kategori_name')
+            // ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
+            // ->find($id);
         
-        $kategori = MKategoriModel::get();
-        $cat = '<label class="form-label">Category</label>
-            <select class="form-control" id="category" name="category">';
-        foreach($kategori as $kat){
-            $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
-        }
-        $cat .= '</select>';
+        // $kategori = MKategoriModel::get();
+        // $cat = '<label class="form-label">Category</label>
+        //     <select class="form-control" id="category" name="category">';
+        // foreach($kategori as $kat){
+        //     $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        // }
+        // $cat .= '</select>';
 
         if($dataKategori){
             $return = array(
-                "kategori_id" => $dataKategori->kategori_id,
-                "kategori_name" => $dataKategori->kategori_name,
+                // "kategori_id" => $dataKategori->kategori_id,
+                // "kategori_name" => $dataKategori->kategori_name,
+                "code" => $dataKategori->code,
                 "name" => $dataKategori->name,
-                "status" => true,
-                "category_list" => $cat
+                "status" => true
+                // "category_list" => $cat
             );
         } else {
             $return = array(
@@ -434,6 +458,7 @@ class MasterController extends Controller
 
         $dataKategori->kategori_id = $request->input('category');
         $dataKategori->name = $request->input('cat_name');
+        $dataKategori->code = $request->input('code');
         $dataKategori->save();
 
         if($dataKategori){
@@ -505,17 +530,13 @@ class MasterController extends Controller
     }
 
     public function ssubcategoryDatatables(){
-        $data = MSsubKategoriModel::select('m_kategori_produk.name as kategori_name', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.*')
-            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
-            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-            ->orderBy('m_ssub_kategori_produk.id','DESC')->get();
+        $data = MSsubKategoriModel::orderBy('m_ssub_kategori_produk.id','DESC')->get();
+        // select('m_kategori_produk.name as kategori_name', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.*')
+            // ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
+            // ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
+            // ->orderBy('m_ssub_kategori_produk.id','DESC')->get();
         return Datatables::of($data)
-            ->addColumn('checkbox', function(){
-                return '<label class="checkboxs">
-                    <input type="checkbox" class="checkSingle">
-                    <span class="checkmarks"></span>
-                </label>';
-            })
+            ->addIndexColumn()
             ->addColumn('action', function($row){
                 if($row->status == 1)
                     return '<div class="edit-delete-action">
@@ -540,41 +561,43 @@ class MasterController extends Controller
                 else
                     return '<span class="badge rounded-pill bg-success">Active</span>';
             })
-            ->rawColumns(['checkbox', 'action', 'status'])
+            ->rawColumns(['action', 'status'])
             ->make(true);
     }
 
     public function editSsubKategori($id)
     {
-        $dataKategori = MSsubKategoriModel::select('m_kategori_produk.id as kategori_id', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.*')
-            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
-            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-            ->find($id);
+        $dataKategori = MSsubKategoriModel::find($id);
+        // select('m_kategori_produk.id as kategori_id', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.*')
+            // ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
+            // ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
+            // ->find($id);
 
-        $kategori = MKategoriModel::get();
-        $cat = '<label class="form-label">Category</label>
-            <select class="form-control" id="category" name="category">';
-        foreach($kategori as $kat){
-            $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
-        }
-        $cat .= '</select>';
+        // $kategori = MKategoriModel::get();
+        // $cat = '<label class="form-label">Category</label>
+        //     <select class="form-control" id="category" name="category">';
+        // foreach($kategori as $kat){
+        //     $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        // }
+        // $cat .= '</select>';
 
-        $subkategori = MSubKategoriModel::where('kategori_id', $dataKategori->kategori_id)->get();
-        $subcat = '<label class="form-label">Sub Category</label>
-            <select class="form-control" id="subcategory" name="subcategory">';
-        foreach($subkategori as $kat){
-            $subcat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
-        }
-        $subcat .= '</select>';
+        // $subkategori = MSubKategoriModel::where('kategori_id', $dataKategori->kategori_id)->get();
+        // $subcat = '<label class="form-label">Sub Category</label>
+        //     <select class="form-control" id="subcategory" name="subcategory">';
+        // foreach($subkategori as $kat){
+        //     $subcat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        // }
+        // $subcat .= '</select>';
 
         if($dataKategori){
             $return = array(
-                "kategori_id" => $dataKategori->kategori_id,
-                "sub_kategori_id" => $dataKategori->sub_kategori_id,
-                "sub_kategori_name" => $dataKategori->sub_kategori_name,
+                // "kategori_id" => $dataKategori->kategori_id,
+                // "sub_kategori_id" => $dataKategori->sub_kategori_id,
+                // "sub_kategori_name" => $dataKategori->sub_kategori_name,
                 "name" => $dataKategori->name,
-                "category_list" => $cat,
-                "sub_category_list" => $subcat,
+                // "category_list" => $cat,
+                // "sub_category_list" => $subcat,
+                "code" => $dataKategori->code,
                 "status" => true
             );
         } else {
@@ -598,8 +621,9 @@ class MasterController extends Controller
             $dataKategori = MSsubKategoriModel::find($id);
         }
 
-        $dataKategori->sub_kategori_id = $request->input('subcategory');
+        // $dataKategori->sub_kategori_id = $request->input('subcategory');
         $dataKategori->name = $request->input('cat_name');
+        $dataKategori->code = $request->input('code');
         $dataKategori->save();
 
         if($dataKategori){
@@ -671,18 +695,14 @@ class MasterController extends Controller
     }
 
     public function sssubcategoryDatatables(){
-        $data = MSssubKategoriModel::select('m_kategori_produk.name as kategori_name', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.name as ssub_kategori_name', 'm_sssub_kategori_produk.*')
-            ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_sssub_kategori_produk.ssub_kategori_id')
-            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
-            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-            ->orderBy('m_ssub_kategori_produk.id','DESC')->get();
+        $data = MSssubKategoriModel::orderBy('id','DESC')->get();
+            // select('m_kategori_produk.name as kategori_name', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.name as ssub_kategori_name', 'm_sssub_kategori_produk.*')
+            // ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_sssub_kategori_produk.ssub_kategori_id')
+            // ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
+            // ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
+            // ->orderBy('m_ssub_kategori_produk.id','DESC')->get();
         return Datatables::of($data)
-            ->addColumn('checkbox', function(){
-                return '<label class="checkboxs">
-                    <input type="checkbox" class="checkSingle">
-                    <span class="checkmarks"></span>
-                </label>';
-            })
+            ->addIndexColumn()
             ->addColumn('action', function($row){
                 if($row->status == 1)
                     return '<div class="edit-delete-action">
@@ -707,52 +727,54 @@ class MasterController extends Controller
                 else
                     return '<span class="badge rounded-pill bg-success">Active</span>';
             })
-            ->rawColumns(['checkbox', 'action', 'status'])
+            ->rawColumns(['action', 'status'])
             ->make(true);
     }
 
     public function editSssubKategori($id)
     {
-        $dataKategori = MSssubKategoriModel::select('m_kategori_produk.id as kategori_id', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.name as ssub_kategori_name', 'm_sssub_kategori_produk.*')
-            ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_sssub_kategori_produk.ssub_kategori_id')
-            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
-            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-            ->find($id);
+        $dataKategori = MSssubKategoriModel::find($id);
+        // select('m_kategori_produk.id as kategori_id', 'm_sub_kategori_produk.name as sub_kategori_name', 'm_ssub_kategori_produk.name as ssub_kategori_name', 'm_sssub_kategori_produk.*')
+        //     ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_sssub_kategori_produk.ssub_kategori_id')
+        //     ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
+        //     ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
+            // ->find($id);
 
-        $kategori = MKategoriModel::get();
-        $cat = '<label class="form-label">Category</label>
-            <select class="form-control" id="category" name="category">';
-        foreach($kategori as $kat){
-            $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
-        }
-        $cat .= '</select>';
+        // $kategori = MKategoriModel::get();
+        // $cat = '<label class="form-label">Category</label>
+        //     <select class="form-control" id="category" name="category">';
+        // foreach($kategori as $kat){
+        //     $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        // }
+        // $cat .= '</select>';
 
-        $subkategori = MSubKategoriModel::where('kategori_id', $dataKategori->kategori_id)->get();
-        $subcat = '<label class="form-label">Sub Category</label>
-            <select class="form-control" id="subcategory" name="subcategory">';
-        foreach($subkategori as $kat){
-            $subcat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
-        }
-        $subcat .= '</select>';
+        // $subkategori = MSubKategoriModel::where('kategori_id', $dataKategori->kategori_id)->get();
+        // $subcat = '<label class="form-label">Sub Category</label>
+        //     <select class="form-control" id="subcategory" name="subcategory">';
+        // foreach($subkategori as $kat){
+        //     $subcat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        // }
+        // $subcat .= '</select>';
 
-        $ssubkategori = MSsubKategoriModel::where('sub_kategori_id', $dataKategori->sub_kategori_id)->get();
-        $ssubcat = '<label class="form-label">Sub-Sub Category</label>
-            <select class="form-control" id="ssubcategory" name="ssubcategory">';
-        foreach($ssubkategori as $kat){
-            $ssubcat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
-        }
-        $ssubcat .= '</select>';
+        // $ssubkategori = MSsubKategoriModel::where('sub_kategori_id', $dataKategori->sub_kategori_id)->get();
+        // $ssubcat = '<label class="form-label">Sub-Sub Category</label>
+        //     <select class="form-control" id="ssubcategory" name="ssubcategory">';
+        // foreach($ssubkategori as $kat){
+        //     $ssubcat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        // }
+        // $ssubcat .= '</select>';
 
         if($dataKategori){
             $return = array(
-                "kategori_id" => $dataKategori->kategori_id,
-                "sub_kategori_id" => $dataKategori->sub_kategori_id,
-                "ssub_kategori_id" => $dataKategori->ssub_kategori_id,
-                "ssub_kategori_name" => $dataKategori->ssub_kategori_name,
+                // "kategori_id" => $dataKategori->kategori_id,
+                // "sub_kategori_id" => $dataKategori->sub_kategori_id,
+                // "ssub_kategori_id" => $dataKategori->ssub_kategori_id,
+                // "ssub_kategori_name" => $dataKategori->ssub_kategori_name,
                 "name" => $dataKategori->name,
-                "category_list" => $cat,
-                "sub_category_list" => $subcat,
-                "ssub_category_list" => $ssubcat,
+                // "category_list" => $cat,
+                // "sub_category_list" => $subcat,
+                // "ssub_category_list" => $ssubcat,
+                "code" => $dataKategori->code,
                 "status" => true
             );
         } else {
@@ -776,8 +798,9 @@ class MasterController extends Controller
             $dataKategori = MSssubKategoriModel::find($id);
         }
 
-        $dataKategori->ssub_kategori_id = $request->input('ssubcategory');
+        // $dataKategori->ssub_kategori_id = $request->input('ssubcategory');
         $dataKategori->name = $request->input('cat_name');
+        $dataKategori->code = $request->input('code');
         $dataKategori->save();
 
         if($dataKategori){
@@ -836,6 +859,270 @@ class MasterController extends Controller
 
         echo json_encode($return);
     }
+
+
+
+
+
+    public function brand(){
+        return view('brand-list');
+    }
+
+    public function brandDatatables(){
+        $data = MBrandModel::orderBy('id','DESC')->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-brand" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-brand" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-brand" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-brand" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
+    }
+
+    public function editBrand($id)
+    {
+        $data = MBrandModel::find($id);
+        if($data){
+            $return = array(
+                "name" => $data->name,
+                "code" => $data->code,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function storeBrand(Request $request)
+    {
+        $id = $request->input('brand_id');
+
+        if($id == ""){
+            $data = new MBrandModel;
+            $data->status = 1;
+        } else {
+            $data = MBrandModel::find($id);
+        }
+
+        $data->name = $request->input('brand_name');
+        $data->code = $request->input('code');
+        $data->save();
+
+        if($data){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function deleteBrand($id)
+    {
+        $dataKategori = MBrandModel::find($id);
+        $dataKategori->status = 0;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function restoreBrand($id)
+    {
+        $dataKategori = MBrandModel::find($id);
+        $dataKategori->status = 1;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully restored"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+
+
+
+
+    public function size(){
+        return view('size');
+    }
+
+    public function sizeDatatables(){
+        $data = MSizeModel::orderBy('id','DESC')->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-size" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-size" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-size" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-size" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
+    }
+
+    public function editSize($id)
+    {
+        $data = MSizeModel::find($id);
+        if($data){
+            $return = array(
+                "name" => $data->name,
+                "code" => $data->code,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function storeSize(Request $request)
+    {
+        $id = $request->input('size_id');
+
+        if($id == ""){
+            $data = new MSizeModel;
+            $data->status = 1;
+        } else {
+            $data = MSizeModel::find($id);
+        }
+
+        $data->name = $request->input('size_name');
+        $data->code = $request->input('code');
+        $data->save();
+
+        if($data){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function deleteSize($id)
+    {
+        $dataKategori = MSizeModel::find($id);
+        $dataKategori->status = 0;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function restoreSize($id)
+    {
+        $dataKategori = MSizeModel::find($id);
+        $dataKategori->status = 1;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully restored"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+
 
 
 
@@ -1202,6 +1489,139 @@ class MasterController extends Controller
     public function restoreStore($id)
     {
         $dataKategori = MTokoModel::find($id);
+        $dataKategori->status = 1;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully restored"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+
+
+
+
+
+
+    public function expenseCategory(){
+        return view('expense-category');
+    }
+
+    public function expenseCategoryDatatables(){
+        $data = MExpenseCategoryModel::orderBy('id','DESC')->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-expense-category" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-expense-category" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-expense-category" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-expense-category" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
+    }
+
+    public function editExpenseCategory($id)
+    {
+        $data = MExpenseCategoryModel::find($id);
+        if($data){
+            $return = array(
+                "name" => $data->name,
+                "desc" => $data->description,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function storeExpenseCategory(Request $request)
+    {
+        $id = $request->input('exp_cat_id');
+
+        if($id == ""){
+            $data = new MExpenseCategoryModel;
+            $data->status = 1;
+        } else {
+            $data = MExpenseCategoryModel::find($id);
+        }
+
+        $data->name = $request->input('nama');
+        $data->description = $request->input('desc');
+        $data->save();
+
+        if($data){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function deleteExpenseCategory($id)
+    {
+        $dataKategori = MExpenseCategoryModel::find($id);
+        $dataKategori->status = 0;
+        $dataKategori->save();
+
+        if($dataKategori){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function restoreExpenseCategory($id)
+    {
+        $dataKategori = MExpenseCategoryModel::find($id);
         $dataKategori->status = 1;
         $dataKategori->save();
 

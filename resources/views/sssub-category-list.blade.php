@@ -36,10 +36,11 @@
                                             <span class="checkmarks"></span>
                                         </label>
                                     </th>
-                                    <th>Category</th>
+                                    <!--<th>Category</th>
                                     <th>Sub Category</th>
-                                    <th>Sub-Sub Category</th>
+                                    <th>Sub-Sub Category</th>-->
                                     <th>Name</th>
+                                    <th>Code</th>
                                     <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -71,20 +72,12 @@
                 selector: 'td:first-child'
             },
             columns: [
-                // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
-                {                          
-                    orderable: false,
-                    targets: 0,
-                    'checkboxes': {
-                        'selectRow': true,
-                    },
-                    defaultContent: '',
-                    data: 'checkbox'
-                },
-                {data: 'kategori_name', name: 'kategori_name'},
-                {data: 'sub_kategori_name', name: 'sub_kategori_name'},
-                {data: 'ssub_kategori_name', name: 'ssub_kategori_name'},
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
+                // {data: 'kategori_name', name: 'kategori_name'},
+                // {data: 'sub_kategori_name', name: 'sub_kategori_name'},
+                // {data: 'ssub_kategori_name', name: 'ssub_kategori_name'},
                 {data: 'name', name: 'name'},
+                {data: 'code', name: 'code'},
                 {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', className: "dt-center"}
             ],            
@@ -107,93 +100,63 @@
 
 			}
         });
-
-        $('body').on('click', '#checkedAll', function(){
-            if (this.checked) {
-                $(".checkSingle").each(function() {
-                    this.checked=true;
-                });
-            } else {
-                $(".checkSingle").each(function() {
-                    this.checked=false;
-                });
-            }
-            // return false;
-        });
-
-        $('body').on('click', '.checkSingle', function(){
-            if ($(this).is(":checked")) {
-                var isAllChecked = 0;
-
-                $(".checkSingle").each(function() {
-                    if (!this.checked)
-                        isAllChecked = 1;
-                });
-
-                if (isAllChecked == 0) {
-                    $("#checkedAll").prop("checked", true);
-                }     
-            }
-            else {
-                $("#checkedAll").prop("checked", false);
-            }
-        });
         
         $('body').on('click', '.add-sssubcat', function(){
             $('#subcat_id').val("");
             $('#cat_name').val("");
-            $('#category').html("");
-            $('#subcategory').html("<option>Choose Sub Category</option>");
-            $('#ssubcategory').html("<option>Choose Sub-Sub Category</option>");
+            $('#code').val("");
+            // $('#category').html("");
+            // $('#subcategory').html("<option>Choose Sub Category</option>");
+            // $('#ssubcategory').html("<option>Choose Sub-Sub Category</option>");
             $('#title_modal').html("Create Sub-Sub-Sub Category");
-            $.ajax({
-                type : "GET",
-                dataType: 'json',
-                url: '{!! url("getCategory") !!}',
-                success: function (data) {
-                    if (data.status === true) {
-                        $('#category').html(data.category);
-                    }
-                },
-                fail: function (e) {
-                    toastr.error(data.msg);
-                }
-            });
+            // $.ajax({
+            //     type : "GET",
+            //     dataType: 'json',
+            //     url: '{!! url("getCategory") !!}',
+            //     success: function (data) {
+            //         if (data.status === true) {
+            //             $('#category').html(data.category);
+            //         }
+            //     },
+            //     fail: function (e) {
+            //         toastr.error(data.msg);
+            //     }
+            // });
         });
 
-        $('body').on('change', '#category', function(){
-            var id = $(this).find(':selected').val();
-            $.ajax({
-                type : "GET",
-                dataType: 'json',
-                url: '{!! url("getSubCategory") !!}/'+id,
-                success: function (data) {
-                    if (data.status === true) {
-                        $('#subcategory').html(data.category);
-                    }
-                },
-                fail: function (e) {
-                    toastr.error(data.msg);
-                }
-            });
-        });
+        // $('body').on('change', '#category', function(){
+        //     var id = $(this).find(':selected').val();
+        //     $.ajax({
+        //         type : "GET",
+        //         dataType: 'json',
+        //         url: '{!! url("getSubCategory") !!}/'+id,
+        //         success: function (data) {
+        //             if (data.status === true) {
+        //                 $('#subcategory').html(data.category);
+        //             }
+        //         },
+        //         fail: function (e) {
+        //             toastr.error(data.msg);
+        //         }
+        //     });
+        // });
 
-        $('body').on('change', '#subcategory', function(){
-            var id = $(this).find(':selected').val();
-            $.ajax({
-                type : "GET",
-                dataType: 'json',
-                url: '{!! url("getSsubCategory") !!}/'+id,
-                success: function (data) {
-                    if (data.status === true) {
-                        $('#ssubcategory').html(data.category);
-                    }
-                },
-                fail: function (e) {
-                    toastr.error(data.msg);
-                }
-            });
-        });
+        // $('body').on('change', '#subcategory', function(){
+        //     var id = $(this).find(':selected').val();
+        //     $.ajax({
+        //         type : "GET",
+        //         dataType: 'json',
+        //         url: '{!! url("getSsubCategory") !!}/'+id,
+        //         success: function (data) {
+        //             if (data.status === true) {
+        //                 $('#ssubcategory').html(data.category);
+        //             }
+        //         },
+        //         fail: function (e) {
+        //             toastr.error(data.msg);
+        //         }
+        //     });
+        // });
 
         $('body').on('click', '.edit-cat', function(){
             $('#title_modal').html("Edit Sub-Sub-Sub Category");
@@ -206,10 +169,11 @@
                     if (data.status === true) {
                         $('#subcat_id').val(id);
                         $('#subcat').html(data.category_list);
-                        $("#category option[value="+data.kategori_id+"]").attr('selected', true); 
-                        $('#ssubcat').html(data.sub_category_list);
-                        $("#subcategory option[value="+data.sub_kategori_id+"]").attr('selected', true); 
+                        // $("#category option[value="+data.kategori_id+"]").attr('selected', true); 
+                        // $('#ssubcat').html(data.sub_category_list);
+                        // $("#subcategory option[value="+data.sub_kategori_id+"]").attr('selected', true); 
                         $('#cat_name').val(data.name);
+                        $('#code').val(data.code);
                     }
                 },
                 fail: function (e) {

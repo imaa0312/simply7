@@ -7,9 +7,12 @@ use Auth;
 use App\Models\MUserModel;
 use App\Models\MRoleModel;
 use App\Models\TargetSalesModel;
+use App\Models\MCustomerModel;
+use App\Models\MProvinsiModel;
+use App\Models\MKotaKabModel;
 use DB;
 use Hash;
-use Yajra\Datatables\Datatables;
+use DataTables;
 
 class MUserController extends Controller
 {
@@ -107,8 +110,8 @@ class MUserController extends Controller
                 $dataUser->birthdate = $date;
                 $dataUser->password =  bcrypt(str_replace(' ', '', $request->password));
                 $dataUser->role = $request->roles;
-                $dataUser->save();
                 $dataUser->status = 1;
+                $dataUser->save();
 
                 if($dataUser){
                     $return = array(
@@ -216,6 +219,179 @@ class MUserController extends Controller
     public function restoreUsers($id)
     {
         $user = MUserModel::find($id);
+        $user->status = 1;
+        $user->save();
+
+        if($user){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+
+
+
+
+    public function customers()
+    {
+        $getMUser = MCustomerModel::get();
+
+        return view('customers', compact('getMUser'));
+    }
+
+    public function customersDatatables(){
+        $data = MCustomerModel::select('m_customer.*', 'm_provinsi.name as province_name', 'm_kota_kab.name as city_name')
+            ->join('m_provinsi', 'm_provinsi.id', '=', 'm_customer.province')
+            ->join('m_kota_kab', 'm_kota_kab.id', '=', 'm_customer.city')
+            ->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-customers" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-customers" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-customers" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-customers" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->editColumn('alamat', function($row){
+                return $row->address.'<br>'.$row->city_name.", ".$row->province_name;
+            })
+            ->rawColumns(['action', 'status', 'alamat'])
+            ->make(true);
+    }
+    
+    public function storeCustomers(Request $request)
+    {
+        $id = $request->input('customers_id');
+
+        if($id == ""){
+            $dataUser = new MCustomerModel;
+            $dataUser->status = 1;
+        } else {
+            $dataUser = MCustomerModel::find($id);
+        }
+
+        $dataUser->name = $request->nama;
+        $dataUser->email = $request->email;
+        $dataUser->phone = $request->telp;
+        $dataUser->address = $request->address;
+        $dataUser->province = $request->prov;
+        $dataUser->city = $request->city;
+        $dataUser->description = $request->desc;
+                
+        $dataUser->save();
+
+        if($dataUser){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+    
+    public function editCustomers($id)
+    {
+        $dataUser = MCustomerModel::select('m_customer.*', 'm_provinsi.name as province_name', 'm_kota_kab.name as city_name')
+            ->join('m_provinsi', 'm_provinsi.id', '=', 'm_customer.province')
+            ->join('m_kota_kab', 'm_kota_kab.id', '=', 'm_customer.city')
+            ->find($id);
+
+        $province = MProvinsiModel::get();
+        $prov = '<label>Province</label>
+            <select class="form-control" id="prov" name="prov">';
+        foreach($province as $kat){
+            $prov .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $prov .= '</select>';
+
+        $city_data = MKotaKabModel::where('provinsi', $dataUser->province)->get();
+        $city = '<label>City</label>
+            <select class="form-control" id="city" name="city">';
+        foreach($city_data as $kat){
+            $city .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $city .= '</select>';
+
+        if($dataUser){
+            $return = array(
+                "name" => $dataUser->name,
+                "email" => $dataUser->email,
+                "phone" => $dataUser->phone,
+                "address" => $dataUser->address,
+                "prov_id" => $dataUser->province,
+                "city_id" => $dataUser->city,
+                "prov_list" => $prov,
+                "city_list" => $city,
+                "desc" => $dataUser->description,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+    
+    public function deleteCustomers($id)
+    {
+        $user = MCustomerModel::find($id);
+        $user->status = 0;
+        $user->save();
+
+        if($user){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully deleted"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+    
+    public function restoreCustomers($id)
+    {
+        $user = MCustomerModel::find($id);
         $user->status = 1;
         $user->save();
 

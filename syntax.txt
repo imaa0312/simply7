@@ -1,0 +1,2 @@
+update composer :
+composer update --ignore-platform-req=ext-zip --ignore-platform-req=ext-gd

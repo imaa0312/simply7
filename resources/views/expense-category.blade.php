@@ -28,261 +28,17 @@
                     </div>
                     
                     <div class="table-responsive">
-                        <table class="table  datanew">
+                        <table class="table" id="myTable">
                             <thead>
                                 <tr>
-                                    <th class="no-sort">
-                                        <label class="checkboxs">
-                                            <input type="checkbox" id="select-all">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </th>
+                                    <th class="no-sort">No</th>
                                     <th>Category name</th>
                                     <th>Description</th>
+                                    <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="Expense-list-blk">
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Employee Benefits</td>
-                                    <td>Employee Vehicle</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Foods & Snacks</td>
-                                    <td>Employee Foods</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Entertainment</td>
-                                    <td>Employee Welfare</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Office Expenses & Postage </td>
-                                    <td>Postal Expense</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Other Expenses</td>
-                                    <td>Other Expenses</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Petrol</td>
-                                    <td>Employee Cab</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Maintenance</td>
-                                    <td>Office Maintenance</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Marketing</td>
-                                    <td>Advertising Cost</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Printing & Stationery</td>
-                                    <td>Stationery Expense</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Telephone Expense</td>
-                                    <td>Telephone Cost</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Entertainment</td>
-                                    <td>Office Vehicle</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Office Expenses & Postage </td>
-                                    <td>Employee Foods</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2 mb-0" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="me-0 confirm-text p-2 mb-0" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody>
                             </tbody>
                         </table>
                     </div>
@@ -291,56 +47,256 @@
             <!-- /product list -->
         </div>
     </div>
-    <!-- Add Expense Category-->
-    <div class="modal fade" id="add-units">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Add Expense Category</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="{{ url('expense-category') }}">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Expense Name</label>
-                                            <input type="text" class="form-control">
-                                        </div>
 
-                                    </div>
-                                    <!-- Editor -->
-                                    <div class="col-md-12">
-                                        <div class="edit-add card">
-                                            <div class="edit-add">
-                                                <label class="form-label">Description</label>
+    <script src="{{ URL::asset('build/js/jquery-3.7.1.min.js') }}"></script>
 
-                                            </div>
-                                            <div class="card-body-list input-blocks mb-0">
-                                                <textarea class="form-control"></textarea>
-                                            </div>
-                                            <p>Maximum 600 Characters</p>
-                                        </div>
-                                    </div>
-                                    <!-- /Editor -->
-                                </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Add Expense Category-->
+    <script>
+        $(document).ready(function(){
+            $('#myTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{!! url('expense-category-datatables') !!}",
+                    type: "get"
+                },
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
+                    {data: 'name', name: 'name', searchable: true},
+                    {data: 'description', name: 'description', searchable: true},
+                    {data: 'status', name: 'status', searchable: true},
+                    {data: 'action', name: 'action', className: "dt-center"}
+                ],            
+                "bFilter": true,
+                "sDom": 'fBtlpi',  
+                "ordering": true,
+                "language": {
+                    search: ' ',
+                    sLengthMenu: '_MENU_',
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> '
+                    },
+                },
+                initComplete: (settings, json)=>{
+                    $('.dataTables_filter').appendTo('#tableSearch');
+                    $('.dataTables_filter').appendTo('.search-input');
+
+                }
+            });
+
+            $('body').on('click', '.add-expense-category', function(){
+                $('#exp_cat_id').val("");
+                $('#nama').val("");
+                $('#desc').val("");
+                $('#title_modal').html("Create Expense Category");
+            });
+
+            $('body').on('click', '.edit-expense-category', function(){
+                $('#title_modal').html("Edit Expense Category");
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("edit-expense-category") !!}/'+id,
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#exp_cat_id').val(id);
+                            $('#nama').val(data.name);
+                            $('#desc').val(data.desc);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+            });
+            
+            $('body').on('click', '.save-expense-category', function(){
+                var form = $('#myForm');
+                var formdata = new FormData(form[0]);
+
+                bootbox.dialog({
+                    message: "Are you sure want to save this data ?",
+                    title: "Save Confirmation",
+                    buttons: {
+                        success: {
+                            label: "Yes",
+                            className: "btn-success btn-flat",
+                            callback: function () {
+                                $.ajax({
+                                    method : "POST",
+                                    dataType: 'json',
+                                    url: '{!! url("save-expense-category") !!}',
+                                    data: formdata,
+                                    cache: false,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (data) {
+                                        if (data.status === true) {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                icon: "success",
+                                                title: "Data has been saved",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                title: "Something wen't Wrong",
+                                                icon: "error",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        }
+                                        $('#add-expense-category').modal('toggle');
+                                        $('#myTable').DataTable().ajax.reload();
+                                    },
+                                    fail: function (e) {
+                                        Swal.fire({
+                                            position: "top-end",
+                                            toast: true,
+                                            title: "Something wen't Wrong",
+                                            icon: "error",
+                                            showConfirmButton: false,
+                                            timer: 2000
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        danger: {
+                            label: "Cancel",
+                            className: "btn-danger btn-flat"
+                        }
+                    }
+                });
+            });
+
+            $('body').on('click', '.del-expense-category', function(){
+                var id = $(this).attr('data-id');
+
+                bootbox.dialog({
+                    message: "Are you sure want to delete this data ?",
+                    title: "Confirmation",
+                    buttons: {
+                        success: {
+                            label: "Yes",
+                            className: "btn-success btn-flat",
+                            callback: function () {
+                                $.ajax({
+                                    method : "GET",
+                                    dataType: 'json',
+                                    url: '{!! url("delete-expense-category") !!}/'+id,
+                                    success: function (data) {
+                                        if (data.status === true) {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                icon: "success",
+                                                title: "Data has been deleted",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                title: "Something wen't Wrong",
+                                                icon: "error",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        }
+                                        
+                                        $('#myTable').DataTable().ajax.reload();
+                                    },
+                                    fail: function (e) {
+                                        Swal.fire({
+                                            position: "top-end",
+                                            toast: true,
+                                            title: "Something wen't Wrong",
+                                            icon: "error",
+                                            showConfirmButton: false,
+                                            timer: 2000
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        danger: {
+                            label: "Cancel",
+                            className: "btn-danger btn-flat"
+                        }
+                    }
+                });
+            });
+
+            $('body').on('click', '.restore-expense-category', function(){
+                var id = $(this).attr('data-id');
+                bootbox.dialog({
+                    message: "Are you sure want to restore this data ?",
+                    title: "Confirmation",
+                    buttons: {
+                        success: {
+                            label: "Yes",
+                            className: "btn-success btn-flat",
+                            callback: function () {
+                                $.ajax({
+                                    method : "GET",
+                                    dataType: 'json',
+                                    url: '{!! url("restore-expense-category") !!}/'+id,
+                                    success: function (data) {
+                                        if (data.status === true) {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                icon: "success",
+                                                title: "Data has been restored",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                title: "Something wen't Wrong",
+                                                icon: "error",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        }
+                                        
+                                        $('#myTable').DataTable().ajax.reload();
+                                    },
+                                    fail: function (e) {
+                                        Swal.fire({
+                                            position: "top-end",
+                                            toast: true,
+                                            title: "Something wen't Wrong",
+                                            icon: "error",
+                                            showConfirmButton: false,
+                                            timer: 2000
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        danger: {
+                            label: "Cancel",
+                            className: "btn-danger btn-flat"
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
