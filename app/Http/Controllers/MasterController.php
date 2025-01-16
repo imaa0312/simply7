@@ -13,7 +13,7 @@ use App\Models\MTokoModel;
 use App\Models\MProvinsiModel;
 use App\Models\MKotaKabModel;
 use App\Models\MUserModel;
-use DataTables;
+use \Yajra\Datatables\DataTables;
 
 class MasterController extends Controller
 {
