@@ -7,6 +7,11 @@ use Auth;
 use App\Models\MUserModel;
 use App\Models\MRoleModel;
 use App\Models\TargetSalesModel;
+use App\Models\MKategoriModel;
+use App\Models\MProdukModel;
+use App\Models\MProdukImage;
+use App\Models\MCartModel;
+use App\Models\DCartModel;
 use DB;
 use carbon;
 
@@ -14,36 +19,135 @@ use carbon;
 
 class MSalesController extends Controller
 {
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function getProduct($id){
+        if($id  > 0)
+                $data = MProdukModel::where('kategori_id', '=', $id)->get();
+        else
+            $data = MProdukModel::get();
+        $product = '';
+
+        foreach($data as $dt){
+            $data_img = MProdukImage::where('produk_id', '=', $dt->id)->first();
+            if($data_img === null){
+                $image = "no_image.png";
+            } else {
+                $image = $data_img->image;
+            }
+            $product .= '<div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 pe-2 prod" data-id="'.$dt->id.'">
+                <div class="product-info default-cover card">
+                    <a href="javascript:void(0);" class="img-bg">
+                        <img src="'.'product_images/'.$image.'" alt="Products">
+                        <span><i data-feather="check" class="feather-16"></i></span>
+                    </a>
+                    <h6 class="product-name"><a href="javascript:void(0);">'.$dt->name.'</a></h6>
+                    <div class="d-flex align-items-center justify-content-between price">
+                        <p>Rp '.$dt->price_sale.'</p>
+                    </div>
+                </div>
+            </div>'; 
+        }
+
+        echo json_encode($product);
+    }
+
+    public function addtocart($id){
+        $cart = '';
+
+        $data = MProdukModel::find($id);
+        $data_img = MProdukImage::where('produk_id', '=', $id)->first();
+        if($data_img === null){
+            $image = "no_image.png";
+        } else {
+            $image = $data_img->image;
+        }
+        $cart .= '<div class="product-list d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
+                data-bs-target="#products">
+                <a href="javascript:void(0);" class="img-bg">
+                    <img src="'.'product_images/'.$image.'"
+                        alt="Products">
+                </a>
+                <div class="info">
+                    <span>'.$data->sku.'</span>
+                    <h6><a href="javascript:void(0);">'.$data->name.'</a></h6>
+                    <p>Rp '.$data->price_sale.'</p>
+                </div>
+            </div>
+            <div class="qty-item text-center">
+                <input type="number" min="1" class="form-control text-center" name="qty" id="qty"
+                    value="1">
+            </div>
+            <div class="d-flex align-items-center action">
+                <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
+                    data-bs-target="#edit-product">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </a>
+                <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
+                    <i class="fa-solid fa-trash-can" style="color: #ff0000;"></i>
+                </a>
+            </div>
+        </div>';
+
+        $var = new  MCartModel;
+        $var->user_id = 4;
+        $var->trx_date = date("Y-m-d H:i:s");
+        $var->session_code = "bdsjakfghjdsk";
+        $var->save();
+
+        $var = new  DCartModel;
+        $var->cart_id = 4;
+        $var->product_id = $id;
+        $var->qty = ;
+        $var->sale_price = ;
+        $var->discount_percent = ;
+        $var->discount_amount = ;
+        $var->save();
+
+        echo json_encode($cart);
+    }
+
     public function index()
     {
-
         $roleSales = MRoleModel::where('name', 'Sales')->first();
 
         //$getMsales = MUserModel::where('role', '=', $roleSales->id)->get();
 
-        $getMsales = DB::table('m_user')
-            ->select('m_user.id as user_id','m_user.name as name', 'm_user.username','m_user.email','m_user.address', 'm_wilayah_sales.name as wilayah_name')
-            ->join('m_wilayah_pembagian_sales','m_user.id','m_wilayah_pembagian_sales.sales')
-            ->join('m_wilayah_sales','m_wilayah_sales.id','m_wilayah_pembagian_sales.wilayah_sales')
-            ->where('role', '=', $roleSales->id)
-            ->get();
+        // $getMsales = DB::table('m_user')
+        //     ->select('m_user.id as user_id','m_user.name as name', 'm_user.username','m_user.email','m_user.address', 'm_wilayah_sales.name as wilayah_name')
+        //     ->join('m_wilayah_pembagian_sales','m_user.id','m_wilayah_pembagian_sales.sales')
+        //     ->join('m_wilayah_sales','m_wilayah_sales.id','m_wilayah_pembagian_sales.wilayah_sales')
+        //     ->where('role', '=', $roleSales->id)
+        //     ->get();
 
-        foreach ($getMsales as $raw_data) {
-            $point_sales = DB::table('m_point_sales')
-                ->where('sales', $raw_data->user_id)
-                ->sum('point');
+        // foreach ($getMsales as $raw_data) {
+        //     $point_sales = DB::table('m_point_sales')
+        //         ->where('sales', $raw_data->user_id)
+        //         ->sum('point');
 
-            $raw_data->point = $point_sales;
-        }
+        //     $raw_data->point = $point_sales;
+        // }
 
         // dd($getMsales);
 
-        return view('admin.sales.index', compact('getMsales'));
+        $data['category'] =  MKategoriModel::where('status', '=', 1)->get();
+        $all_product =  MProdukModel::get();
+        $data['all_product'] = array();
+        $i=0;
+        foreach($all_product as $all){
+            $data['all_product'][$i] = $all;
+            $data_img = MProdukImage::where('produk_id', '=', $all->id)->first();
+            if($data_img === null){
+                $data['all_product'][$i]['image'] = "no_image.png";
+            } else {
+                $data['all_product'][$i]['image'] = $data_img->image;
+            }
+            $i++;
+        }
+
+        // echo "<pre>";
+        // print_r($product); die;
+
+        return view('pos', compact('data'));
     }
 
     /**

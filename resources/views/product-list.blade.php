@@ -31,7 +31,7 @@
                     </div>
                     
                     <div class="table-responsive product-list">
-                        <table class="table datanew">
+                        <table class="table" id="myTable">
                             <thead>
                                 <tr>
                                     <th class="no-sort">No</th>
@@ -41,7 +41,7 @@
                                     <th>Brand</th>
                                     <th>Purchase Price</th>
                                     <th>Sale Price</th>
-                                    <th>Status</th>
+                                    <!-- <th>Status</th> -->
                                     <th class="no-sort">Action</th>
                                 </tr>
                             </thead>
@@ -78,9 +78,9 @@
                     {data: 'sku', name: 'sku'},
                     {data: 'category', name: 'category'},
                     {data: 'brand', name: 'brand'},
-                    {data: 'p_price', name: 'p_price'},
-                    {data: 's_price', name: 's_price'},
-                    {data: 'status', name: 'status'},
+                    {data: 'price_purchase', name: 'price_purchase'},
+                    {data: 'price_sale', name: 'price_sale'},
+                    // {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', className: "dt-center"}
                 ],            
                 "bFilter": true,
@@ -103,7 +103,7 @@
                 }
             });
             
-            $('body').on('click', '.add-product', function(){
+            $('body').on('click', '.add-prod', function(){
                 $('#product_id').val("");
                 $('#product_name').val("");
                 $('#sku').val("");
@@ -111,15 +111,96 @@
                 $('#s_price').val('');
                 $('#profit').val("");
                 $('#qty_alert').val("");
-                $('#category_list').html("<option>Choose Category</option>");
-                $('#sub_category_list').html("<option>Choose Sub Category</option>");
-                $('#ssub_category_list').html("<option>Choose Sub Sub Category</option>");
-                $('#sssub_category_list').html("<option>Choose Sub Sub Sub Category</option>");
-                $('#brand_list').html("<option>Choose Brand</option>");
-                $('#size_category_list').html("<option>Choose Size</option>");
                 $('#desc').val('').blur();
                 $('#title_modal').html("Create Product");
-                $('.image-upload').show();
+                $('#images').val("");
+                $('#image').val("");
+                $('.phone-img').remove();
+                $('#addnew').show();
+
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("getCategory") !!}',
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#category_list').html(data.category);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("getSubCategory") !!}',
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#sub_category_list').html(data.category);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("getSsubCategory") !!}',
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#ssub_category_list').html(data.category);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("getSssubCategory") !!}',
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#sssub_category_list').html(data.category);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("getBrand") !!}',
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#brand_list').html(data.category);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("getSize") !!}',
+                    success: function (data) {
+                        if (data.status === true) {
+                            $('#size_list').html(data.category);
+                        }
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
             });
     
             $('body').on('click', '.edit-product', function(){
@@ -135,27 +216,31 @@
                             $('#product_name').val(data.name);
                             $('#sku').val(data.sku);
                             $('#p_price').val(data.price_purchase);
-                            $('#s_price').val(data.proce_sale);
+                            $('#s_price').val(data.price_sale);
                             $('#profit').val(data.profit_percent);
                             $('#qty_alert').val(data.stok_minimal);
-                            $('#category_list').html(data.category_list);
-                            $('#sub_category_list').html(data.sub_category_list);
-                            $('#ssub_category_list').html(data.ssub_category_list);
-                            $('#sssub_category_list').html(data.sssub_category_list);
+                            $('#category_list').html(data.kategori_list);
+                            $('#sub_category_list').html(data.sub_kategori_list);
+                            $('#ssub_category_list').html(data.ssub_kategori_list);
+                            $('#sssub_category_list').html(data.sssub_kategori_list);
                             $('#brand_list').html(data.brand_list);
-                            $('#size_category_list').html(data.size_list);
-                            $('#desc').html(data.desc);
-                            $("#category option[value="+data.category_id+"]").attr('selected', true); 
-                            $("#sub_category option[value="+data.sub_category_id+"]").attr('selected', true); 
-                            $("#ssub_category option[value="+data.ssub_category_id+"]").attr('selected', true); 
-                            $("#sssub_category option[value="+data.sssub_category_id+"]").attr('selected', true); 
+                            $('#size_list').html(data.size_list);
+                            $('#desc').html(data.description);
+                            $("#category option[value="+data.kategori_id+"]").attr('selected', true); 
+                            $("#subcategory option[value="+data.sub_kategori_id+"]").attr('selected', true); 
+                            $("#ssubcategory option[value="+data.ssub_kategori_id+"]").attr('selected', true); 
+                            $("#sssubcategory option[value="+data.sssub_kategori_id+"]").attr('selected', true); 
                             $("#brand option[value="+data.brand_id+"]").attr('selected', true); 
                             $("#size option[value="+data.size_id+"]").attr('selected', true); 
-
+                            $('#images').val(data.images_id);
+                            $('#images_id').val(data.images_id);
+                            
+                            
                             if(data.images_id == ""){
-                                $('.image-upload').show();
+                                $('#addnew').show()
                             } else {
-                                $('.image-upload').hide();
+                                $('#addnew').hide();
+                                $('.add-choosen').html('<div class="phone-img"><img src="'+data.images+'" alt="image"><a href="javascript:void(0);"><i class="fa-solid fa-xmark remove-product" data-id="'+data.images_id+'"></i></a></div>');
                             }
                         }
                     },
@@ -166,7 +251,7 @@
             });
             
             $('body').on('click', '.save-product', function(){
-                var form = $('#myForm');
+                var form = $('#formKu');
                 var formdata = new FormData(form[0]);
     
                 bootbox.dialog({
@@ -371,13 +456,10 @@
                                 timer: 2000
                             });
                             $('.add-choosen').append('<div class="phone-img"><img src="'+data.images+'" alt="image"><a href="javascript:void(0);"><i class="fa-solid fa-xmark remove-product" data-id="'+data.id+'"></i></a></div>');
+                            $('#addnew').hide();
                             
-                            if(array_images=="")
-                                $('#images').val(data.id);
-                            else 
-                                $('#images').val(array_images+";"+data.id);
-
-                            $('.image-upload').hide();
+                            $('#images').val(data.id);
+                            $('#images_id').val(data.id);
                             
                         } else {
                             Swal.fire({
@@ -403,14 +485,12 @@
                 });
             });
 
-            $('body').on('change', '.remove-product', function(){
+            $('body').on('click', '.remove-product', function(){
                 var id = $(this).attr('data-id');
                 $.ajax({
-                    method : "POST",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    method : "GET",
                     dataType: 'json',
-                    url: '{!! url("del-image-product") !!}',
-                    data: formdata,
+                    url: '{!! url("del-image-product") !!}/'+id,
                     cache: false,
                     processData: false,
                     contentType: false,
@@ -420,10 +500,11 @@
                                 position: "top-end",
                                 toast: true,
                                 icon: "success",
-                                title: "Data has been saved",
+                                title: "Data has been deleted",
                                 showConfirmButton: false,
                                 timer: 2000
                             });
+                            $('#addnew').show();
                         } else {
                             Swal.fire({
                                 position: "top-end",
@@ -434,8 +515,6 @@
                                 timer: 2000
                             });
                         }
-                        $('#add-products').modal('toggle');
-                        $('#myTable').DataTable().ajax.reload();
                     },
                     fail: function (e) {
                         Swal.fire({

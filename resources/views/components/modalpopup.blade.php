@@ -883,6 +883,7 @@
 							<form method="POST" id="formKu">
                                 @csrf
                                 <input type="hidden" name="product_id" id="product_id">
+                                <input type="hidden" name="images_id" id="images_id">
                                 <div class="card">
                                     <div class="card-body add-product pb-0">
                                         <div class="accordion-card-one accordion" id="accordionExample">
@@ -910,45 +911,20 @@
                                                             </div>
                                                             <div class="col-lg-4 col-sm-6 col-12">
                                                                 <div class="mb-3 add-product" id="category_list">
-                                                                    <label class="form-label">Category</label>
-                                                                    <select class="select" id="category" name="category">
-                                                                        <option>Choose</option>
-                                                                        <option>Lenovo</option>
-                                                                        <option>Electronics</option>
-                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 col-sm-6 col-12">
                                                                 <div class="mb-3 add-product" id="sub_category_list">
-                                                                    <label class="form-label">Sub Category</label>
-                                                                    <select class="select" id="sub_category" name="sub_category">
-                                                                        <option>Choose</option>
-                                                                        <option>Lenovo</option>
-                                                                        <option>Electronics</option>
-                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-4 col-sm-6 col-12">
                                                                 <div class="mb-3 add-product" id="ssub_category_list">
-                                                                    <label class="form-label">Sub Sub Category</label>
-                                                                    <select class="select" id="ssub_category" name="ssub_category">
-                                                                        <option>Choose</option>
-                                                                        <option>Fruits</option>
-                                                                        <option>Computers</option>
-                                                                        <option>Shoes</option>
-                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 col-sm-6 col-12">
                                                                 <div class="mb-3 add-product" id="sssub_category_list">
-                                                                    <label class="form-label">Sub Sub Sub Category</label>
-                                                                    <select class="select" id="sssub_category" name="sssub_category">
-                                                                        <option>Choose</option>
-                                                                        <option>Lenovo</option>
-                                                                        <option>Electronics</option>
-                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -956,18 +932,10 @@
                                                             <div class="row">
                                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                                     <div class="mb-3 add-product" id="brand_list">
-                                                                        <label class="form-label">Brand</label>
-                                                                        <select class="select" id="brand" name="brand">
-                                                                            <option>Choose</option>
-                                                                            <option>Nike</option>
-                                                                            <option>Bolt</option>
-                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-4 col-sm-6 col-12">
                                                                     <div class="mb-3 add-product" id="size_list">
-                                                                        <label class="form-label">Size</label>
-                                                                        <input type="text" class="form-control" id="size" name="size">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-4 col-sm-6 col-12">
@@ -1064,11 +1032,11 @@
                                                                                 <div class="text-editor add-list add">
                                                                                     <div class="col-lg-12">
                                                                                         <div class="add-choosen">
-                                                                                            <div class="input-blocks">
+                                                                                            <div class="input-blocks" id="addnew">
                                                                                                 <form id="formImage" enctype="multipart/form-data" method="POST">
                                                                                                 @csrf
                                                                                                 <input type="hidden" name="images" id="images">
-                                                                                                <div class="image-upload">
+                                                                                                <div class="image-upload image-up">
                                                                                                     <input type="file" id="image" name="image">
                                                                                                     <div class="image-uploads">
                                                                                                         <i data-feather="plus-circle"
@@ -1096,7 +1064,7 @@
                                 <div class="col-lg-12">
                                     <div class="btn-addproduct mb-4">
                                         <button type="button" class="btn btn-cancel me-2">Cancel</button>
-                                        <button type="submit" class="btn btn-submit">Save Product</button>
+                                        <button type="button" class="btn btn-submit save-product">Save Product</button>
                                     </div>
                                 </div>
                             </form>

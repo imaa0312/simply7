@@ -29008,6 +29008,7 @@ th.fixed-width {
   transition: all 0.5s ease;
   border-radius: 8px;
   margin-left: -0.1px !important;
+  width: 120px!important;;
 }
 .pos-category .owl-item li {
   padding: 15px 0;

@@ -91,9 +91,9 @@ class MasterController extends Controller
 
     public function getKategori()
     {
-        $dataKategori = MKategoriModel::get();
+        $dataKategori = MKategoriModel::where('status', '=', 1)->get();
         $cat = '<label class="form-label">Category</label>
-                <select class="select" id="category" name="category">
+                <select class="form-control" id="category" name="category">
                 <option>Choose Category</option>';
         foreach($dataKategori as $kat){
             $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
@@ -115,21 +115,12 @@ class MasterController extends Controller
         echo json_encode($return);
     }
 
-    public function getSubKategori($id="")
+    public function getSubKategori()
     {
-        if($id==""){
-            $dataKategori = MSubKategoriModel::select('m_sub_kategori_produk.*', 'm_kategori_produk.name as kategori_name')
-                ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-                ->get();
-        } else {
-            $dataKategori = MSubKategoriModel::select('m_sub_kategori_produk.*', 'm_kategori_produk.name as kategori_name')
-                ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-                ->where('kategori_id', $id)
-                ->get();
-        }
+        $dataKategori = MSubKategoriModel::where('status', '=', 1)->get();
         
         $cat = '<label class="form-label">Sub Category</label>
-            <select class="select" id="subcategory" name="subcategory">
+            <select class="form-control" id="subcategory" name="subcategory">
             <option>Choose Sub Category</option>';
         foreach($dataKategori as $kat){
             $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
@@ -151,24 +142,94 @@ class MasterController extends Controller
         echo json_encode($return);
     }
 
-    public function getSsubKategori($id)
+    public function getSsubKategori()
     {
-        if($id==""){
-            $dataKategori = MSsubKategoriModel::select('m_ssub_kategori_produk.*', 'm_kategori_produk.name as kategori_name', 'm_sub_kategori_produk.name as sub_kategori_name')
-                ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
-                ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-                ->get();
-        } else {
-            $dataKategori = MSsubKategoriModel::select('m_ssub_kategori_produk.*', 'm_kategori_produk.name as kategori_name', 'm_sub_kategori_produk.name as sub_kategori_name')
-                ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_ssub_kategori_produk.sub_kategori_id')
-                ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_sub_kategori_produk.kategori_id')
-                ->where('sub_kategori_id', $id)
-                ->get();
-        }
+        $dataKategori = MSsubKategoriModel::where('status', '=', 1)->get();
 
         $cat = '<label class="form-label">Sub-Sub Category</label>
-            <select class="select" id="ssubcategory" name="ssubcategory">
+            <select class="form-control" id="ssubcategory" name="ssubcategory">
             <option>Choose Sub-Sub Category</option>';
+        foreach($dataKategori as $kat){
+            $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $cat .= '</select>';
+
+        if($dataKategori){
+            $return = array(
+                "category" => $cat,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function getSssubKategori()
+    {
+        $dataKategori = MSssubKategoriModel::where('status', '=', 1)->get();
+
+        $cat = '<label class="form-label">Sub-Sub-Sub Category</label>
+            <select class="form-control" id="sssubcategory" name="sssubcategory">
+            <option>Choose Sub-Sub-Sub Category</option>';
+        foreach($dataKategori as $kat){
+            $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $cat .= '</select>';
+
+        if($dataKategori){
+            $return = array(
+                "category" => $cat,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function getBrand()
+    {
+        $dataKategori = MBrandModel::where('status', '=', 1)->get();
+
+        $cat = '<label class="form-label">Brand</label>
+            <select class="form-control" id="brand" name="brand">
+            <option>Choose Brand</option>';
+        foreach($dataKategori as $kat){
+            $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
+        }
+        $cat .= '</select>';
+
+        if($dataKategori){
+            $return = array(
+                "category" => $cat,
+                "status" => true
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function getSize()
+    {
+        $dataKategori = MSizeModel::where('status', '=', 1)->get();
+
+        $cat = '<label class="form-label">Size</label>
+            <select class="form-control" id="size" name="size">
+            <option>Choose Size</option>';
         foreach($dataKategori as $kat){
             $cat .= '<option value="'.$kat->id.'">'.$kat->name.'</option>';
         }

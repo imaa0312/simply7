@@ -267,7 +267,7 @@
         @endif
         @if (Route::is(['product-list']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added add-product" data-bs-toggle="modal" data-bs-target="#add-products"><i data-feather="plus-circle" class="me-2"></i>{{ $li_3 }}</a>
+                <a href="#" class="btn btn-added add-prod" data-bs-toggle="modal" data-bs-target="#add-products"><i data-feather="plus-circle" class="me-2"></i>{{ $li_3 }}</a>
             </div>
         @endif
     </div>

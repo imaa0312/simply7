@@ -8,6 +8,7 @@ use App\Http\Controllers\MRoleController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\TPurchaseOrder;
 use App\Http\Controllers\MProdukController;
+use App\Http\Controllers\MSalesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +25,18 @@ Route::get('index', [CustomAuthController::class, 'dashboard']);
 
 // Master
 Route::get('/getCategory', [MasterController::class, 'getKategori']);
-Route::get('/getSubCategory/{id}', [MasterController::class, 'getSubKategori']);
-Route::get('/getSsubCategory/{id}', [MasterController::class, 'getSsubKategori']);
+Route::get('/getSubCategory', [MasterController::class, 'getSubKategori']);
+Route::get('/getSsubCategory', [MasterController::class, 'getSsubKategori']);
+Route::get('/getSssubCategory', [MasterController::class, 'getSssubKategori']);
+Route::get('/getBrand', [MasterController::class, 'getBrand']);
+Route::get('/getSize', [MasterController::class, 'getSize']);
 Route::get('/getProvince', [MasterController::class, 'getProvince']);
 Route::get('/getCity/{id}', [MasterController::class, 'getCity']);
 Route::get('/getRole', [MUserController::class, 'getRole']);
 Route::get('/getManager', [MasterController::class, 'getStoreManager']);
 Route::get('/getExpenseCategory', [MasterController::class, 'getExpenseCategory']);
+Route::get('/getProduct/{id}', [MSalesController::class, 'getProduct']);
+Route::get('/addtocart/{id}', [MSalesController::class, 'addtocart']);
 
 Route::get('/roles', [MRoleController::class, 'index'])->name('roles');  
 Route::get('/roles-datatables', [MRoleController::class, 'rolesDatatables'])->name('roles-datatables');  
@@ -130,14 +136,18 @@ Route::get('/delete-customers/{id}', [MUserController::class, 'deleteCustomers']
 Route::get('/restore-customers/{id}', [MUserController::class, 'restoreCustomers'])->name('customers-restore'); 
 
 Route::get('/product-list', [MProdukController::class, 'product'])->name('product-list');
+Route::get('/product-datatables', [MProdukController::class, 'productDatatables'])->name('product-datatables'); 
+Route::get('/edit-product/{id}', [MProdukController::class, 'editProduct'])->name('product-edit'); 
 Route::post('/save-product-images', [MProdukController::class, 'uploadImages'])->name('upload-images');
-Route::post('/del-image-product', [MProdukController::class, 'delImages'])->name('del-image-product');
+Route::get('/del-image-product/{id}', [MProdukController::class, 'delImages'])->name('del-image-product');
+Route::post('/save-product', [MProdukController::class, 'storeProduct'])->name('save-product');
+Route::get('/delete-product/{id}', [MProdukController::class, 'deleteProduct'])->name('product-delete');
 
 Route::get('/purchase-order', [TPurchaseOrder::class, 'purchaseOrder'])->name('purchase-order'); 
 
 Route::get('/purchase-received', [TPurchaseOrder::class, 'purchaseReceived'])->name('purchase-received'); 
 
-
+Route::get('/pos', [MSalesController::class, 'index'])->name('pos');  
 
 
 
@@ -198,10 +208,6 @@ Route::get('/invoice-report', function () {
 Route::get('/sales-returns', function () {                         
     return view('sales-returns');
 })->name('sales-returns'); 
-
-Route::get('/pos', function () {                         
-    return view('pos');
-})->name('pos');  
 
 Route::get('/coupons', function () {                         
     return view('coupons');
