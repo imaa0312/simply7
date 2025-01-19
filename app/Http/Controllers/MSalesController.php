@@ -12,6 +12,7 @@ use App\Models\MProdukModel;
 use App\Models\MProdukImage;
 use App\Models\MCartModel;
 use App\Models\DCartModel;
+use App\Models\MCustomerModel;
 use DB;
 use carbon;
 
@@ -19,12 +20,67 @@ use carbon;
 
 class MSalesController extends Controller
 {
+    public function load_cart($cart_id){
+        $cart = '';
+        $dcart = DCartModel::where('cart_id', '=', $cart_id)->orderBy('id', 'ASC')->get();
+        foreach($dcart as $dc){
+            $data = MProdukModel::find($dc->product_id);
+            $data_img = MProdukImage::where('produk_id', '=', $dc->product_id)->first();
+            if($data_img === null){
+                $image = "no_image.png";
+            } else {
+                $image = $data_img->image;
+            }
+            $cart .= '<div class="product-list d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
+                    data-bs-target="#products">
+                    <a href="javascript:void(0);" class="img-bg">
+                        <img src="'.'product_images/'.$image.'"
+                            alt="Products">
+                    </a>
+                    <div class="info">
+                        <span>'.$data->sku.'</span>
+                        <h6><a href="javascript:void(0);">'.$data->name.'</a></h6>
+                        <p>Rp '.$data->price_sale.'</p>
+                    </div>
+                </div>
+                <div class="qty-item text-center">
+                    <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus" data-id="'.$dc->id.'"><i class="fa-solid fa-circle-minus" style="color: #ff0000;"></i></a>
+                        <input type="text" min="1" class="form-control text-center qty" name="qty"
+                        value="'.$dc->qty.'" data-id="'.$dc->id.'">
+                    <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus" data-id="'.$dc->id.'"><i class="fa-solid fa-circle-plus" style="color: #ff0000;"></i></a>                
+                </div>
+                <div class="d-flex align-items-center action">
+                    <a class="btn-icon delete-icon confirm-text del" href="javascript:void(0);" data-id="'.$dc->id.'">
+                        <i class="fa-solid fa-trash-can" style="color: #ff0000;"></i>
+                    </a>
+                </div>
+            </div>';
+        }
+
+        return $cart;
+    }
     public function getProduct($id){
         if($id  > 0)
-                $data = MProdukModel::where('kategori_id', '=', $id)->get();
+                $data = MProdukModel::select('m_produk.*', 'm_kategori_produk.name as kategori', 'm_sub_kategori_produk.name as sub_kategori', 'm_ssub_kategori_produk.name as ssub_kategori', 'm_sssub_kategori_produk.name as sssub_kategori', 'm_brand.name as brand', 'm_size.name as size')
+                ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
+                ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
+                ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_produk.ssub_kategori_id')
+                ->join('m_sssub_kategori_produk', 'm_sssub_kategori_produk.id', '=', 'm_produk.sssub_kategori_id')
+                ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
+                ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')
+                ->where('m_produk.kategori_id', '=', $id)->get();
         else
-            $data = MProdukModel::get();
+            $data = MProdukModel::select('m_produk.*', 'm_kategori_produk.name as kategori', 'm_sub_kategori_produk.name as sub_kategori', 'm_ssub_kategori_produk.name as ssub_kategori', 'm_sssub_kategori_produk.name as sssub_kategori', 'm_brand.name as brand', 'm_size.name as size')
+            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
+            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
+            ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_produk.ssub_kategori_id')
+            ->join('m_sssub_kategori_produk', 'm_sssub_kategori_produk.id', '=', 'm_produk.sssub_kategori_id')
+            ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
+            ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')->get();
+
         $product = '';
+        $list = "<option value='0'>Search Products</option>";
 
         foreach($data as $dt){
             $data_img = MProdukImage::where('produk_id', '=', $dt->id)->first();
@@ -39,98 +95,157 @@ class MSalesController extends Controller
                         <img src="'.'product_images/'.$image.'" alt="Products">
                         <span><i data-feather="check" class="feather-16"></i></span>
                     </a>
-                    <h6 class="product-name"><a href="javascript:void(0);">'.$dt->name.'</a></h6>
+                    <h6 class="cat-name"><a href="javascript:void(0);">'.$dt->sub_kategori."-".$dt->sssub_kategori.'</a></h6>
+                    <h6 class="product-name"><a href="javascript:void(0);">'.$dt->brand."-".$dt->name.'</a></h6>
                     <div class="d-flex align-items-center justify-content-between price">
+                        <span>'.$dt->size.'</span>
                         <p>Rp '.$dt->price_sale.'</p>
                     </div>
                 </div>
             </div>'; 
+
+            $list .= "<option value='".$dt->id."'>".$dt->brand." / ".$dt->name." / ".$dt->sssub_kategori." / ".$dt->size."</option>";
         }
 
-        echo json_encode($product);
+        $return = array(
+            "grid" => $product,
+            "list" => $list
+        );
+
+        echo json_encode($return);
     }
 
     public function addtocart($id){
-        $cart = '';
-
+        $check = MCartModel::select('m_cart.*', 'd_cart.product_id', 'd_cart.id as dcart_id', 'd_cart.qty')
+            ->join('d_cart', 'm_cart.id', '=', 'd_cart.cart_id')
+            ->where('session_code', '=', 'bdsjakfghjdsk')
+            ->where('product_id', '=', $id)
+            ->first();
         $data = MProdukModel::find($id);
-        $data_img = MProdukImage::where('produk_id', '=', $id)->first();
-        if($data_img === null){
-            $image = "no_image.png";
+
+        if($check){
+            $d_cart = DCartModel::find($check->dcart_id);
+            $d_cart->qty = (int)$check->qty+1;
+            $d_cart->sale_price = $data->price_sale;
+
+            $cart_id = $check->id;
         } else {
-            $image = $data_img->image;
+            $var = new  MCartModel;
+            $var->user_id = 4;
+            $var->trx_date = date("Y-m-d H:i:s");
+            $var->session_code = "bdsjakfghjdsk";
+            $var->save();
+
+            $d_cart = new  DCartModel;
+            $d_cart->cart_id = $var->id;
+            $d_cart->product_id = $id;
+            $d_cart->qty = 1;
+            $d_cart->sale_price = $data->price_sale;
+            $d_cart->save();
+
+            $cart_id = $var->id;
         }
-        $cart .= '<div class="product-list d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
-                data-bs-target="#products">
-                <a href="javascript:void(0);" class="img-bg">
-                    <img src="'.'product_images/'.$image.'"
-                        alt="Products">
-                </a>
-                <div class="info">
-                    <span>'.$data->sku.'</span>
-                    <h6><a href="javascript:void(0);">'.$data->name.'</a></h6>
-                    <p>Rp '.$data->price_sale.'</p>
-                </div>
-            </div>
-            <div class="qty-item text-center">
-                <input type="number" min="1" class="form-control text-center" name="qty" id="qty"
-                    value="1">
-            </div>
-            <div class="d-flex align-items-center action">
-                <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                    data-bs-target="#edit-product">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                </a>
-                <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                    <i class="fa-solid fa-trash-can" style="color: #ff0000;"></i>
-                </a>
-            </div>
-        </div>';
+        $d_cart->save();
 
-        $var = new  MCartModel;
-        $var->user_id = 4;
-        $var->trx_date = date("Y-m-d H:i:s");
-        $var->session_code = "bdsjakfghjdsk";
-        $var->save();
+        $return = array(
+            "cart" => $this->load_cart($cart_id),
+            "id" => $cart_id,
+            "count" => DCartModel::where('cart_id', '=', $cart_id)->sum('qty')
+        );
 
-        $var = new  DCartModel;
-        $var->cart_id = 4;
-        $var->product_id = $id;
-        $var->qty = ;
-        $var->sale_price = ;
-        $var->discount_percent = ;
-        $var->discount_amount = ;
-        $var->save();
+        echo json_encode($return);
+    }
 
-        echo json_encode($cart);
+    public function cartQty($id, $desc){
+        $d_cart = DCartModel::find($id);
+        $qty = $d_cart->qty;
+        $product = $d_cart->product_id;
+        $cart_id = $d_cart->cart_id;
+        if($desc==0)
+            $d_cart->qty = (int)$qty-1;
+        else
+            $d_cart->qty = (int)$qty+1;
+
+        $data = MProdukModel::find($product);
+        $d_cart->sale_price = $data->price_sale;
+        $d_cart->save();
+
+        $return = array(
+            "cart" => $this->load_cart($cart_id),
+            "id" => $cart_id,
+            "count" => DCartModel::where('cart_id', '=', $cart_id)->sum('qty')
+        );
+
+        echo json_encode($return);
+    }
+
+    public function fillQty($id, $amount){
+        $d_cart = DCartModel::find($id);
+        $qty = $d_cart->qty;
+        $product = $d_cart->product_id;
+
+        $cart_id = $d_cart->cart_id;
+        $d_cart->qty = $amount;
+
+        $data = MProdukModel::find($product);
+        $d_cart->sale_price = $data->price_sale;
+        $d_cart->save();
+
+        $return = array(
+            "cart" => $this->load_cart($cart_id),
+            "id" => $cart_id,
+            "count" => DCartModel::where('cart_id', '=', $cart_id)->sum('qty')
+        );
+
+        echo json_encode($return);
+    }
+
+    public function posDel($id){
+        $d_cart = DCartModel::find($id);
+        $cart_id = $d_cart->cart_id;
+        $d_cart->delete();
+
+        $return = array(
+            "cart" => $this->load_cart($cart_id),
+            "id" => $cart_id,
+            "count" => DCartModel::where('cart_id', '=', $cart_id)->sum('qty')
+        );
+
+        echo json_encode($return);
+    }
+
+    public function posVoid($id){
+        $d_cart = DCartModel::where("cart_id", "=", $id);
+        $d_cart->delete();
+
+        $m_cart = MCartModel::find($id);
+        $m_cart->delete();
+
+        if($d_cart && $m_cart){
+            $return = array(
+                "status" => true,
+                "count" => DCartModel::where('cart_id', '=', $id)->sum('qty'),
+                "msg" => "Transaction has been void"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data not found"
+            );
+        }
+        echo json_encode($return);
     }
 
     public function index()
     {
-        $roleSales = MRoleModel::where('name', 'Sales')->first();
-
-        //$getMsales = MUserModel::where('role', '=', $roleSales->id)->get();
-
-        // $getMsales = DB::table('m_user')
-        //     ->select('m_user.id as user_id','m_user.name as name', 'm_user.username','m_user.email','m_user.address', 'm_wilayah_sales.name as wilayah_name')
-        //     ->join('m_wilayah_pembagian_sales','m_user.id','m_wilayah_pembagian_sales.sales')
-        //     ->join('m_wilayah_sales','m_wilayah_sales.id','m_wilayah_pembagian_sales.wilayah_sales')
-        //     ->where('role', '=', $roleSales->id)
-        //     ->get();
-
-        // foreach ($getMsales as $raw_data) {
-        //     $point_sales = DB::table('m_point_sales')
-        //         ->where('sales', $raw_data->user_id)
-        //         ->sum('point');
-
-        //     $raw_data->point = $point_sales;
-        // }
-
-        // dd($getMsales);
-
         $data['category'] =  MKategoriModel::where('status', '=', 1)->get();
-        $all_product =  MProdukModel::get();
+        $all_product =  MProdukModel::select('m_produk.*', 'm_kategori_produk.name as kategori', 'm_sub_kategori_produk.name as sub_kategori', 'm_ssub_kategori_produk.name as ssub_kategori', 'm_sssub_kategori_produk.name as sssub_kategori', 'm_brand.name as brand', 'm_size.name as size')
+        ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
+        ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
+        ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_produk.ssub_kategori_id')
+        ->join('m_sssub_kategori_produk', 'm_sssub_kategori_produk.id', '=', 'm_produk.sssub_kategori_id')
+        ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
+        ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')->get();
         $data['all_product'] = array();
         $i=0;
         foreach($all_product as $all){
@@ -149,23 +264,38 @@ class MSalesController extends Controller
 
         return view('pos', compact('data'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function posCust(Request $request)
     {
-        return view('admin.sales.create');
+        $customers =  MCustomerModel::where('status', '=', 1)->where('name', 'like', '%'.$request->input('q').'%')->get();
+        echo json_encode($customers);
     }
+    public function posProd(Request $request)
+    {
+        $data = MProdukModel::select('m_produk.*', 'm_kategori_produk.name as kategori', 'm_sub_kategori_produk.name as sub_kategori', 'm_ssub_kategori_produk.name as ssub_kategori', 'm_sssub_kategori_produk.name as sssub_kategori', 'm_brand.name as brand', 'm_size.name as size')
+            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
+            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
+            ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_produk.ssub_kategori_id')
+            ->join('m_sssub_kategori_produk', 'm_sssub_kategori_produk.id', '=', 'm_produk.sssub_kategori_id')
+            ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
+            ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')
+            ->where('m_produk.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_brand.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_sssub_kategori_produk.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_size.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_produk.sku', 'like', '%'.$request->input('q').'%')
+            ->get();
+        echo json_encode($data);
+    }
+    
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
+
     public function store(Request $request)
     {
         $nama = $request->old('nama');

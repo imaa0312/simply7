@@ -36,7 +36,6 @@ Route::get('/getRole', [MUserController::class, 'getRole']);
 Route::get('/getManager', [MasterController::class, 'getStoreManager']);
 Route::get('/getExpenseCategory', [MasterController::class, 'getExpenseCategory']);
 Route::get('/getProduct/{id}', [MSalesController::class, 'getProduct']);
-Route::get('/addtocart/{id}', [MSalesController::class, 'addtocart']);
 
 Route::get('/roles', [MRoleController::class, 'index'])->name('roles');  
 Route::get('/roles-datatables', [MRoleController::class, 'rolesDatatables'])->name('roles-datatables');  
@@ -148,6 +147,13 @@ Route::get('/purchase-order', [TPurchaseOrder::class, 'purchaseOrder'])->name('p
 Route::get('/purchase-received', [TPurchaseOrder::class, 'purchaseReceived'])->name('purchase-received'); 
 
 Route::get('/pos', [MSalesController::class, 'index'])->name('pos');  
+Route::get('/addtocart/{id}', [MSalesController::class, 'addtocart']);
+Route::get('/pos-qty/{id}/{desc}', [MSalesController::class, 'cartQty'])->name('pos-qty');  
+Route::get('/fill-qty/{id}/{qty}', [MSalesController::class, 'fillQty'])->name('fill-qty');  
+Route::get('/pos-del/{id}', [MSalesController::class, 'posDel'])->name('pos-del');  
+Route::get('/pos-void/{id}', [MSalesController::class, 'posVoid'])->name('pos-void');  
+Route::get('/pos-cust', [MSalesController::class, 'posCust'])->name('pos-cust');  
+Route::get('/pos-prod', [MSalesController::class, 'posProd'])->name('pos-prod');  
 
 
 

@@ -71,112 +71,38 @@
                                 <h5>Order List</h5>
                                 <span>Transaction ID : #65565</span>
                             </div>
-                            <div class="">
-                                <a class="confirm-text" href="javascript:void(0);"><i data-feather="trash-2"
-                                        class="feather-16 text-danger"></i></a>
-                                <a href="javascript:void(0);" class="text-default"><i data-feather="more-vertical"
-                                        class="feather-16"></i></a>
-                            </div>
                         </div>
+                        <form id="formKu" method="POST">
+                        @csrf
+                        <input type="hidden" id="cart_id">
                         <div class="customer-info block-section">
                             <h6>Customer Information</h6>
                             <div class="input-block d-flex align-items-center">
                                 <div class="flex-grow-1">
-                                    <select class="select">
-                                        <option>Walk in Customer</option>
-                                        <option>John</option>
-                                        <option>Smith</option>
-                                        <option>Ana</option>
-                                        <option>Elza</option>
+                                    <select class="select2 form-control" id="cust">
+                                        <option value="0">Walk in Customer</option>
                                     </select>
                                 </div>
                                 <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal"
                                     data-bs-target="#create"><i data-feather="user-plus" class="feather-16"></i></a>
                             </div>
                             <div class="input-block">
-                                <select class="select">
-                                    <option>Search Products</option>
-                                    <option>IPhone 14 64GB</option>
-                                    <option>MacBook Pro</option>
-                                    <option>Rolex Tribute V3</option>
-                                    <option>Red Nike Angelo</option>
-                                    <option>Airpod 2</option>
-                                    <option>Oldest</option>
+                                <select class="select2 form-control" id="prod-list">
+                                    <option value="0">Search Products</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="product-added block-section">
                             <div class="head-text d-flex align-items-center justify-content-between">
-                                <h6 class="d-flex align-items-center mb-0">Product Added<span class="count">2</span></h6>
-                                <a href="javascript:void(0);" class="d-flex align-items-center text-danger"><span
-                                        class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear all</a>
+                                <h6 class="d-flex align-items-center mb-0">Product Added<span class="count" id="count">0</span></h6>
                             </div>
                             <div class="product-wrap" id="productadded">
-                                <div class="product-list d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center product-info" data-bs-toggle="modal"
-                                        data-bs-target="#products">
-                                        <a href="javascript:void(0);" class="img-bg">
-                                            <img src="{{ URL::asset('/build/img/products/pos-product-16.png') }}"
-                                                alt="Products">
-                                        </a>
-                                        <div class="info">
-                                            <span>PT0005</span>
-                                            <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                            <p>$2000</p>
-                                        </div>
-                                    </div>
-                                    <div class="qty-item text-center">
-                                        <a href="javascript:void(0);"
-                                            class="dec d-flex justify-content-center align-items-center"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i
-                                                data-feather="minus-circle" class="feather-14"></i></a>
-                                        <input type="text" class="form-control text-center" name="qty"
-                                            value="4">
-                                        <a href="javascript:void(0);"
-                                            class="inc d-flex justify-content-center align-items-center"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i
-                                                data-feather="plus-circle" class="feather-14"></i></a>
-                                    </div>
-                                    <div class="d-flex align-items-center action">
-                                        <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit-product">
-                                            <i data-feather="edit" class="feather-14"></i>
-                                        </a>
-                                        <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                            <i data-feather="trash-2" class="feather-14"></i>
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="block-section">
                             <div class="selling-info">
                                 <div class="row">
-                                    <div class="col-12 col-sm-4">
-                                        <div class="input-block">
-                                            <label>Order Tax</label>
-                                            <select class="select">
-                                                <option>GST 5%</option>
-                                                <option>GST 10%</option>
-                                                <option>GST 15%</option>
-                                                <option>GST 20%</option>
-                                                <option>GST 25%</option>
-                                                <option>GST 30%</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-sm-4">
-                                        <div class="input-block">
-                                            <label>Shipping</label>
-                                            <select class="select">
-                                                <option>15</option>
-                                                <option>20</option>
-                                                <option>25</option>
-                                                <option>30</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-12 col-sm-4">
                                         <div class="input-block">
                                             <label>Discount</label>
@@ -201,14 +127,7 @@
                                     <tr>
                                         <td>Tax (GST 5%)</td>
                                         <td class="text-end">$40.21</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shipping</td>
-                                        <td class="text-end">$40.21</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sub Total</td>
-                                        <td class="text-end">$60,454</td>
+                                    </tr>class="text-end">$60,454</td>
                                     </tr>
                                     <tr>
                                         <td class="danger">Discount (10%)</td>
@@ -263,7 +182,7 @@
                                 data-bs-toggle="modal" data-bs-target="#hold-order"><span
                                     class="me-1 d-flex align-items-center"><i data-feather="pause"
                                         class="feather-16"></i></span>Hold</a>
-                            <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill"><span
+                            <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill" id="void"><span
                                     class="me-1 d-flex align-items-center"><i data-feather="trash-2"
                                         class="feather-16"></i></span>Void</a>
                             <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill"
@@ -271,7 +190,7 @@
                                     class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                         class="feather-16"></i></span>Payment</a>
                         </div>
-
+                        </form>
                     </aside>
                 </div>
             </div>
@@ -289,7 +208,7 @@
                     dataType: 'json',
                     url: '{!! url("getProduct") !!}/'+id,
                     success: function (data) {
-                        $('.product_div').html(data);
+                        $('.product_div').html(data.grid);
                     },
                     fail: function (e) {
                         toastr.error(data.msg);
@@ -305,7 +224,9 @@
                     dataType: 'json',
                     url: '{!! url("addtocart") !!}/'+id,
                     success: function (data) {
-                        $('#productadded').append(data);
+                        $('#productadded').html(data.cart);
+                        $('#cart_id').val(data.id);
+                        $('#count').html(data.count);
                     },
                     fail: function (e) {
                         toastr.error(data.msg);
@@ -313,53 +234,149 @@
                 });
             });
     
-            $('body').on('click', '.edit-product', function(){
-                $('#title_modal').html("Edit Product");
+            $('body').on('click', '.dec', function(){
                 var id = $(this).attr('data-id');
                 $.ajax({
                     type : "GET",
                     dataType: 'json',
-                    url: '{!! url("edit-product") !!}/'+id,
+                    url: '{!! url("pos-qty") !!}/'+id+'/'+0,
                     success: function (data) {
-                        if (data.status === true) {
-                            $('#product_id').val(data.id);
-                            $('#product_name').val(data.name);
-                            $('#sku').val(data.sku);
-                            $('#p_price').val(data.price_purchase);
-                            $('#s_price').val(data.price_sale);
-                            $('#profit').val(data.profit_percent);
-                            $('#qty_alert').val(data.stok_minimal);
-                            $('#category_list').html(data.kategori_list);
-                            $('#sub_category_list').html(data.sub_kategori_list);
-                            $('#ssub_category_list').html(data.ssub_kategori_list);
-                            $('#sssub_category_list').html(data.sssub_kategori_list);
-                            $('#brand_list').html(data.brand_list);
-                            $('#size_list').html(data.size_list);
-                            $('#desc').html(data.description);
-                            $("#category option[value="+data.kategori_id+"]").attr('selected', true); 
-                            $("#subcategory option[value="+data.sub_kategori_id+"]").attr('selected', true); 
-                            $("#ssubcategory option[value="+data.ssub_kategori_id+"]").attr('selected', true); 
-                            $("#sssubcategory option[value="+data.sssub_kategori_id+"]").attr('selected', true); 
-                            $("#brand option[value="+data.brand_id+"]").attr('selected', true); 
-                            $("#size option[value="+data.size_id+"]").attr('selected', true); 
-                            $('#images').val(data.images_id);
-                            $('#images_id').val(data.images_id);
-                            $('.add-choosen').html('<div class="phone-img"><img src="'+data.images+'" alt="image"><a href="javascript:void(0);"><i class="fa-solid fa-xmark remove-product" data-id="'+data.images_id+'"></i></a></div>');
-                            
-                            if(data.images_id == ""){
-                                $('.image-upload').show();
-                            } else {
-                                $('.image-upload').hide();
-                            }
-                        }
+                        $('#productadded').html(data.cart);
+                        $('#count').html(data.count);
                     },
                     fail: function (e) {
                         toastr.error(data.msg);
                     }
                 });
             });
+    
+            $('body').on('click', '.inc', function(){
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("pos-qty") !!}/'+id+'/'+1,
+                    success: function (data) {
+                        $('#productadded').html(data.cart);
+                        $('#count').html(data.count);
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+            });
+    
+            $('body').on('change', '.qty', function(){
+                var id = $(this).attr('data-id');
+                var qty = $(this).val();
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("fill-qty") !!}/'+id+'/'+qty,
+                    success: function (data) {
+                        $('#productadded').html(data.cart);
+                        $('#count').html(data.count);
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+            });
+    
+            $('body').on('click', '.del', function(){
+                var id = $(this).attr('data-id');
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("pos-del") !!}/'+id,
+                    success: function (data) {
+                        $('#productadded').html(data.cart);
+                        $('#count').html(data.count);
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+            });
+    
+            $('body').on('click', '#void', function(){
+                var id = $('#cart_id').val();
+                $.ajax({
+                    type : "GET",
+                    dataType: 'json',
+                    url: '{!! url("pos-void") !!}/'+id,
+                    success: function (data) {  
+                        $('#productadded').html("");
+                        $('#cart_id').val("");
+                        $('#count').html(data.count);
+                    },
+                    fail: function (e) {
+                        toastr.error(data.msg);
+                    }
+                });
+            });
+
+            $('#cust').select2({
+                ajax: {
+                    type: "GET",
+                    dataType: 'json',
+                    url: '{!! url("pos-cust") !!}',
+                    data: function (param) {
+                        return {
+                            q: param.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+
+            $('#prod-list').select2({
+                ajax: {
+                    type: "GET",
+                    dataType: 'json',
+                    url: '{!! url("pos-prod") !!}',
+                    data: function (param) {
+                        return {
+                            q: param.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    // text: item.brand+' - '+item.name+' - '+item.size+' - '.item.sku,
+                                    text: item.brand+' - '+item.name+' - '+item.size,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+
+
+
+
+
+
+
+    
+            $('body').on('click', '#hold', function(){
+                var id = $(this).attr('data-id');
+                $('#productadded').html("");
+                $('#cart_id').val("");
+            });
             
-            $('body').on('click', '.save-product', function(){
+            $('body').on('click', '.payment', function(){
                 var form = $('#formKu');
                 var formdata = new FormData(form[0]);
     
