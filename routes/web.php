@@ -148,6 +148,7 @@ Route::get('/purchase-received', [TPurchaseOrder::class, 'purchaseReceived'])->n
 
 Route::get('/pos', [MSalesController::class, 'index'])->name('pos');  
 Route::get('/addtocart/{id}', [MSalesController::class, 'addtocart']);
+Route::get('/loadcart/{id}', [MSalesController::class, 'load_cart']);
 Route::get('/pos-qty/{id}/{desc}', [MSalesController::class, 'cartQty'])->name('pos-qty');  
 Route::get('/fill-qty/{id}/{qty}', [MSalesController::class, 'fillQty'])->name('fill-qty');  
 Route::get('/pos-del/{id}', [MSalesController::class, 'posDel'])->name('pos-del');  

@@ -22,6 +22,18 @@ class MSalesController extends Controller
 {
     public function load_cart($cart_id){
         $cart = '';
+        if($cart_id == 0){
+            $mcart = MCartModel::where('session_code', '=', 'bdsjakfghjdsk')
+                ->where('status', '=', 1)
+                ->first();
+            
+            if($mcart) $cart_id = $mcart->id;
+            else $cart_id = 0;
+
+            $cartid = 0;
+        } else
+            $cartid = 1;
+        
         $dcart = DCartModel::where('cart_id', '=', $cart_id)->orderBy('id', 'ASC')->get();
         foreach($dcart as $dc){
             $data = MProdukModel::find($dc->product_id);
@@ -58,7 +70,10 @@ class MSalesController extends Controller
             </div>';
         }
 
-        return $cart;
+        if($cartid == 0)
+            echo json_encode($cart);
+        else
+            return $cart;
     }
     public function getProduct($id){
         if($id  > 0)
@@ -123,17 +138,32 @@ class MSalesController extends Controller
             ->first();
         $data = MProdukModel::find($id);
 
-        if($check){
-            $d_cart = DCartModel::find($check->dcart_id);
-            $d_cart->qty = (int)$check->qty+1;
-            $d_cart->sale_price = $data->price_sale;
+        $check_mcart = MCartModel::where('session_code', '=', 'bdsjakfghjdsk')
+            ->where('status', '=', 1)
+            ->first();
 
-            $cart_id = $check->id;
+        if($check_mcart){
+            $cart_id = $check_mcart->id;
+
+            if($check){
+                $d_cart = DCartModel::find($check->dcart_id);
+                $d_cart->qty = (int)$check->qty+1;
+                $d_cart->sale_price = $data->price_sale;
+            } else {
+                $d_cart = new  DCartModel;
+                $d_cart->cart_id = $cart_id;
+                $d_cart->product_id = $id;
+                $d_cart->qty = 1;
+                $d_cart->sale_price = $data->price_sale;
+                $d_cart->save();
+            }
+            $d_cart->save();
         } else {
             $var = new  MCartModel;
             $var->user_id = 4;
             $var->trx_date = date("Y-m-d H:i:s");
             $var->session_code = "bdsjakfghjdsk";
+            $var->status = 1;
             $var->save();
 
             $d_cart = new  DCartModel;
@@ -144,8 +174,8 @@ class MSalesController extends Controller
             $d_cart->save();
 
             $cart_id = $var->id;
+            $d_cart->save();
         }
-        $d_cart->save();
 
         $return = array(
             "cart" => $this->load_cart($cart_id),
