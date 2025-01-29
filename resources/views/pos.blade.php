@@ -34,25 +34,7 @@
                                 <h5 class="mb-3">Products</h5>
                             </div>
                             <div class="tabs_container">
-                                <div class="tab_content active" data-tab="all">
-                                    <div class="row">
-                                        @foreach($data['all_product'] as $all)
-                                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 prod" id="p{{{ $all['id'] }}}" data-id={{{ $all['id'] }}}>
-                                            <div class="product-info default-cover card">
-                                                <a href="javascript:void(0);" class="img-bg">
-                                                    <img src="{{ URL::asset('/product_images') }}/{{{ $all['image'] }}}"
-                                                        alt="Products">
-                                                    <span><i data-feather="check" class="feather-16"></i></span>
-                                                </a>
-                                                <h6 class="product-name"><a href="javascript:void(0);">{{{ $all['name'] }}}</a>
-                                                </h6>
-                                                <div class="d-flex align-items-center justify-content-between price">
-                                                    <p>Rp {{{ $all['price_sale'] }}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
+                                <div class="tab_content tab-all active" data-tab="all">
                                 </div>
                                 @foreach($data['category'] as $cat)
                                 <div class="tab_content product_div" data-tab="{{{ $cat->code }}}">
@@ -127,7 +109,6 @@
                                     <tr>
                                         <td>Tax (GST 5%)</td>
                                         <td class="text-end">$40.21</td>
-                                    </tr>class="text-end">$60,454</td>
                                     </tr>
                                     <tr>
                                         <td class="danger">Discount (10%)</td>
@@ -145,7 +126,7 @@
                             <h6>Payment Method</h6>
                             <div class="row d-flex align-items-center justify-content-center methods">
                                 <div class="col-md-6 col-lg-4 item">
-                                    <div class="default-cover">
+                                    <div class="default-cover" data-id="cash">
                                         <a href="javascript:void(0);">
                                             <img src="{{ URL::asset('/build/img/icons/cash-pay.svg')}}"
                                                 alt="Payment Method">
@@ -154,7 +135,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-4 item">
-                                    <div class="default-cover">
+                                    <div class="default-cover" data-id="edc">
                                         <a href="javascript:void(0);">
                                             <img src="{{ URL::asset('/build/img/icons/credit-card.svg')}}"
                                                 alt="Payment Method">
@@ -163,7 +144,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-4 item">
-                                    <div class="default-cover">
+                                    <div class="default-cover" data-id="qr">
                                         <a href="javascript:void(0);">
                                             <img src="{{ URL::asset('/build/img/icons/qr-scan.svg')}}" alt="Payment Method">
                                             <span>Scan</span>
@@ -201,6 +182,18 @@
     
     <script>
         $(document).ready(function(){
+            $.ajax({
+                type : "GET",
+                dataType: 'json',
+                url: '{!! url("getProduct") !!}/0',
+                success: function (data) {
+                    $('.tab-all').html(data.grid);
+                },
+                fail: function (e) {
+                    toastr.error(data.msg);
+                }
+            });
+
             $.ajax({
                 type : "GET",
                 dataType: 'json',

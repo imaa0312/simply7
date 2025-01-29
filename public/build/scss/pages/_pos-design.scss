@@ -547,7 +547,7 @@ aside {
                         }
 
                     }
-                    &:hover {
+                    &:hover, &.active {
                         background-color: $gray-200;
                         border-color: $primary;
                         img {

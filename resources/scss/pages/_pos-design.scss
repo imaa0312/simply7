@@ -554,6 +554,13 @@ aside {
                             filter: invert(75%) sepia(66%) saturate(1955%) hue-rotate(327deg) brightness(103%) contrast(102%);
                         }
                     }
+                    &:active {
+                        background-color: $gray-200;
+                        border-color: $primary;
+                        img {
+                            filter: invert(75%) sepia(66%) saturate(1955%) hue-rotate(327deg) brightness(103%) contrast(102%);
+                        }
+                    }
                 }
             }
         }

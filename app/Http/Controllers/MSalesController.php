@@ -94,7 +94,7 @@ class MSalesController extends Controller
             ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
             ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')->get();
 
-        $product = '';
+        $product = '<div class="row">';
         $list = "<option value='0'>Search Products</option>";
 
         foreach($data as $dt){
@@ -108,7 +108,6 @@ class MSalesController extends Controller
                 <div class="product-info default-cover card">
                     <a href="javascript:void(0);" class="img-bg">
                         <img src="'.'product_images/'.$image.'" alt="Products">
-                        <span><i data-feather="check" class="feather-16"></i></span>
                     </a>
                     <h6 class="cat-name"><a href="javascript:void(0);">'.$dt->sub_kategori."-".$dt->sssub_kategori.'</a></h6>
                     <h6 class="product-name"><a href="javascript:void(0);">'.$dt->brand."-".$dt->name.'</a></h6>
@@ -121,6 +120,8 @@ class MSalesController extends Controller
 
             $list .= "<option value='".$dt->id."'>".$dt->brand." / ".$dt->name." / ".$dt->sssub_kategori." / ".$dt->size."</option>";
         }
+
+        $product .= '</div>';
 
         $return = array(
             "grid" => $product,

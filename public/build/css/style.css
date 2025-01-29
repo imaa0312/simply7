@@ -29386,7 +29386,14 @@ aside.product-order-list .payment-method .methods .default-cover:hover {
   background-color: #eff2f7;
   border-color: #FF9F43;
 }
+aside.product-order-list .payment-method .methods .default-cover:active {
+  background-color: #eff2f7!important;
+  border-color: #FF9F43!important;
+}
 aside.product-order-list .payment-method .methods .default-cover:hover img {
+  filter: invert(75%) sepia(66%) saturate(1955%) hue-rotate(327deg) brightness(103%) contrast(102%);
+}
+aside.product-order-list .payment-method .methods .default-cover:active img {
   filter: invert(75%) sepia(66%) saturate(1955%) hue-rotate(327deg) brightness(103%) contrast(102%);
 }
 aside.product-order-list .btn-block {
