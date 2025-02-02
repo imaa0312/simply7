@@ -59,6 +59,40 @@ class TPurchaseOrder extends Controller
             ->make(true);
     }
 
+    public function poProductDatatable($id =  0){
+        $data = DPurchaseOrderModel::select('d_purchase_order.*', 'm_produk.name as name')
+            ->join('m_produk', 'd_purchase_order.produk', '=', 'm_produk.id')
+            ->where('d_purchase_order.po_id', '=', $id)
+            ->get();
+        return Datatables::of($data)
+            ->addColumn('action', function($row){
+                if($row->status == 1)
+                    return '<div class="edit-delete-action">
+                        <a class="me-2 p-2 btn btn-success btn-sm edit-users" href="javascript:void(0);" data-bs-toggle="modal"
+                            data-bs-target="#add-users" data-id="'.$row->id.'">
+                            <i class="fas fa-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm p-2 del-users" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-trash-can"></i>
+                        </a>
+                    </div>';
+                else
+                    return '<div class="edit-delete-action">
+                        <a class="btn btn-success btn-sm p-2 restore-users" href="javascript:void(0);" data-id="'.$row->id.'">
+                            <i class="fas fa-square-check"></i>
+                        </a>
+                    </div>';
+            })
+            ->editColumn('status', function($row){
+                if($row->status == 0)
+                    return '<span class="badge rounded-pill bg-danger">Deleted</span>';
+                else
+                    return '<span class="badge rounded-pill bg-success">Active</span>';
+            })
+            ->rawColumns(['action', 'status'])
+            ->make(true);
+    }
+
     //dropdown_selection
 
     public function asset(){

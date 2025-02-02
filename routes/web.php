@@ -143,6 +143,7 @@ Route::post('/save-product', [MProdukController::class, 'storeProduct'])->name('
 Route::get('/delete-product/{id}', [MProdukController::class, 'deleteProduct'])->name('product-delete');
 
 Route::get('/purchase-order', [TPurchaseOrder::class, 'purchaseOrder'])->name('purchase-order'); 
+Route::get('/po-product-datatables/{id}', [TPurchaseOrder::class, 'poProductDatatable'])->name('po-product-datatables'); 
 
 Route::get('/purchase-received', [TPurchaseOrder::class, 'purchaseReceived'])->name('purchase-received'); 
 

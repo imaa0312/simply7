@@ -725,7 +725,9 @@
 							</button>
 						</div>
 						<div class="modal-body custom-modal-body">
-							<form action="purchase-list">
+							<form method="POST" id="formKu">
+                                @csrf
+                                <input type="hidden" id="po_id" name="po_id" value="0">
 								<div class="row">
 									<div class="col-lg-4 col-md-6 col-sm-12">
 										<div class="input-blocks add-product">
@@ -759,7 +761,9 @@
 									<div class="col-lg-6">
 										<div class="input-blocks">
 											<label>Product Name</label>
-											<input type="text" placeholder="Please type product code and select">
+											<select class="select2 form-control" id="prod-list">
+                                                <option value="0">Search Products</option>
+                                            </select>
 										</div>
 									</div>
 									<div class="col-lg-2">
@@ -771,7 +775,7 @@
                                                 </div>
                                                 <div class="col-lg-4 col-sm-4 col-4 ps-0">
                                                     <div class="add-icon tab">
-                                                        <a href="javascript:void(0);"><i data-feather="plus-circle" class="feather-plus-circles"></i></a>
+                                                        <a href="javascript:void(0);" id="add-product"><i data-feather="plus-circle" class="feather-plus-circles"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -780,7 +784,7 @@
 									<div class="col-lg-12">
 										<div class="modal-body-table">
 											<div class="table-responsive">
-												<table class="table  datanew">
+												<table class="table" id="myTable2">
 													<thead>
 														<tr>
 															<th>Product</th>
@@ -789,22 +793,11 @@
 															<th>Discount($)</th>
 															<th>Tax(%)</th>
 															<th>Tax Amount($)</th>
-															<th>Unit Cost($)</th>
 															<th>Total Cost(%)</th>
 														</tr>
 													</thead>
 
 													<tbody>
-														<tr>
-															<td class="p-3">a</td>
-															<td class="p-2">a</td>
-															<td class="p-2">a</td>
-															<td class="p-2">a</td>
-															<td class="p-2">a</td>
-															<td class="p-2">a</td>
-															<td class="p-2">a</td>
-															<td class="p-2">a</td>
-														</tr>
 													</tbody>
 												</table>
 											</div>

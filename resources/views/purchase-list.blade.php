@@ -353,4 +353,80 @@
             <!-- /product list -->
         </div>
     </div>
+    
+    <script src="{{ URL::asset('build/js/jquery-3.7.1.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#prod-list').select2({
+                ajax: {
+                    type: "GET",
+                    dataType: 'json',
+                    url: '{!! url("pos-prod") !!}',
+                    data: function (param) {
+                        return {
+                            q: param.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    // text: item.brand+' - '+item.name+' - '+item.size+' - '.item.sku,
+                                    text: item.brand+' - '+item.name+' - '+item.size,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    }
+                },
+                dropdownParent: $("#add-units")
+            });
+
+            $('#myTable2').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{!! url('po-product-datatables') !!}/"+$('#po_id').val(),
+                    type: "get"
+                },
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                columns: [
+                    // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
+                    {data: 'name', name: 'name'},
+                    {data: 'qty', name: 'qty'},
+                    {data: 'purchase_price', name: 'purchase_price'},
+                    {data: 'purchase_discount', name: 'purchase_discount'},
+                    {data: 'purchase_tax_percent', name: 'purchase_tax_percent'},
+                    {data: 'purchase_tax_amount', name: 'purchase_tax_amount'},
+                    {data: 'total_cost', name: 'total_cost'}
+                ],            
+                "bFilter": false,
+                "sDom": 'fBtlpi',  
+                "ordering": false,
+                "language": {
+                    search: ' ',
+                    sLengthMenu: '_MENU_',
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> '
+                    },
+                },
+                initComplete: (settings, json)=>{
+                    $('.dataTables_filter').appendTo('#tableSearch');
+                    $('.dataTables_filter').appendTo('.search-input');
+    
+                }
+            });
+
+            $('body').on('click', '#add-product', function(){
+
+            });
+        });
+    </script>
 @endsection
