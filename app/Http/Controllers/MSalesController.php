@@ -13,6 +13,7 @@ use App\Models\MProdukImage;
 use App\Models\MCartModel;
 use App\Models\DCartModel;
 use App\Models\MCustomerModel;
+use App\Models\MSupplierModel;
 use DB;
 use carbon;
 
@@ -314,6 +315,13 @@ class MSalesController extends Controller
             ->orWhere('m_sssub_kategori_produk.name', 'like', '%'.$request->input('q').'%')
             ->orWhere('m_size.name', 'like', '%'.$request->input('q').'%')
             ->orWhere('m_produk.sku', 'like', '%'.$request->input('q').'%')
+            ->get();
+        echo json_encode($data);
+    }
+
+    public function getSupp()
+    {
+        $data = MSupplierModel::where('status', '=', 1)
             ->get();
         echo json_encode($data);
     }

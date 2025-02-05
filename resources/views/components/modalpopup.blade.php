@@ -732,22 +732,9 @@
 									<div class="col-lg-4 col-md-6 col-sm-12">
 										<div class="input-blocks add-product">
 											<label>Supplier Name</label>
-                                            <select class="select">
-                                                <option>Select Customer</option>
-                                                <option>Apex Computers</option>
-                                                <option>Dazzle Shoes</option>
-                                                <option>Best Accessories</option>
+                                            <select class="select2 form-control" id="supp-list" name="supplier">
+                                                <option value="0">Search Supplier</option>
                                             </select>
-										</div>
-									</div>
-									<div class="col-lg-4 col-md-6 col-sm-12">
-										<div class="input-blocks">
-											<label>Purchase Date</label>
-
-											<div class="input-groupicon calender-input">
-												<i data-feather="calendar" class="info-img"></i>
-												<input type="text" class="datetimepicker" placeholder="Choose">
-											</div>
 										</div>
 									</div>
 									<div class="col-lg-4 col-md-6 col-sm-12">
@@ -756,12 +743,22 @@
 											<input type="text" class="form-control" disabled>
 										</div>
 									</div>
+									<div class="col-lg-4 col-md-6 col-sm-12">
+										<div class="input-blocks">
+											<label>Purchase Date</label>
+
+											<div class="input-groupicon calender-input">
+												<i data-feather="calendar" class="info-img"></i>
+												<input type="text" class="datetimepicker" placeholder="Choose" name="po_date">
+											</div>
+										</div>
+									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="input-blocks">
 											<label>Product Name</label>
-											<select class="select2 form-control" id="prod-list">
+											<select class="select2 form-control" id="prod-list" name="product">
                                                 <option value="0">Search Products</option>
                                             </select>
 										</div>
@@ -771,7 +768,7 @@
 											<label>Qty</label>
                                             <div class="row">
                                                 <div class="col-lg-8 col-sm-8 col-8">
-											        <input type="text" class="form-control">
+											        <input type="text" class="form-control" name="qty">
                                                 </div>
                                                 <div class="col-lg-4 col-sm-4 col-4 ps-0">
                                                     <div class="add-icon tab">
@@ -789,11 +786,9 @@
 														<tr>
 															<th>Product</th>
 															<th>Qty</th>
-															<th>Purchase Price($)</th>
-															<th>Discount($)</th>
-															<th>Tax(%)</th>
-															<th>Tax Amount($)</th>
-															<th>Total Cost(%)</th>
+															<th>Purchase Price(Rp)</th>
+															<th>Discount(Rp)</th>
+															<th>Total Cost(Rp)</th>
 														</tr>
 													</thead>
 
@@ -807,29 +802,28 @@
 									<div class="row">
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
-												<label>Order Tax</label>
-												<input type="text" value="0">
+												<label>Order Tax (%)</label>
+												<input type="text" value="0" name="order_tax" id="order_tax">
 											</div>
 										</div>
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
-												<label>Discount</label>
-												<input type="text" value="0">
+												<label>Discount (Rp)</label>
+												<input type="text" value="0" name="order_discount" id="order_discount">
 											</div>
 										</div>
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
-												<label>Shipping</label>
-												<input type="text" value="0">
+												<label>Shipping (Rp)</label>
+												<input type="text" value="0" id="shipping_cost" name="shipping_cost">
 											</div>
 										</div>
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
 												<label>Status</label>
-												<select class="select">
-													<option>Choose</option>
-													<option>Received</option>
-													<option>Pending</option>
+												<select class="select" name="status" id="status">
+													<option value="in process">In Process</option>
+													<option value="received">Received</option>
 												</select>
 											</div>
 										</div>
@@ -839,7 +833,7 @@
 								<div class="col-lg-12">
 									<div class="input-blocks summer-description-box">
 										<label>Notes</label>
-										<div id="summernote"></div>
+										<textarea id="summernote" name="desc" id="desc"></textarea>
 									</div>
 								</div>
 								<div class="col-lg-12">

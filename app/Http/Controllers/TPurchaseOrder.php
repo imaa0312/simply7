@@ -10,6 +10,7 @@ use App\Models\MProdukModel;
 use App\Models\MSupplierModel;
 use App\Models\TPurchaseOrderModel;
 use App\Models\DPurchaseOrderModel;
+use App\Models\DPurchaseOrderTempModel;
 use App\Models\MUser;
 use DataTables;
 
@@ -92,6 +93,62 @@ class TPurchaseOrder extends Controller
             ->rawColumns(['action', 'status'])
             ->make(true);
     }
+
+    public function poTemp(Request $request){
+        $id = $request->input('po_id');
+        $product = $request->input('product');
+        $dt_product = MProdukModel::find($product);
+        $tax = (double)0.1*(double)$dt_product->price_purchase;
+
+        if($id == 0){
+            $po = new TPurchaseOrderModel;
+            $po->supplier = $request->input('supplier');
+            $po->po_date = date("Y-m-d H:i:s", strtotime($request->input('po_date')));
+            $po->order_discount = $request->input('order_discount');
+            $po->order_tax_percent = $request->input('order_tax');
+            $po->shipping_cost = $request->input('shipping_cost');
+            $po->description = $request->input('description');
+            $po->status = $request->input('status');
+            $po->save();
+
+            $id = $po->id;
+        }
+
+        $temp = new DPurchaseOrderModel;
+        $temp->po_id = $id;
+        $temp->produk = $product;
+        $temp->qty = $request->input('qty');
+        $temp->purchase_price = $dt_product->price_purchase;
+        $temp->purchase_discount = $dt_product->price_purchase;
+        $temp->purchase_tax_percent = 10;
+        $temp->purchase_tax_amount = $tax;
+        $temp->total_cost = $dt_product->price_purchase+$tax;
+        $temp->save();
+
+        if($temp){
+            $return = array(
+                "status" => true,
+                "msg" => "Successfully saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Oops! Something wen't wrong"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+
+
+
+
+
+
+
+
+
 
     //dropdown_selection
 

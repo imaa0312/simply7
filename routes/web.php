@@ -36,6 +36,7 @@ Route::get('/getRole', [MUserController::class, 'getRole']);
 Route::get('/getManager', [MasterController::class, 'getStoreManager']);
 Route::get('/getExpenseCategory', [MasterController::class, 'getExpenseCategory']);
 Route::get('/getProduct/{id}', [MSalesController::class, 'getProduct']);
+Route::get('/getSupp', [MSalesController::class, 'getSupp']);
 
 Route::get('/roles', [MRoleController::class, 'index'])->name('roles');  
 Route::get('/roles-datatables', [MRoleController::class, 'rolesDatatables'])->name('roles-datatables');  
@@ -144,6 +145,7 @@ Route::get('/delete-product/{id}', [MProdukController::class, 'deleteProduct'])-
 
 Route::get('/purchase-order', [TPurchaseOrder::class, 'purchaseOrder'])->name('purchase-order'); 
 Route::get('/po-product-datatables/{id}', [TPurchaseOrder::class, 'poProductDatatable'])->name('po-product-datatables'); 
+Route::post('/save-po-temp', [TPurchaseOrder::class, 'poTemp'])->name('save-po-temp'); 
 
 Route::get('/purchase-received', [TPurchaseOrder::class, 'purchaseReceived'])->name('purchase-received'); 
 

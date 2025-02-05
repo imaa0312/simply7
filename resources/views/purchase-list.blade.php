@@ -358,6 +358,30 @@
 
     <script>
         $(document).ready(function(){
+            $('#supp-list').select2({
+                ajax: {
+                    type: "GET",
+                    dataType: 'json',
+                    url: '{!! url("getSupp") !!}',
+                    data: function (param) {
+                        return {
+                            q: param.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    }
+                },
+                dropdownParent: $("#add-units")
+            });
+
             $('#prod-list').select2({
                 ajax: {
                     type: "GET",
@@ -390,18 +414,15 @@
                     url: "{!! url('po-product-datatables') !!}/"+$('#po_id').val(),
                     type: "get"
                 },
-                select: {
-                    style: 'multi',
-                    selector: 'td:first-child'
-                },
+                // select: {
+                //     style: 'multi',
+                //     selector: 'td:first-child'
+                // },
                 columns: [
-                    // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
                     {data: 'name', name: 'name'},
                     {data: 'qty', name: 'qty'},
                     {data: 'purchase_price', name: 'purchase_price'},
                     {data: 'purchase_discount', name: 'purchase_discount'},
-                    {data: 'purchase_tax_percent', name: 'purchase_tax_percent'},
-                    {data: 'purchase_tax_amount', name: 'purchase_tax_amount'},
                     {data: 'total_cost', name: 'total_cost'}
                 ],            
                 "bFilter": false,
@@ -421,11 +442,47 @@
                     $('.dataTables_filter').appendTo('#tableSearch');
                     $('.dataTables_filter').appendTo('.search-input');
     
-                }
+                },
+                "autoWidth": false
             });
 
             $('body').on('click', '#add-product', function(){
+                var form = $('#formKu');
+                var formdata = new FormData(form[0]);
 
+                $.ajax({
+                    method : "POST",
+                    dataType: 'json',
+                    url: '{!! url("save-po-temp") !!}',
+                    data: formdata,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if (data.status === false) {
+                            Swal.fire({
+                                position: "top-end",
+                                toast: true,
+                                title: "Something wen't Wrong",
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
+                        // $('#add-category').modal('toggle');
+                        $('#myTable2').DataTable().ajax.reload();
+                    },
+                    fail: function (e) {
+                        Swal.fire({
+                            position: "top-end",
+                            toast: true,
+                            title: "Something wen't Wrong",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
             });
         });
     </script>
