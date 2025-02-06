@@ -9,6 +9,7 @@ use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\TPurchaseOrder;
 use App\Http\Controllers\MProdukController;
 use App\Http\Controllers\MSalesController;
+use App\Http\Controllers\ShopeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -158,6 +159,9 @@ Route::get('/pos-del/{id}', [MSalesController::class, 'posDel'])->name('pos-del'
 Route::get('/pos-void/{id}', [MSalesController::class, 'posVoid'])->name('pos-void');  
 Route::get('/pos-cust', [MSalesController::class, 'posCust'])->name('pos-cust');  
 Route::get('/pos-prod', [MSalesController::class, 'posProd'])->name('pos-prod');  
+
+// SHOPEEEEE //
+Route::get('get-shop-info', [ShopeeController::class, 'getShopInfo'])->name('get-shop-info');
 
 
 
