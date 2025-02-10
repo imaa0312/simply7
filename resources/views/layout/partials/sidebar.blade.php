@@ -71,9 +71,9 @@
 								<li class="{{ Request::is('manage-stocks') ? 'active' : '' }}"><a
 									href="{{ url('manage-stocks') }}"><span>Manage
 										Stock</span></a></li>
-							<li class="{{ Request::is('stock-adjustment') ? 'active' : '' }}"><a
+							<!---- <li class="{{ Request::is('stock-adjustment') ? 'active' : '' }}"><a
 									href="{{ url('stock-adjustment') }}"><span>Stock
-										Opname</span></a></li>
+										Opname</span></a></li> -->
 							<li class="{{ Request::is('stock-transfer') ? 'active' : '' }}"><a
 									href="{{ url('stock-transfer') }}"><span>Stock
 										Transfer</span></a></li>
@@ -86,25 +86,25 @@
                     <ul>
                         <li class="{{ Request::is('purchase-order') ? 'active' : '' }}"><a
                             href="{{ url('purchase-order') }}"><i data-feather="shopping-bag"></i><span>Purchase Order</span></a></li>
-                        <li class="{{ Request::is('purchase-order-report') ? 'active' : '' }}"><a
-                            href="{{ url('purchase-order-report') }}"><i data-feather="file-text"></i><span>Purchase Invoice</span></a></li>
+                        <li class="{{ Request::is('purchase-received') ? 'active' : '' }}"><a
+                            href="{{ url('purchase-received') }}"><i data-feather="file-text"></i><span>Purchase Received</span></a></li>
                     </ul>
                 </li>
-                <li class="submenu-open">
+                <!-- <li class="submenu-open">
                     <h6 class="submenu-hdr">Promo</h6>
                     <ul>
                         <li class="{{ Request::is('coupons') ? 'active' : '' }}"><a href="{{ url('coupons') }}"><i
                                     data-feather="tag"></i><span>Coupons</span></a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <li class="submenu-open">
                     <h6 class="submenu-hdr">Sales</h6>
                     <ul>
-                        <li class="{{ Request::is('sales-list') ? 'active' : '' }}"><a href="{{ url('sales-list') }}"><i data-feather="shopping-cart"></i><span>Sales</span></a></li>
-                        <li class="{{ Request::is('invoice-report') ? 'active' : '' }}"><a href="{{ url('invoice-report') }}"><i data-feather="file-text"></i><span>Invoices</span></a></li>
+                        <!--<li class="{{ Request::is('sales-list') ? 'active' : '' }}"><a href="{{ url('sales-list') }}"><i data-feather="shopping-cart"></i><span>Sales</span></a></li>
+                        <li class="{{ Request::is('invoice-report') ? 'active' : '' }}"><a href="{{ url('invoice-report') }}"><i data-feather="file-text"></i><span>Invoices</span></a></li>-->
+						<li class="{{ Request::is('pos') ? 'active' : '' }}"><a href="{{ url('pos') }}"><i data-feather="hard-drive"></i><span>POS</span></a></li>
                         <li class="{{ Request::is('sales-returns') ? 'active' : '' }}"><a href="{{ url('sales-returns') }}"><i data-feather="copy"></i><span>Sales Return</span></a></li>
-                        <li class="{{ Request::is('pos') ? 'active' : '' }}"><a href="{{ url('pos') }}"><i data-feather="hard-drive"></i><span>POS</span></a></li>
                     </ul>
                 </li>
                 <li class="submenu-open">
@@ -128,7 +128,7 @@
                         <li class="{{ Request::is('inventory-report') ? 'active' : '' }}"><a
 							href="{{ url('inventory-report') }}"><i data-feather="inbox"></i><span>Inventory
 								Report</span></a></li>
-                        <li class="{{ Request::is('invoice-report') ? 'active' : '' }}"><a
+                        <!--<li class="{{ Request::is('invoice-report') ? 'active' : '' }}"><a
 							href="{{ url('invoice-report') }}"><i data-feather="file"></i><span>Invoice
 								Report</span></a></li>
                         <li class="{{ Request::is('supplier-report') ? 'active' : '' }}"><a
@@ -142,7 +142,7 @@
 								Report</span></a></li>
                         <li class="{{ Request::is('income-report') ? 'active' : '' }}"><a
 							href="{{ url('income-report') }}"><i data-feather="bar-chart"></i><span>Income
-								Report</span></a></li>
+								Report</span></a></li>-->
                         <li class="{{ Request::is('profit-and-loss') ? 'active' : '' }}"><a
 							href="{{ url('profit-and-loss') }}"><i data-feather="pie-chart"></i><span>Profit &
 								Loss</span></a></li>

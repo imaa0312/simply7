@@ -55,7 +55,11 @@
 </div>
 <!-- /Main Wrapper -->
 
+@if(!empty($data))
+@component('components.modalpopup', ['data' => $data])
+@else
 @component('components.modalpopup')
+@endif
 @endcomponent
 @include('layout.partials.footer-scripts')
 </body>

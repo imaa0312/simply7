@@ -718,9 +718,9 @@
 					<div class="content">
 						<div class="modal-header border-0 custom-modal-header">
 							<div class="page-title">
-								<h4>Add Purchase</h4>
+								<h4 id="title-PO">Add Purchase</h4>
 							</div>
-							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<button type="button" class="close close-po" data-bs-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
@@ -728,6 +728,7 @@
 							<form method="POST" id="formKu">
                                 @csrf
                                 <input type="hidden" id="po_id" name="po_id" value="0">
+                                <input type="hidden" id="mode" name="mode">
 								<div class="row">
 									<div class="col-lg-4 col-md-6 col-sm-12">
 										<div class="input-blocks add-product">
@@ -735,27 +736,25 @@
                                             <select class="select2 form-control" id="supp-list" name="supplier">
                                                 <option value="0">Search Supplier</option>
                                             </select>
+                                            <input type="text" class="form-control" id="supp-section" readonly style="background-color: #f8f9fa;">
 										</div>
 									</div>
 									<div class="col-lg-4 col-md-6 col-sm-12">
 										<div class="input-blocks">
 											<label>Reference No</label>
-											<input type="text" class="form-control" disabled>
+											<input type="text" class="form-control" id="refno" readonly style="background-color: #f8f9fa;">
 										</div>
 									</div>
 									<div class="col-lg-4 col-md-6 col-sm-12">
 										<div class="input-blocks">
 											<label>Purchase Date</label>
-
-											<div class="input-groupicon calender-input">
-												<i data-feather="calendar" class="info-img"></i>
-												<input type="text" class="datetimepicker" placeholder="Choose" name="po_date">
-											</div>
+                                            <input type="text" id="date" name="po_date" class="form-control">
+                                            <span class="form-text text-muted">dd/mm/yyyy</span>
 										</div>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-6">
+									<div class="col-lg-6 product-section">
 										<div class="input-blocks">
 											<label>Product Name</label>
 											<select class="select2 form-control" id="prod-list" name="product">
@@ -763,12 +762,12 @@
                                             </select>
 										</div>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-2 product-section">
 										<div class="input-blocks">
 											<label>Qty</label>
                                             <div class="row">
                                                 <div class="col-lg-8 col-sm-8 col-8">
-											        <input type="text" class="form-control" name="qty">
+											        <input type="number" min=1 value="1" class="form-control" name="qty" id="qty">
                                                 </div>
                                                 <div class="col-lg-4 col-sm-4 col-4 ps-0">
                                                     <div class="add-icon tab">
@@ -803,28 +802,25 @@
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
 												<label>Order Tax (%)</label>
-												<input type="text" value="0" name="order_tax" id="order_tax">
+												<input type="number" class="form-control" min=0 name="order_tax" id="order_tax">
 											</div>
 										</div>
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
 												<label>Discount (Rp)</label>
-												<input type="text" value="0" name="order_discount" id="order_discount">
+												<input class="currency" type="text" value="0" name="order_discount" id="order_discount">
 											</div>
 										</div>
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
 												<label>Shipping (Rp)</label>
-												<input type="text" value="0" id="shipping_cost" name="shipping_cost">
+												<input class="currency" type="text" value="0" id="shipping_cost" name="shipping_cost">
 											</div>
 										</div>
 										<div class="col-lg-3 col-md-6 col-sm-12">
 											<div class="input-blocks">
-												<label>Status</label>
-												<select class="select" name="status" id="status">
-													<option value="in process">In Process</option>
-													<option value="received">Received</option>
-												</select>
+												<label>Grand Total</label>
+                                                <input type="text" id="grand_total" name="grand_total" readonly style="background-color: #f8f9fa;">
 											</div>
 										</div>
 									</div>
@@ -833,13 +829,13 @@
 								<div class="col-lg-12">
 									<div class="input-blocks summer-description-box">
 										<label>Notes</label>
-										<textarea id="summernote" name="desc" id="desc"></textarea>
+										<textarea name="desc" id="desc"></textarea>
 									</div>
 								</div>
 								<div class="col-lg-12">
 									<div class="modal-footer-btn">
-										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-submit">Submit</button>
+										<button type="button" class="btn btn-cancel me-2 close-po" data-bs-dismiss="modal">Cancel</button>
+										<button type="button" class="btn btn-submit" id="save-po">Submit</button>
 									</div>
 								</div>
 							</form>
@@ -1062,6 +1058,191 @@
 		</div>
 	</div>
 @endif
+
+@if(Route::is(['purchase-received']))
+<div class="modal fade" id="add-received">
+    <div class="modal-dialog add-centered">
+        <div class="modal-content">
+            <div class="page-wrapper p-0 m-0">
+                <div class="content p-0">
+                    <div class="modal-header border-0 custom-modal-header">
+                        <div class="page-title">
+                            <h4> Add Purchase Received</h4>
+                        </div>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="POST" id="formKu">
+                                @csrf
+                                <input type="hidden" id="pr_id" name="pr_id">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6 col-12">
+                                        <div class="input-blocks">
+                                            <label class="form-label">Reference No.</label>
+                                            <select class="select2 form-control" id="refno" name="refno">
+                                                <option value="0">Search</option>
+                                            </select>
+                                            <input type="text" class="form-control" id="refno_po" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 col-12">
+                                        <div class="input-blocks">
+                                            <label>PR Code</label>
+                                            <input type="text" id="pr_code" name="pr_code" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 col-12">
+                                        <div class="input-blocks">
+                                            <label>Receive Date</label>
+                                            <input type="text" id="date" name="pr_date" class="form-control prdate">
+                                            <span class="form-text text-muted prdate">YYYY-MM-DD HH:MM</span>
+                                            <input type="text" class="form-control" id="pr_date" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-6 col-12 view">
+                                        <div class="input-blocks">
+                                            <label>Product Barcode</label>
+                                            <div class="input-groupicon select-code">
+                                                <input type="text" placeholder="Please type Product Barcode" id="barcode" name="barcode">
+                                                <div class="addonset">
+                                                    <img src="{{ URL::asset('/build/img/icons/qrcode-scan.svg')}}" alt="img">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive no-pagination">
+                                    <table class="table" id="myTable2">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Qty</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <br>
+                                
+                                <div class="row">
+                                    <div class="col-lg-12 text-end">
+                                        <button type="button"  class="btn btn-cancel add-cancel me-3" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-submit save-pr view">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+@if(Route::is(['stock-transfer']))
+<div class="modal fade" id="add-units">
+    <div class="modal-dialog modal-dialog-centered stock-adjust-modal">
+        <div class="modal-content">
+            <div class="page-wrapper-new p-0">
+                <div class="content">
+                    <div class="modal-header border-0 custom-modal-header">
+                        <div class="page-title">
+                            <h4>Add Transfer</h4>
+                        </div>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body custom-modal-body">
+                        <form method="POST" id="formKu">
+                            @csrf
+                            <input type="hidden" id="ts_id" name="ts_id">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="input-blocks">
+                                        <label class="form-label">Transfer Stock Code</label>
+                                        <input type="text" class="form-control" id="ts_code" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-blocks">
+                                        <label>Transfer Date</label>
+                                        <input type="text" id="ts_date" name="ts_date" class="form-control">
+                                        <span class="form-text text-muted">YYYY-MM-DD HH:MM</span>
+                                        <input type="hidden" class="form-control" id="tsdate" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="input-blocks">
+                                        <label>From</label>
+                                        <select class="form-control" id="asal" name="asal">
+                                            <option>Choose</option>
+                                            <option value="0">Warehouse</option>
+                                            @foreach($data['store'] as $store)
+                                                <option value="{{{ $store->id }}}">{{{ $store->name }}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-blocks">
+                                        <label>To</label>
+                                        <select class="form-control" id="tujuan" name="tujuan">
+                                            <option>Choose</option>
+                                        </select>
+                                        <input type="text" class="form-control" id="tujuan_name">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="input-blocks search-form mb-3">
+                                            <label>Product</label>
+                                            <select class="select2 form-control" id="produk" name="produk">
+                                                <option value="0">Search</option>
+                                            </select>
+                                            <input type="text" id="produk_name" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="input-blocks search-form mb-3">
+                                            <label>Qty</label>
+                                            <input type="number" class="form-control" name="qty" id="qty">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="input-blocks search-form mb-0">
+                                        <label>Notes</label>
+                                        <textarea class="form-control" id="desc" name="desc"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer-btn">
+                                <button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-submit save-ts">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+
+
+
+
 
 
 
@@ -10442,370 +10623,6 @@
 		<!-- /Edit Printer -->
 @endif
 
-@if(Route::is(['purchase-returns']))
-			<!--add popup -->
-			<div class="modal fade" id="add-sales-new">
-				<div class="modal-dialog add-centered">
-					<div class="modal-content">
-						<div class="page-wrapper p-0 m-0">
-							<div class="content p-0">
-								<div class="modal-header border-0 custom-modal-header">
-									<div class="page-title">
-										<h4> Add Purchase Return</h4>
-									</div>
-									<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="card">
-									<div class="card-body">
-										<form action="purchase-returns">
-											<div class="row">
-												<div class="col-lg-4 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label class="form-label">Supplier</label>
-														<div class="row">
-															<div class="col-lg-10 col-sm-10 col-10">
-																<select class="select">
-																	<option>Choose</option>
-																	<option>Apex Computers</option>
-																	<option>Modern Automobile</option>
-																	<option>AIM Infotech</option>
-																</select>
-															</div>
-															<div class="col-lg-2 col-sm-2 col-2 ps-0">
-																<div class="add-icon">
-																	<a href="#" class="choose-add"><i data-feather="plus-circle" class="plus"></i></a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-4 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Date</label>
-														<div class="input-groupicon calender-input">
-															<i data-feather="calendar" class="info-img"></i>
-															<input type="text" class="datetimepicker" placeholder="Choose">
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-4 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label class="form-label">Reference No.</label>
-														<input type="text" class="form-control">
-													</div>
-												</div>
-												<div class="col-lg-12 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Product Name</label>
-														<div class="input-groupicon select-code">
-															<input type="text" placeholder="Please type product code and select">
-															<div class="addonset">
-																<img src="{{ URL::asset('/build/img/icons/qrcode-scan.svg')}}" alt="img">
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="table-responsive no-pagination">
-												<table class="table  datanew">
-													<thead>
-														<tr>
-															<th>Image</th>
-															<th>Date</th>
-															<th>Supplier</th>
-															<th>Reference</th>
-															<th>Status</th>
-															<th>Grand Total ($)</th>
-															<th>Paid ($)</th>
-															<th>Due ($)</th>
-															<th>Payment Status</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-				
-											<div class="row">
-												<div class="col-lg-6 ms-auto">
-													<div class="total-order w-100 max-widthauto m-auto mb-4">
-														<ul>
-															<li>
-																<h4>Order Tax</h4>
-																<h5>$ 0.00</h5>
-															</li>
-															<li>
-																<h4>Discount</h4>
-																<h5>$ 0.00</h5>
-															</li>
-															<li>
-																<h4>Shipping</h4>
-																<h5>$ 0.00</h5>
-															</li>
-															<li>
-																<h4>Grand Total</h4>
-																<h5>$ 0.00</h5>
-															</li>
-														</ul>
-													</div>
-												</div>
-											</div>
-											
-											<div class="row">
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Order Tax</label>
-														<div class="input-groupicon select-code">
-															<input type="text" value="0" class="p-2">
-														</div>
-														
-													</div>
-												</div>
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Discount</label>
-														<div class="input-groupicon select-code">
-															<input type="text" value="0" class="p-2">
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Shipping</label>
-														<div class="input-groupicon select-code">
-															<input type="text" value="0" class="p-2">
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks mb-5">
-														<label>Status</label>
-														<select class="select">
-															<option>Choose</option>
-															<option>Pending</option>
-															<option>Received</option>
-														</select>
-													</div>
-												</div>
-												<div class="col-lg-12 text-end">
-													<button type="button"  class="btn btn-cancel add-cancel me-3" data-bs-dismiss="modal">Cancel</button>
-													<button type="submit" class="btn btn-submit add-sale">Submit</button											>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /add popup -->
-
-			<!--Edit popup -->
-			<div class="modal fade" id="edit-sales-new">
-				<div class="modal-dialog add-centered">
-					<div class="modal-content">
-						<div class="page-wrapper p-0 m-0">
-							<div class="content p-0">
-								<div class="modal-header border-0 custom-modal-header">
-									<div class="page-title">
-										<h4>Edit Purchase Return</h4>
-									</div>
-									<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="card">
-									<div class="card-body">
-										<form action="purchase-returns">
-											<div class="row">
-												<div class="col-lg-4 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label class="form-label">Supplier</label>
-														<div class="row">
-															<div class="col-lg-10 col-sm-10 col-10">
-																<select class="select">
-																	<option>Apex Computers</option>
-																	<option>Modern Automobile</option>
-																	<option>AIM Infotech</option>
-																</select>
-															</div>
-															<div class="col-lg-2 col-sm-2 col-2 ps-0">
-																<div class="add-icon">
-																	<a href="#" class="choose-add"><i data-feather="plus-circle" class="plus"></i></a>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-4 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Date</label>
-														<div class="input-groupicon calender-input">
-															<i data-feather="calendar" class="info-img"></i>
-															<input type="text" class="datetimepicker" placeholder="Choose">
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-4 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label class="form-label">Reference No.</label>
-														<input type="text" class="form-control" value="PT001">
-													</div>
-												</div>
-												<div class="col-lg-12 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Product Name</label>
-														<div class="input-groupicon select-code">
-															<input type="text" placeholder="Please type product code and select" value="Apex Computers">
-															<div class="addonset">
-																<img src="{{ URL::asset('/build/img/icons/qrcode-scan.svg')}}" alt="img">
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="table-responsive no-pagination">
-												<table class="table  datanew">
-													<thead>
-														<tr>
-															<th>Image</th>
-															<th>Date</th>
-															<th>Supplier</th>
-															<th>Reference</th>
-															<th>Status</th>
-															<th>Grand Total ($)</th>
-															<th>Paid ($)</th>
-															<th>Due ($)</th>
-															<th>Payment Status</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td>
-																<a class="product-img">
-																	<img src="{{ URL::asset('/build/img/products/product1.jpg')}}" alt="product">
-																</a>
-															</td>
-															<td>2/27/2022</td>
-															<td>Apex Computers </td>
-															<td>PT001</td>
-															<td><span class="badges bg-lightgreen">Received</span></td>
-															<td>550</td>
-															<td>120</td>
-															<td>550</td>
-															<td><span class="badges bg-lightgreen">Paid</span></td>
-														</tr>
-														<tr>
-															<td>
-																<a class="product-img">
-																	<img src="{{ URL::asset('/build/img/products/product5.jpg')}}" alt="product">
-																</a>
-															</td>
-															<td>3/24/2022</td>
-															<td>Best Power Tools</td>
-															<td>PT0011</td>
-															<td><span class="badges bg-lightred">Pending</span></td>
-															<td>2580</td>
-															<td>1250</td>
-															<td>2580</td>
-															<td><span class="badges bg-lightred">Unpaid</span></td>													
-														</tr>
-													</tbody>
-												</table>
-											</div>
-				
-											<div class="row">
-												<div class="col-lg-6 ms-auto">
-													<div class="total-order w-100 max-widthauto m-auto mb-4">
-														<ul>
-															<li>
-																<h4>Order Tax</h4>
-																<h5>$ 0.00</h5>
-															</li>
-															<li>
-																<h4>Discount</h4>
-																<h5>$ 0.00</h5>
-															</li>
-															<li>
-																<h4>Shipping</h4>
-																<h5>$ 0.00</h5>
-															</li>
-															<li>
-																<h4>Grand Total</h4>
-																<h5>$ 0.00</h5>
-															</li>
-														</ul>
-													</div>
-												</div>
-											</div>
-											
-											<div class="row">
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Order Tax</label>
-														<div class="input-groupicon select-code">
-															<input type="text" value="0" class="p-2">
-														</div>
-														
-													</div>
-												</div>
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Discount</label>
-														<div class="input-groupicon select-code">
-															<input type="text" value="0" class="p-2">
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks">
-														<label>Shipping</label>
-														<div class="input-groupicon select-code">
-															<input type="text" value="0" class="p-2">
-														</div>
-													</div>
-												</div>
-												<div class="col-lg-3 col-sm-6 col-12">
-													<div class="input-blocks mb-5">
-														<label>Status</label>
-														<select class="select">
-															<option>Choose</option>
-															<option>Pending</option>
-															<option>Received</option>
-														</select>
-													</div>
-												</div>
-												<div class="col-lg-12 text-end">
-													<button type="button"  class="btn btn-cancel add-cancel me-3" data-bs-dismiss="modal">Cancel</button>
-													<button type="submit" class="btn btn-submit add-sale">Save Changes</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- Edit popup -->
-@endif
-
 @if(Route::is(['shift']))
 		<!-- Add Shift -->
 		<div class="modal fade" id="add-units">
@@ -12542,296 +12359,6 @@
 			</div>
 		</div>
 		<!-- /View Notes -->
-@endif
-
-@if(Route::is(['stock-transfer']))
-		<!-- Add Stock -->
-		<div class="modal fade" id="add-units">
-			<div class="modal-dialog modal-dialog-centered stock-adjust-modal">
-				<div class="modal-content">
-					<div class="page-wrapper-new p-0">
-						<div class="content">
-							<div class="modal-header border-0 custom-modal-header">
-								<div class="page-title">
-									<h4>Add Transfer</h4>
-								</div>
-								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body custom-modal-body">
-								<form action="stock-transfer">
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="input-blocks">
-												<label>Warehouse From</label>
-												<select class="select">
-													<option>Choose</option>
-													<option>Lobar Handy</option>
-													<option>Quaint Warehouse</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="input-blocks">
-												<label>Warehouse To</label>
-												<select class="select">
-													<option>Choose</option>
-													<option>Selosy</option>
-													<option>Logerro</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="input-blocks">
-												<label>Responsible Person</label>
-												<input type="text" class="form-control">
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="input-blocks search-form mb-3">
-												<label>Product</label>
-												<input type="text" class="form-control" placeholder="Select Product">
-												<i data-feather="search" class="feather-search"></i>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="input-blocks search-form mb-0">
-												<label>Notes</label>
-												<textarea class="form-control"></textarea>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer-btn">
-										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-submit">Create</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Add Stock -->
-
-		<!-- Edit Stock -->
-		<div class="modal fade" id="edit-units">
-			<div class="modal-dialog modal-dialog-centered stock-adjust-modal">
-				<div class="modal-content">
-					<div class="page-wrapper-new p-0">
-						<div class="content">
-							<div class="modal-header border-0 custom-modal-header">
-								<div class="page-title">
-									<h4>Edit Transfer</h4>
-								</div>
-								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body custom-modal-body">
-								<form action="stock-transfer">
-									<div class="input-blocks search-form">
-										<label>Product</label>
-										<input type="text" class="form-control" value="Nike Jordan">
-										<i data-feather="search" class="feather-search"></i>
-									</div>
-									<div class="row">
-										<div class="col-lg-6">
-											<div class="input-blocks">
-												<label>Warehouse From</label>
-												<select class="select">
-													<option>Lobar Handy</option>
-													<option>Quaint Warehouse</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<div class="input-blocks">
-												<label>Warehouse To</label>
-												<select class="select">
-													<option>Selosy</option>
-													<option>Logerro</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="input-blocks">
-												<label>Reference No</label>
-												<input type="text" class="form-control" value="32434545">
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="input-blocks search-form mb-3">
-												<label>Product</label>
-												<input type="text" class="form-control" placeholder="Select Product" value="Nike Jordan">
-												<i data-feather="search" class="feather-search"></i>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="modal-body-table">
-												<div class="table-responsive">
-													<table class="table  datanew">
-														<thead>
-															<tr>
-																<th>Product</th>
-																<th>SKU</th>
-																<th>Category</th>
-																<th>Qty</th>
-																<th class="no-sort">Action</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td>
-																	<div class="productimgname">
-																		<a href="javascript:void(0);" class="product-img stock-img">
-																			<img src="{{ URL::asset('/build/img/products/stock-img-02.png')}}" alt="product">
-																		</a>
-																		<a href="javascript:void(0);">Nike Jordan</a>
-																	</div>												
-																</td>
-																<td>PT002</td>
-																<td>Nike</td>
-																<td>
-																	<div class="product-quantity">
-																		<span class="quantity-btn"><i data-feather="minus-circle" class="feather-search"></i></span>
-																		<input type="text" class="quntity-input" value="2">
-																		<span class="quantity-btn">+<i data-feather="plus-circle" class="plus-circle"></i></span>
-																	</div>
-																</td>
-																<td class="action-table-data">
-																	<div class="edit-delete-action">
-																		<a class="me-2 p-2" href="#" data-bs-toggle="modal" data-bs-target="#edit-units">
-																			<i data-feather="edit" class="feather-edit"></i>
-																		</a>
-																		<a class="confirm-text p-2" href="javascript:void(0);">
-																			<i data-feather="trash-2" class="feather-trash-2"></i>
-																		</a>
-																	</div>
-																	
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<div class="input-blocks search-form mb-0">
-												<label>Notes</label>
-												<textarea class="form-control">The Jordan brand is owned by Nike (owned by the Knight family), as, at the time, the company was building its strategy to work with athletes to launch shows that could inspire consumers.Although Jordan preferred Converse and Adidas, they simply could not match the offer Nike made. </textarea>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer-btn">
-										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-submit">Save Changes</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Edit Stock -->
-
-		<!-- Import Transfer -->
-		<div class="modal fade" id="view-notes">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="page-wrapper-new p-0">
-						<div class="content">
-							<div class="modal-header border-0 custom-modal-header">
-								<div class="page-title">
-									<h4>Import Transfer</h4>
-								</div>
-								<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-						</div>
-						<div class="modal-body custom-modal-body">
-							<form action="stock-transfer">
-								<div class="row">
-									<div class="col-lg-4 col-sm-6 col-12">
-										<div class="input-blocks">
-											<label>From</label>
-											<select class="select">
-												<option>Choose</option>
-												<option>Store 1</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-lg-4 col-sm-6 col-12">
-										<div class="input-blocks">
-											<label>To</label>
-											<select class="select">
-												<option>Choose</option>
-												<option>Store 2</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-lg-4 col-sm-6 col-12">
-										<div class="input-blocks">
-											<label>Satus</label>
-											<select class="select">
-												<option>Choose</option>
-												<option>Sent</option>
-												<option>Pending</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-lg-12 col-sm-6 col-12">
-										<div class="row">
-											<div>
-												<div class="modal-footer-btn download-file">
-													<a href="javascript:void(0)" class="btn btn-submit">Download Sample File</a>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-12">
-										<div class="input-blocks image-upload-down">
-											<label>	Upload CSV File</label>
-											<div class="image-upload download">
-												<input type="file">
-												<div class="image-uploads">
-													<img src="{{ URL::asset('/build/img/download-img.png')}}" alt="img">
-													<h4>Drag and drop a <span>file to upload</span></h4>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-12 col-sm-6 col-12">
-										<div class="mb-3">
-											<label class="form-label">Shipping</label>
-											<input type="text" class="form-control">
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-12">
-									<div class="mb-3 summer-description-box transfer">
-										<label class="form-label">Description</label>
-										<div id="summernote3">
-										</div>
-										<p>Maximum 60 Characters</p>
-									</div>
-								</div>
-								<div class="col-lg-12">
-									<div class="modal-footer-btn">
-										<button type="button" class="btn btn-cancel me-2" data-bs-dismiss="modal">Cancel</button>
-										<button type="submit" class="btn btn-submit">Submit</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Import Transfer -->
 @endif
 
 @if(Route::is(['storage-settings']))

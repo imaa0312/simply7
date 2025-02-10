@@ -3,83 +3,237 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\Models\MGudangModel;
 use Illuminate\Http\Request;
+
+use App\Models\MGudangModel;
+use App\Models\MTokoModel;
+use App\Models\MProdukModel;
+use App\Models\TransferStockModel;
+use App\Models\DTransferStockModel;
 use App\Models\MStokProdukModel;
-use Yajra\Datatables\Datatables;
+
+use DataTables;
 
 
 
 class MStokProdukController extends Controller
 {
-
-    public function index()
+    public function stockTransfer()
     {
-        $dataGudang = MGudangModel::all();
-        return view('admin.transaksi.stok.all-gudang',compact('dataGudang'));
+        $data['store'] = MTokoModel::where('status', 1)->get();
+        return view('stock-transfer', compact('data'));
     }
 
-    public function stokProdukGudang($id)
+    public function stockTransferDatatables()
     {
-        $gudang = MGudangModel::where('id',$id)->first();
+        $data = TransferStockModel::select('t_transfer_stock.*', 'm_user.name as user')
+            ->join('m_user', 't_transfer_stock.user_id', '=', 'm_user.id')
+            ->get();
 
-        $dataProduk = DB::table('m_stok_produk')
-                    ->leftjoin('m_produk', 'm_produk.code', '=', 'm_stok_produk.produk_code')
-                    ->select(DB::raw('SUM(stok) as jmlh_stok'), 'm_stok_produk.gudang', 'm_stok_produk.produk_code', 'm_produk.name as produk','m_produk.id as produk_id','m_produk.type_barang')
-                    ->groupBy('produk_code')
-                    ->orderBy('produk_code', 'DESC')
-                    ->where('gudang', $id)
-                    ->get();
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                return '<div class="edit-delete-action">
+                    <a class="me-2 p-2 btn btn-success btn-sm view-ts" href="javascript:void(0);" data-bs-toggle="modal"
+                        data-bs-target="#add-units" data-id="'.$row->id.'" data-toggle="tooltip" title="View Transfer Stock">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                </div>';
+            })
+            ->addColumn('tempat_asal', function($row){
+                if($row->asal == 0) return "Warehouse";
+                else {
+                    return MTokoModel::find($row->asal)->name;
+                }
+            })
+            ->addColumn('tempat_tujuan', function($row){
+                if($row->tujuan == 0) return "Warehouse";
+                else {
+                    return MTokoModel::find($row->tujuan)->name;
+                }
+            })
+            ->rawColumns(['action', 'tempat_asal', 'tempat_tujuan'])
+            ->make(true);
+    }
 
+    public function getDest($id)
+    {
+        if($id == 0){
+            $data = MTokoModel::where('status', '=', 1)->get();
+            $option = "";
+        } else {
+            $data = MTokoModel::whereNot('id',$id)->where('status', '=', 1)->get();
+            $option = "<option value='0'>Warehouse</option>";
+        }
+
+        foreach($data as $dt){
+            $option .= "<option value='".$dt->id."'>".$dt->name."</option>";
+        }
         
-        // dd($gudang);
-        // return view('admin.transaksi.stok.index', compact('dataProduk','id'));
-        return view('admin.transaksi.stok.index-server-side', compact('dataProduk','id','gudang'));
+        echo json_encode($option);
     }
 
-    public function updateStokProduk(Request $request, $id)
+    public function getProduct(Request $request, $id)
     {
-        $code  = $request->code;
-        $type = $request->type;
-        $dataProduk = DB::table('m_stok_produk')
-                    ->join('m_produk', 'm_produk.code', '=', 'm_stok_produk.produk_code')
-                    ->select('m_stok_produk.*', 'm_produk.name as produk')
-                    ->where('produk_code', '=', $code)
-                    ->where('gudang', $id)
-                    ->first();
-        // dd($dataProduk);
-        return view('admin.transaksi.stok.update',compact('dataProduk','type','code', 'id'));
+        $data = MStokProdukModel::select('m_produk.*', 'm_kategori_produk.name as kategori', 'm_sub_kategori_produk.name as sub_kategori', 'm_ssub_kategori_produk.name as ssub_kategori', 'm_sssub_kategori_produk.name as sssub_kategori', 'm_brand.name as brand', 'm_size.name as size', 'm_stok_produk.balance')
+            ->join('m_produk', 'm_produk.id', '=', 'm_stok_produk.produk_id')
+            ->join('m_kategori_produk', 'm_kategori_produk.id', '=', 'm_produk.kategori_id')
+            ->join('m_sub_kategori_produk', 'm_sub_kategori_produk.id', '=', 'm_produk.sub_kategori_id')
+            ->join('m_ssub_kategori_produk', 'm_ssub_kategori_produk.id', '=', 'm_produk.ssub_kategori_id')
+            ->join('m_sssub_kategori_produk', 'm_sssub_kategori_produk.id', '=', 'm_produk.sssub_kategori_id')
+            ->join('m_brand', 'm_brand.id', '=', 'm_produk.brand_id')
+            ->join('m_size', 'm_size.id', '=', 'm_produk.size_id')
+            ->where('m_produk.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_brand.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_sssub_kategori_produk.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_size.name', 'like', '%'.$request->input('q').'%')
+            ->orWhere('m_produk.sku', 'like', '%'.$request->input('q').'%')
+            ->where('m_stok_produk.place', '=', $id)
+            ->where('m_stok_produk.balance', '>', 0)
+            ->get();
+            
+        echo json_encode($data);
     }
 
-    public function update(Request $request)
+    public function getMax($id, $asal)
     {
-        $this->validate($request,[
-            'code' => 'required',
-            'stok' => 'required|numeric',
-            'type' => 'required'
-        ]);
+        $data = MStokProdukModel::select( 'balance')
+            ->where('place', '=', $asal)
+            ->where('produk_id', '=', $id)
+            ->orderBy('id', 'DESC')->first();
+            
+        if($data){
+            $return = array(
+                "status" => true,
+                "balance" => $data->balance
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Failed"
+            );
+        }
 
-        $stok_awal = DB::table('m_stok_produk')
-            ->select('m_stok_produk.produk_code','m_stok_produk.type_barang')
-            ->where('m_stok_produk.produk_code', $request->code)
-            ->where('m_stok_produk.gudang', $request->id_gudang)
-            ->groupBy('m_stok_produk.produk_code','m_stok_produk.type_barang')
-            ->sum('m_stok_produk.stok');
+        echo json_encode($return);
+    }
 
-        $cekstok = null;
-        ($request->type == 'in') ? $cekstok = $request->stok : $cekstok = -$request->stok;
+    public function transferStore(Request $request)
+    {
+        $date = date('Ymd');
+        $latestTS = DB::table('t_transfer_stock')
+            ->where('ts_code', 'like', "TS-".$date."%")
+            ->orderBy('ts_code', 'DESC')
+            ->first();
 
-        $stok = new MStokProdukModel;
-        $stok->produk_code = $request->code;
-        $stok->transaksi = "Stok Produk (+)";
-        $stok->tipe_transaksi = "Edit Stok";
-        $stok->stok_awal = $stok_awal;
-        $stok->stok = $cekstok;
-        $stok->gudang = $request->id_gudang;
-        $stok->type = $request->type;
-        $stok->save();
+        if ($latestTS) {
+            $lastNumber = (int) substr($latestTS->ts_code, -4);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
 
-        return redirect('admin/transaksi-stok/'.$request->id_gudang);
+        $ts_code = 'TS-' . $date . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        $ts = new TransferStockModel;
+        $ts->ts_code = $ts_code;
+        $ts->ts_date = date("Y-m-d H:i", strtotime($request->input('ts_date')));
+        $ts->asal = $request->input('asal');
+        $ts->tujuan = $request->input('tujuan');
+        $ts->user_id = 1;
+        $ts->description = $request->input('desc');
+        $ts->save();
+
+        $dts = new DTransferStockModel;
+        $dts->ts_id = $ts->id;
+        $dts->produk = $request->input('produk');
+        $dts->qty = $request->input('qty');
+        $dts->save();
+
+        $cek_asal = MStokProdukModel::where('place', '=', $request->input('asal'))
+            ->where('produk_id', '=', $request->input('produk'))
+            ->orderBy('id', 'DESC')->first();
+        if($cek_asal)  $stok_awal_asal = $cek_asal->balance;
+        else $stok_awal_asal = 0;
+
+        $balance_asal = $stok_awal_asal - $request->input('qty');
+
+        $mutasi = new MStokProdukModel;
+        $mutasi->refno = $ts_code;
+        $mutasi->produk_id = $request->input('produk');
+        $mutasi->person = 1;
+        $mutasi->stok_awal = $stok_awal_asal;
+        $mutasi->qty = $request->input('qty');
+        $mutasi->balance = $balance_asal;
+        $mutasi->place = $request->input('asal');
+        $mutasi->trx = 'transfer';
+        $mutasi->save();
+
+        $cek_tujuan = MStokProdukModel::where('place', '=', $request->input('tujuan'))
+            ->where('produk_id', '=', $request->input('produk'))
+            ->orderBy('id', 'DESC')->first();
+        if($cek_tujuan)  $stok_awal_tujuan = $cek_tujuan->balance;
+        else $stok_awal_tujuan = 0;
+
+        $balance_tujuan = $stok_awal_tujuan + $request->input('qty');
+
+        $mutasi = new MStokProdukModel;
+        $mutasi->refno = $ts_code;
+        $mutasi->produk_id = $request->input('produk');
+        $mutasi->person = 1;
+        $mutasi->stok_awal = $stok_awal_tujuan;
+        $mutasi->qty = $request->input('qty');
+        $mutasi->balance = $balance_tujuan;
+        $mutasi->place = $request->input('tujuan');
+        $mutasi->trx = 'transfer';
+        $mutasi->save();
+
+        if($mutasi){
+            $return = array(
+                "status" => true,
+                "msg" =>"Data has been saved"
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Failed"
+            );
+        }
+
+        echo json_encode($return);
+    }
+
+    public function editTransfer($id)
+    {
+        $data = TransferStockModel::select('t_transfer_stock.*', 'd_transfer_stock.produk', 'd_transfer_stock.qty', 'm_produk.name as product_name')
+            ->join('d_transfer_stock', 'd_transfer_stock.ts_id', '=', 't_transfer_stock.id')
+            ->join('m_produk', 'd_transfer_stock.produk', '=', 'm_produk.id')
+            ->where('t_transfer_stock.id', '=', $id)->first();
+        
+        if($data){
+            if($data->tujuan == 0) $tujuan = "Warehouse";
+            else $tujuan = MTokoModel::find($data->tujuan)->name;
+
+            $return = array(
+                "status"        => true,
+                "id"            => $id,
+                "ts_code"       => $data->ts_code,
+                "ts_date"       => $data->ts_date,
+                "asal"          => $data->asal,
+                "tujuan"        => $data->tujuan,
+                "tujuan_name"   => $tujuan,
+                "produk_id"     => $data->produk,
+                "product_name"  => $data->product_name,
+                "qty"           => $data->qty,
+                "description"   => $data->description
+            );
+        } else {
+            $return = array(
+                "status" => false,
+                "msg" => "Data Not Found"
+            );
+        }
+
+        echo json_encode($return);
     }
 
     public function laporanStok()
@@ -106,54 +260,5 @@ class MStokProdukController extends Controller
             ->get();
 
         return view('admin.transaksi.stok.laporan',compact('dataGudang','dataBarang'));
-    }
-
-    public function apiStokProduk($id)
-    {
-        $dataProduk = DB::table('m_stok_produk')
-                    ->leftjoin('m_produk', 'm_produk.code', '=', 'm_stok_produk.produk_code')
-                    ->select(DB::raw('SUM(stok) as jmlh_stok'), 'm_stok_produk.gudang', 'm_stok_produk.produk_code', 'm_produk.name as produk','m_produk.id as produk_id','m_produk.type_barang')
-                    ->groupBy('produk_code')
-                    ->orderBy('produk_code', 'DESC')
-                    ->where('gudang', $id)
-                    ->get();
-
-        $date_now = date('d-m-Y');
-        $date = '01-'.date('m-Y', strtotime($date_now));
-        $date_last_month = date('Y-m-d', strtotime('-1 months',strtotime($date)));
-
-        foreach ($dataProduk as $raw_data) {
-            $balance = DB::table('m_stok_produk')
-                ->where('m_stok_produk.produk_code', $raw_data->produk_code)
-                ->where('m_stok_produk.gudang', $id)
-                ->where('type', 'closing')
-                ->whereMonth('periode',date('m', strtotime($date_last_month)))
-                ->whereYear('periode',date('Y', strtotime($date_last_month)))
-                ->sum('balance');
-
-            $stok = DB::table('m_stok_produk')
-                ->where('m_stok_produk.produk_code', $raw_data->produk_code)
-                ->where('m_stok_produk.gudang', $id)
-                ->whereMonth('created_at',date('m', strtotime($date_now)))
-                ->whereYear('created_at',date('Y', strtotime($date_now)))
-                ->groupBy('m_stok_produk.produk_code')
-                ->sum('stok');
-
-            $stok_akhir = $stok + $balance;
-
-            $raw_data->jmlh_stok = $stok_akhir;
-        }
-
-
-        return Datatables::of($dataProduk)
-            ->addColumn('action',function($dataProduk){
-                return '<a href="'.route("produk.stok.update",["id" => $dataProduk->gudang ,"code" => $dataProduk->produk_code, "type" => "in"]).'"  class="btn btn-success btn-sm"  data-toggle="tooltip" data-placement="top" title="Tambah Stok Produk '.$dataProduk->produk.'"> <span class="fa fa-plus"></span></a> </a>';
-            })
-            ->editColumn('type_barang', function($dataProduk){
-                return ucwords($dataProduk->type_barang);
-            })
-            ->addIndexColumn()
-            ->rawColumns(['action','type_barang'])
-            ->make(true);
     }
 }

@@ -31,6 +31,7 @@
  <script src="{{ URL::asset('/build/js/moment.min.js') }}"></script>
  <script src="{{ URL::asset('/build/js/bootstrap-datetimepicker.min.js') }}"></script>
  <script src="{{ URL::asset('/build/plugins/daterangepicker/daterangepicker.js') }}"></script>
+ <script src="{{ URL::asset('build/plugins/flatpickr/flatpickr.js') }}"></script>
 
  @if (Route::is(['todo']))
      <!-- Datetimepicker CSS -->

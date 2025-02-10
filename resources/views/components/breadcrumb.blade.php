@@ -133,22 +133,41 @@
                         data-feather="plus-circle" class="me-2"></i>Add New Size</a>
             </div>
         @endif
-
-        
-
-
-
-        
-        @if (Route::is(['stock-transfer']))
+        @if (Route::is(['purchase-received']))
             <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
-                        data-feather="plus-circle" class="me-2"></i>Add New</a>
-            </div>
-            <div class="page-btn import">
-                <a href="#" class="btn btn-added color" data-bs-toggle="modal" data-bs-target="#view-notes"><i
-                        data-feather="download" class="me-2"></i>Import Transfer</a>
+                <a href="#" class="btn btn-added btn-add-pr" data-bs-toggle="modal" data-bs-target="#add-received">
+                    <i data-feather="plus-circle" class="me-2"></i>Add Purchase Received
+                </a>
             </div>
         @endif
+
+        @if (Route::is(['stock-transfer']))
+            <div class="page-btn">
+                <a href="#" class="btn btn-added add-ts" data-bs-toggle="modal" data-bs-target="#add-units"><i
+                        data-feather="plus-circle" class="me-2"></i>Add New</a>
+            </div>
+        @endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        
+
+
+
+        
+        
         @if (Route::is(['stock-adjustment']))
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
@@ -184,13 +203,6 @@
             <div class="page-btn">
                 <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-units"><i
                         data-feather="plus-circle" class="me-2"></i>Add New Quotation</a>
-            </div>
-        @endif
-        @if (Route::is(['purchase-returns']))
-            <div class="page-btn">
-                <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#add-sales-new">
-                    <i data-feather="plus-circle" class="me-2"></i>Add Purchase Return
-                </a>
             </div>
         @endif
         @if (Route::is(['payroll-list']))

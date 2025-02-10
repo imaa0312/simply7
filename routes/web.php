@@ -9,6 +9,7 @@ use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\TPurchaseOrder;
 use App\Http\Controllers\MProdukController;
 use App\Http\Controllers\MSalesController;
+use App\Http\Controllers\MStokProdukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::get('/getManager', [MasterController::class, 'getStoreManager']);
 Route::get('/getExpenseCategory', [MasterController::class, 'getExpenseCategory']);
 Route::get('/getProduct/{id}', [MSalesController::class, 'getProduct']);
 Route::get('/getSupp', [MSalesController::class, 'getSupp']);
+Route::get('/getRef', [TPurchaseOrder::class, 'getRef']);
 
 Route::get('/roles', [MRoleController::class, 'index'])->name('roles');  
 Route::get('/roles-datatables', [MRoleController::class, 'rolesDatatables'])->name('roles-datatables');  
@@ -144,10 +146,23 @@ Route::post('/save-product', [MProdukController::class, 'storeProduct'])->name('
 Route::get('/delete-product/{id}', [MProdukController::class, 'deleteProduct'])->name('product-delete');
 
 Route::get('/purchase-order', [TPurchaseOrder::class, 'purchaseOrder'])->name('purchase-order'); 
+Route::get('/po-producttemp-datatables/{id}', [TPurchaseOrder::class, 'poProductTempDatatable'])->name('po-producttemp-datatables'); 
 Route::get('/po-product-datatables/{id}', [TPurchaseOrder::class, 'poProductDatatable'])->name('po-product-datatables'); 
+Route::get('/po-datatables', [TPurchaseOrder::class, 'poDatatables'])->name('po-datatables'); 
 Route::post('/save-po-temp', [TPurchaseOrder::class, 'poTemp'])->name('save-po-temp'); 
+Route::get('/del-po-temp/{id}', [TPurchaseOrder::class, 'poDestroyTemp'])->name('del-po-temp'); 
+Route::post('/save-po-product', [TPurchaseOrder::class, 'poProductTemp'])->name('save-po-product'); 
+Route::post('/save-po', [TPurchaseOrder::class, 'poStore'])->name('save-po'); 
+Route::get('/edit-po/{id}', [TPurchaseOrder::class, 'poEdit'])->name('edit-po'); 
+Route::get('/del-po/{id}', [TPurchaseOrder::class, 'poDel'])->name('del-po'); 
 
 Route::get('/purchase-received', [TPurchaseOrder::class, 'purchaseReceived'])->name('purchase-received'); 
+Route::get('/pr-datatables', [TPurchaseOrder::class, 'prDatatables'])->name('pr-datatables'); 
+Route::get('/pr-barcode/{id}/{br}', [TPurchaseOrder::class, 'prBarcode'])->name('pr-barcode'); 
+Route::get('/pr-product-datatables/{id}', [TPurchaseOrder::class, 'prProduct'])->name('pr-product-datatables');
+Route::post('/save-pr', [TPurchaseOrder::class, 'prStore'])->name('save-pr');  
+Route::get('/add-pr', [TPurchaseOrder::class, 'prAdd'])->name('add-pr');  
+Route::get('/edit-pr/{id}', [TPurchaseOrder::class, 'prEdit'])->name('edit-pr');  
 
 Route::get('/pos', [MSalesController::class, 'index'])->name('pos');  
 Route::get('/addtocart/{id}', [MSalesController::class, 'addtocart']);
@@ -158,6 +173,18 @@ Route::get('/pos-del/{id}', [MSalesController::class, 'posDel'])->name('pos-del'
 Route::get('/pos-void/{id}', [MSalesController::class, 'posVoid'])->name('pos-void');  
 Route::get('/pos-cust', [MSalesController::class, 'posCust'])->name('pos-cust');  
 Route::get('/pos-prod', [MSalesController::class, 'posProd'])->name('pos-prod');  
+
+Route::get('/stock-transfer', [MStokProdukController::class, 'stockTransfer'])->name('stock-transfer'); 
+Route::get('/stock-transfer-datatables', [MStokProdukController::class, 'stockTransferDatatables'])->name('stock-transfer-datatables'); 
+Route::get('/ts-getDest/{id}', [MStokProdukController::class, 'getDest'])->name('ts-getDest'); 
+Route::get('/ts-getMax/{id}/{asal}', [MStokProdukController::class, 'getMax'])->name('ts-getMax'); 
+Route::get('/ts-prod/{id}', [MStokProdukController::class, 'getProduct'])->name('ts-prod'); 
+Route::post('/ts-save', [MStokProdukController::class, 'transferStore'])->name('ts-save'); 
+Route::get('/ts-edit/{id}', [MStokProdukController::class, 'editTransfer'])->name('ts-edit'); 
+
+
+
+
 
 
 
@@ -197,10 +224,6 @@ Route::get('/manage-stocks', function () {
 Route::get('/stock-adjustment', function () {                         
     return view('stock-adjustment');
 })->name('stock-adjustment');     
-
-Route::get('/stock-transfer', function () {                         
-    return view('stock-transfer');
-})->name('stock-transfer'); 
 
 Route::get('/purchase-report', function () {                         
     return view('purchase-report');

@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WareHouseModel extends Model
+class DPurchaseReceiveModel extends Model
 {
-    protected $table = 't_transfer_warehouse';
+    protected $table = 'd_purchase_receive';
 
     protected $guarded = ['id'];
 }

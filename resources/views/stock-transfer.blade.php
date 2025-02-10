@@ -28,300 +28,288 @@
                                         class="feather-search"></i></a>
                             </div>
                         </div>
-                        <div class="search-path">
-                            <div class="d-flex align-items-center">
-                                <a class="btn btn-filter" id="filter_search">
-                                    <i data-feather="filter" class="filter-icon"></i>
-                                    <span><img src="{{ URL::asset('/build/img/icons/closes.svg') }}" alt="img"></span>
-                                </a>
-                                <div class="layout-hide-box">
-                                    <a href="javascript:void(0);" class="me-3 layout-box"><i data-feather="layout"
-                                            class="feather-search"></i></a>
-                                    <div class="layout-drop-item card">
-                                        <div class="drop-item-head">
-                                            <h5>Want to manage datatable?</h5>
-                                            <p>Please drag and drop your column to reorder your table and enable see option
-                                                as you want.</p>
-                                        </div>
-                                        <ul>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Shop</span>
-                                                    <input type="checkbox" id="option1" class="check" checked>
-                                                    <label for="option1" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Product</span>
-                                                    <input type="checkbox" id="option2" class="check" checked>
-                                                    <label for="option2" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Reference No</span>
-                                                    <input type="checkbox" id="option3" class="check" checked>
-                                                    <label for="option3" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Date</span>
-                                                    <input type="checkbox" id="option4" class="check" checked>
-                                                    <label for="option4" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Responsible Person</span>
-                                                    <input type="checkbox" id="option5" class="check" checked>
-                                                    <label for="option5" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Notes</span>
-                                                    <input type="checkbox" id="option6" class="check" checked>
-                                                    <label for="option6" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Quantity</span>
-                                                    <input type="checkbox" id="option7" class="check" checked>
-                                                    <label for="option7" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div
-                                                    class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                                    <span class="status-label"><i data-feather="menu"
-                                                            class="feather-menu"></i>Actions</span>
-                                                    <input type="checkbox" id="option8" class="check" checked>
-                                                    <label for="option8" class="checktoggle"> </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-sort">
-                            <i data-feather="sliders" class="info-img"></i>
-                            <select class="select">
-                                <option>Sort by Date</option>
-                                <option>Newest</option>
-                                <option>Oldest</option>
-                            </select>
-                        </div>
                     </div>
-                    <!-- /Filter -->
-                    <div class="card" id="filter_inputs">
-                        <div class="card-body pb-0">
-                            <div class="row">
-                                <div class="col-lg-3 col-sm-6 col-12">
-                                    <div class="input-blocks">
-                                        <i data-feather="archive" class="info-img"></i>
-                                        <select class="select">
-                                            <option>Warehouse From</option>
-                                            <option>Lobar Handy</option>
-                                            <option>Quaint Warehouse</option>
-                                            <option>Traditional Warehouse</option>
-                                            <option>Cool Warehouse</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6 col-12">
-                                    <div class="input-blocks">
-                                        <i data-feather="user" class="info-img"></i>
-                                        <select class="select">
-                                            <option>Warehouse To</option>
-                                            <option>Selosy</option>
-                                            <option>Logerro</option>
-                                            <option>Vesloo</option>
-                                            <option>Crompy</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6 col-12">
-                                    <div class="input-blocks">
-                                        <i data-feather="calendar" class="info-img"></i>
-                                        <div class="input-groupicon">
-                                            <input type="text" class="datetimepicker" placeholder="Choose Date">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6 col-12 ms-auto">
-                                    <div class="input-blocks">
-                                        <a class="btn btn-filters ms-auto"> <i data-feather="search"
-                                                class="feather-search"></i> Search </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Filter -->
                     <div class="table-responsive">
-                        <table class="table  datanew">
+                        <table class="table" id="myTable">
                             <thead>
                                 <tr>
-                                    <th class="no-sort">
-                                        <label class="checkboxs">
-                                            <input type="checkbox" id="select-all">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </th>
-                                    <th>From Warehouse</th>
-                                    <th>To Warehouse</th>
-                                    <th>No of Products</th>
-                                    <th>Quantity transfered</th>
-                                    <th>Ref Number</th>
+                                    <th class="no-sort">No</th>
                                     <th>Date</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Ref Number</th>
+                                    <th>Input By</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Lobar Handy </td>
-                                    <td>Selosy </td>
-                                    <td>
-                                        04
-                                    </td>
-                                    <td>
-                                        14
-                                    </td>
-                                    <td>#145445</td>
-                                    <td>25 Jul 2023</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Quaint Warehouse </td>
-                                    <td>Logerro </td>
-                                    <td>
-                                        21
-                                    </td>
-                                    <td>
-                                        10
-                                    </td>
-                                    <td>#135478</td>
-                                    <td>28 Jul 2023</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Traditional Warehouse </td>
-                                    <td>Vesloo </td>
-                                    <td>
-                                        15
-                                    </td>
-                                    <td>
-                                        14
-                                    </td>
-                                    <td>#145124</td>
-                                    <td>24 Jul 2023</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>Cool Warehouse </td>
-                                    <td>Crompy</td>
-                                    <td>
-                                        14
-                                    </td>
-                                    <td>
-                                        74
-                                    </td>
-                                    <td>#474541</td>
-                                    <td>15 Jul 2023</td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-units">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- /product list -->
         </div>
     </div>
+
+    <script src="{{ URL::asset('build/js/jquery-3.7.1.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#ts_date").flatpickr({
+                dateFormat: "Y-m-d H:i",
+                enableTime: true
+            });
+
+            $('#myTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{!! url('stock-transfer-datatables') !!}",
+                    type: "get"
+                },
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, "className": "dt-center" },
+                    {data: 'ts_date', name: 'ts_date'},
+                    {data: 'tempat_asal', name: 'tempat_asal'},
+                    {data: 'tempat_tujuan', name: 'tempat_tujuan'},
+                    {data: 'ts_code', name: 'ts_code'},
+                    {data: 'user', name: 'user'},
+                    {data: 'action', name: 'action'}
+                ],            
+                "bFilter": true,
+                "sDom": 'fBtlpi',  
+                "ordering": false,
+                "language": {
+                    search: ' ',
+                    sLengthMenu: '_MENU_',
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> '
+                    },
+                },
+                initComplete: (settings, json)=>{
+                    $('.dataTables_filter').appendTo('#tableSearch');
+                    $('.dataTables_filter').appendTo('.search-input');
+
+                },
+                "autoWidth": false
+            });
+
+            $('#produk').select2({
+                ajax: {
+                    type: "GET",
+                    delay: 250,
+                    dataType: 'json',
+                    url: '{!! url("ts-prod") !!}/'+$('#asal').val(),
+                    data: function (param) {
+                        return {
+                            q: param.term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    // text: item.brand+' - '+item.name+' - '+item.size+' - '.item.sku,
+                                    text: item.brand+' - '+item.name+' - '+item.size,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                dropdownParent: $("#add-units")
+            });
+
+            $('body').on('change', '#produk', function(){
+                $.ajax({
+                    method : "GET",
+                    dataType: 'json',
+                    url: '{!! url("ts-getMax") !!}/'+$(this).val()+'/'+$('#asal').val(),
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $('#qty').attr('max', data.balance);
+                    },
+                    fail: function (e) {
+                        Swal.fire({
+                            position: "top-end",
+                            toast: true,
+                            title: "Something wen't Wrong",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            })
+
+            $('body').on('click', '#asal', function(){
+                $.ajax({
+                    method : "GET",
+                    dataType: 'json',
+                    url: '{!! url("ts-getDest") !!}/'+$(this).val(),
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        $('#tujuan').html(data);
+                    },
+                    fail: function (e) {
+                        Swal.fire({
+                            position: "top-end",
+                            toast: true,
+                            title: "Something wen't Wrong",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            })
+
+            $('body').on('click', '.add-ts', function(){
+                $('#ts_date').val("");
+                $('#tsdate').val("");
+                $('#asal').prop('selectedIndex',0);
+                $('#tujuan').prop('selectedIndex',0);
+                $('#qty').val("");
+                $('#desc').val("");
+                $('#produk').next(".select2-container").show();
+                $('#produk_name').hide();
+
+                $('#ts_date').removeAttr("disabled");
+                $('#asal').removeAttr("disabled");
+                $('#tujuan').removeAttr("disabled");
+                $('#produk_name').removeAttr("disabled");
+                $('#qty').removeAttr("disabled");
+                $('#desc').removeAttr("disabled");
+                $('.save-ts').show();
+                $('#tujuan').show();
+                $('#tujuan_name').hide();
+            });
+
+            $('body').on('click', '.view-ts', function(){
+                $.ajax({
+                    method : "GET",
+                    dataType: 'json',
+                    url: '{!! url("ts-edit") !!}/'+$(this).attr('data-id'),
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if(data.status === true){
+                            $('#ts_id').val(data.id);
+                            $('#ts_code').val(data.ts_code);
+                            $('#ts_date').val(data.ts_date);
+                            $('#asal option[value='+data.asal+']').attr('selected','selected');
+                            $('#tujuan_name').val(data.tujuan_name);
+                            $('#produk').next(".select2-container").hide();
+                            $('#produk_name').show();
+                            $('#produk_name').val(data.product_name);
+                            $('#qty').val(data.qty);
+                            $('#desc').val(data.description);
+
+                            $('#ts_date').attr("disabled", "disabled");
+                            $('#asal').attr("disabled", "disabled");
+                            $('#tujuan_name').attr("disabled", "disabled");
+                            $('#produk_name').attr("disabled", "disabled");
+                            $('#qty').attr("disabled", "disabled");
+                            $('#desc').attr("disabled", "disabled");
+                            $('.save-ts').hide();
+                            $('#tujuan').hide();
+                            $('#tujuan_name').show();
+                        } else {
+                            Swal.fire({
+                            position: "top-end",
+                            toast: true,
+                            title: data.msg,
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        }
+                    },
+                    fail: function (e) {
+                        Swal.fire({
+                            position: "top-end",
+                            toast: true,
+                            title: "Something wen't Wrong",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            });
+
+            $('body').on('click', '.save-ts', function(){
+                var form = $('#formKu');
+                var formdata = new FormData(form[0]);
+    
+                bootbox.dialog({
+                    message: "Are you sure want to save this data ?",
+                    title: "Save Confirmation",
+                    buttons: {
+                        success: {
+                            label: "Yes",
+                            className: "btn-success btn-flat",
+                            callback: function () {
+                                $.ajax({
+                                    method : "POST",
+                                    dataType: 'json',
+                                    url: '{!! url("ts-save") !!}',
+                                    data: formdata,
+                                    cache: false,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (data) {
+                                        if (data.status === true) {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                icon: "success",
+                                                title: "Data has been saved",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                position: "top-end",
+                                                toast: true,
+                                                title: "Something wen't Wrong",
+                                                icon: "error",
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        }
+                                        $('#add-units').modal('toggle');
+                                        $('#myTable').DataTable().ajax.reload();
+                                    },
+                                    fail: function (e) {
+                                        Swal.fire({
+                                            position: "top-end",
+                                            toast: true,
+                                            title: "Something wen't Wrong",
+                                            icon: "error",
+                                            showConfirmButton: false,
+                                            timer: 2000
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        danger: {
+                            label: "Cancel",
+                            className: "btn-danger btn-flat"
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

@@ -322,7 +322,7 @@ class MSalesController extends Controller
     public function getSupp()
     {
         $data = MSupplierModel::where('status', '=', 1)
-            ->get();
+            ->orderBy('id', 'DESC')->get();
         echo json_encode($data);
     }
     

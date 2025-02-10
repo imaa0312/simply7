@@ -2,6 +2,7 @@
  <link rel="stylesheet" href="{{ url('build/css/bootstrap.min.css') }}">
 
  <!-- Datetimepicker CSS -->
+ <link rel="stylesheet" href="{{ url('build/plugins/flatpickr/flatpickr.css') }}">
  <link rel="stylesheet" href="{{ url('build/plugins/daterangepicker/daterangepicker.css') }}">
  <link rel="stylesheet" href="{{ url('build/css/bootstrap-datetimepicker.min.css') }}">
 
