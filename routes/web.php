@@ -10,6 +10,7 @@ use App\Http\Controllers\TPurchaseOrder;
 use App\Http\Controllers\MProdukController;
 use App\Http\Controllers\MSalesController;
 use App\Http\Controllers\MStokProdukController;
+use App\Http\Controllers\ShopeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -185,6 +186,8 @@ Route::get('/ts-edit/{id}', [MStokProdukController::class, 'editTransfer'])->nam
 
 
 
+// SHOPEEEEE //
+Route::get('get-shop-info', [ShopeeController::class, 'getShopInfo'])->name('get-shop-info');
 
 
 
