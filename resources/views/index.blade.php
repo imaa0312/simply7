@@ -3,7 +3,8 @@
 @section('content')
     <div class="page-wrapper">
         <div class="content">
-            <div class="row">
+            <h1>Welcome, {{{ Auth::user()->name }}}!</h1>
+            <!--<div class="row">
                 <div class="col-xl-3 col-sm-6 col-12 d-flex">
                     <div class="dash-widget w-100">
                         <div class="dash-widgetimg">
@@ -94,7 +95,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Button trigger modal -->
 
             <div class="row">
                 <div class="col-xl-7 col-sm-12 col-12 d-flex">
@@ -384,7 +384,8 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
+    
 @endsection

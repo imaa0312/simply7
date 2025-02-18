@@ -36,8 +36,10 @@
                             class="img-fluid">
                     </span>
                     <span class="user-detail">
-                        <span class="user-name">Admin</span>
-                        <span class="user-role">Super Admin</span>
+                        @if(!Auth::guest())
+                            <span class="user-name">{{{ Auth::user()->name }}}</span>
+                            <!-- <span class="user-role">Super Admin</span> -->
+                        @endif
                     </span>
                 </span>
             </a>
@@ -48,12 +50,14 @@
                                 alt="">
                             <span class="status online"></span></span>
                         <div class="profilesets">
-                            <h6>Admin</h6>
-                            <h5>Super Admin</h5>
+                            @if(!Auth::guest())
+                                <h6>{{{ Auth::user()->name }}}</h6>
+                                <!--<h5>Super Admin</h5>-->
+                            @endif
                         </div>
                     </div>
                     <hr class="m-0">
-                    <a class="dropdown-item logout pb-0" href="{{ url('signin') }}"><img
+                    <a class="dropdown-item logout pb-0" href="{{ url('logout') }}"><img
                             src="{{ URL::asset('/build/img/icons/log-out.svg') }}" class="me-2"
                             alt="img">Logout</a>
                 </div>
