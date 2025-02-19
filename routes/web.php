@@ -28,7 +28,7 @@ use App\Http\Controllers\Auth\LoginController;
 Route::get('signin-3', function () {
     return view('signin-3');
 })->name('signin-3');
-Route::get('/logout', [AuthController::class, 'destroy']);
+Route::get('/logout', [LoginController::class, 'destroy']);
 Route::post('auth/login', [LoginController::class, 'store']);
 
 Route::get('pwd', function () {
@@ -37,7 +37,9 @@ Route::get('pwd', function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('index', [CustomAuthController::class, 'dashboard']); 
+    Route::get('/', function () {
+        return view('index');
+    })->name('index');
 
 
     // Master
@@ -209,19 +211,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-Route::get('signin', [CustomAuthController::class, 'index'])->name('signin');
-Route::post('custom-login', [CustomAuthController::class, 'customSignin'])->name('signin.custom'); 
-Route::get('register', [CustomAuthController::class, 'registration'])->name('register');
-Route::post('custom-register', [CustomAuthController::class, 'customRegister'])->name('register.custom'); 
-Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
 
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
+
 
 Route::get('/low-stocks', function () {
     return view('low-stocks');

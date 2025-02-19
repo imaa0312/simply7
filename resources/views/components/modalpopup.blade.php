@@ -6291,6 +6291,40 @@
 @endif
 
 @if (Route::is(['pos']))
+    <!-- Modal -->
+    <div class="modal fade modal-default pos-modal" id="payment-mod" aria-labelledby="payment">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header p-4">
+                    <h5>PAYMENT</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form id="formPayment" method="POST">
+                @csrf
+                <div class="modal-body p-4">
+                        <label>TOTAL PAYMENT</label>
+                        <h2 class="text-center p-4" id="h2total">Rp 4500.00</h2>
+                        <div class="input-block txtbox">
+                            <label id="label-payment">Order Reference</label>
+                            <input class="form-control" type="text" value="" placeholder="">
+                        </div>
+                        <div class="input-block txtbox">
+                            <label id="label-change">Order Reference</label>
+                            <input class="form-control" type="text" disabled id="change-money">
+                        </div>
+                        <div class="modal-footer d-sm-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="pay" data-bs-dismiss="modal">Confirm</button>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <!-- Payment Completed -->
     <div class="modal fade modal-default" id="payment-completed" aria-labelledby="payment-completed">
         <div class="modal-dialog modal-dialog-centered">

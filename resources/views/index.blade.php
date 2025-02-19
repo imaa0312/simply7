@@ -3,7 +3,9 @@
 @section('content')
     <div class="page-wrapper">
         <div class="content">
+            @if(!Auth::guest())
             <h1>Welcome, {{{ Auth::user()->name }}}!</h1>
+            @endif
             <!--<div class="row">
                 <div class="col-xl-3 col-sm-6 col-12 d-flex">
                     <div class="dash-widget w-100">

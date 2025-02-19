@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="block-section">
-                            <div class="selling-info">
+                            <!--<div class="selling-info">
                                 <div class="row">
                                     <div class="col-12 col-sm-4">
                                         <div class="input-block">
@@ -99,25 +99,25 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="order-total">
                                 <table class="table table-responsive table-borderless">
                                     <tr>
                                         <td>Sub Total</td>
-                                        <td class="text-end">$60,454</td>
+                                        <td class="text-end" id="subtot">Rp 0</td>
                                     </tr>
                                     <tr>
-                                        <td>Tax (GST 5%)</td>
-                                        <td class="text-end">$40.21</td>
+                                        <td>Tax (10%)</td>
+                                        <td class="text-end" id="tax">Rp 0</td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <td class="danger">Discount (10%)</td>
                                         <td class="danger text-end">$15.21</td>
                                     </tr>
                                     <tr>
                                         <td>Total</td>
-                                        <td class="text-end">$64,024.5</td>
-                                    </tr>
+                                        <td class="text-end"></td>
+                                    </tr>-->
                                 </table>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                             <div class="row d-flex align-items-center justify-content-center methods">
                                 <div class="col-md-6 col-lg-4 item">
                                     <div class="default-cover" data-id="cash">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-mod" data-id="cash" class="payment-method">
                                             <img src="{{ URL::asset('/build/img/icons/cash-pay.svg')}}"
                                                 alt="Payment Method">
                                             <span>Cash</span>
@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="col-md-6 col-lg-4 item">
                                     <div class="default-cover" data-id="edc">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-mod" data-id="card" class="payment-method">
                                             <img src="{{ URL::asset('/build/img/icons/credit-card.svg')}}"
                                                 alt="Payment Method">
                                             <span>Debit Card</span>
@@ -145,20 +145,20 @@
                                 </div>
                                 <div class="col-md-6 col-lg-4 item">
                                     <div class="default-cover" data-id="qr">
-                                        <a href="javascript:void(0);">
+                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#payment-mod" data-id="qr" class="payment-method">
                                             <img src="{{ URL::asset('/build/img/icons/qr-scan.svg')}}" alt="Payment Method">
-                                            <span>Scan</span>
+                                            <span>Scan QR</span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="d-grid btn-block">
-                            <a class="btn btn-secondary" href="javascript:void(0);">
-                                Grand Total : $64,024.5
+                            <a class="btn btn-secondary" href="javascript:void(0);" id="total">
+                                Grand Total : Rp 0
                             </a>
                         </div>
-                        <div class="btn-row d-sm-flex align-items-center justify-content-between">
+                        <!--<div class="btn-row d-sm-flex align-items-center justify-content-between">
                             <a href="javascript:void(0);" class="btn btn-info btn-icon flex-fill"
                                 data-bs-toggle="modal" data-bs-target="#hold-order"><span
                                     class="me-1 d-flex align-items-center"><i data-feather="pause"
@@ -170,7 +170,7 @@
                                 data-bs-toggle="modal" data-bs-target="#payment-completed"><span
                                     class="me-1 d-flex align-items-center"><i data-feather="credit-card"
                                         class="feather-16"></i></span>Payment</a>
-                        </div>
+                        </div>-->
                         </form>
                     </aside>
                 </div>
@@ -219,6 +219,27 @@
                         toastr.error(data.msg);
                     }
                 });
+            });
+
+            $('body').on('click', '.payment-method', function(event){
+                event.stopImmediatePropagation();
+                var method = $(this).attr('data-id');
+                alert(method);
+
+                if(method == 'cash'){
+                    $('.txtbox').show();
+                    $('#label-payment').html('Cash');
+                    $('#label-change').show();
+                    $('#label-change').html('Change');
+                    $('#change-money').html('Change');
+                } else if(method == 'card'){
+                    $('.txtbox').show();
+                    $('#label-payment').html('Card Number');
+                    $('#label-change').hide();
+                    $('#change-money').hide();
+                } else {
+                    $('.txtbox').hide();
+                }
             });
 
             $('body').on('click', '.prod', function(){
